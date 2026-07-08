@@ -4,6 +4,22 @@ All notable changes to this project are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.5.0] - 2026-07-08
+
+### Added
+
+- `openagents` bare command and `openagents:status` — default workflow shows agent status, repo status, available commands, and next steps
+- Multi-signal agent detection: env vars → running processes → config dirs → binaries (covers 14+ agents)
+- Agent support expanded from 6 to 14: opencode, claude-code, cursor, codex, cline, zed, antigravity, deepagents, gemini-cli, github-copilot, kimi-code-cli, mimocode, warp, amp
+- `references/status.md` — new reference file for the default status workflow
+- Invocation section in SKILL.md clarifying `:` and space syntax are equivalent
+
+### Changed
+
+- `references/global.md` — comprehensive agent detection matrix with all 14 agents, multi-phase handshake
+- `AGENTS.md` — updated with status subcommand and full agent list
+- SKILL.md description triggers — added `detect agent`, `agent status`, `multi-agent setup`, `ecosystem check`
+
 ## [1.4.0] - 2026-07-08
 
 ### Added

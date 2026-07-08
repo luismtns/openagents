@@ -7,19 +7,24 @@ description: |
   for rule generation.
   Use when setting up multi-agent, initializing projects,
   creating skills or rules, or generating project rules.
-  Triggers: openagents global, openagents init, openagents add,
-    openagents rules, configure agents, check agents,
-    verify setup, init project, project setup, analyze project,
+  Triggers: openagents, openagents status, openagents global,
+    openagents init, openagents add, openagents rules,
+    configure agents, check agents, verify setup,
+    init project, project setup, analyze project,
     generate rules, refresh rules, create skill, add skill,
-    register skill, package skill.
+    register skill, package skill, detect agent, agent status,
+    multi-agent setup, ecosystem check.
+    Use `openagents` (bare) to show agent status and available commands.
 allowed-tools: Read, Write, Glob, Grep, Bash(git:*), Bash(mkdir:*),
   Bash(ln:*), Bash(test:*), Bash(uname:*), Bash(echo:*),
   Bash(pwd:*), Bash(ls:*), Bash(find:*)
-version: 1.4.0
+version: 1.5.0
 author: Luis Bovo <luis@luis.dev>
 license: MIT
 user-invocable: true
-compatible-with: opencode, claude-code, cursor, codex, cline, zed
+compatible-with: opencode, claude-code, cursor, codex, cline, zed,
+  antigravity, deepagents, gemini-cli, github-copilot,
+  kimi-code-cli, mimocode, warp, amp
 tags: [openagents, multi-agent, orchestration, setup, init, rules, skills]
 ---
 
@@ -31,17 +36,32 @@ Load this skill, then route to the right subcommand:
 
 | Invocation | Read | When |
 |------------|------|------|
+| `openagents` / `openagents:status` / `openagents status` | [references/status.md](references/status.md) | Default — show agent status, repo status, and available commands |
 | `openagents:global` / `openagents global` | [references/global.md](references/global.md) | Detect agent, verify global multi-agent setup, handshake |
 | `openagents:init` / `openagents init` | [references/init.md](references/init.md) | Scaffold project AGENTS.md and rules |
 | `openagents:add` / `openagents add` | [references/add.md](references/add.md) | Create new skills or rules in multi-agent context |
 | `openagents:rules` / `openagents rules` | [references/rules.md](references/rules.md) | Deep codebase analysis for rule generation |
 
+## Invocation
+
+All subcommands accept two equivalent forms:
+- `openagents:<subcommand>` — colon syntax (opencode convention)
+- `openagents <subcommand>` — space syntax (natural language)
+
+The bare `openagents` (no subcommand) always runs the default status
+workflow in [references/status.md](references/status.md).
+
+If the user types `openagents` without a subcommand, route to status.
+If the user includes a subcommand (`:name` or ` name`), route to the
+corresponding reference file.
+
 ## How it works
 
-The skill detects which AI coding agent is running, adapts configuration
-paths accordingly, and orchestrates multi-agent workflows across your
-ecosystem. No agent-specific config is shipped — the skill reads your
-environment and adjusts.
+The skill detects which AI coding agent is running using a multi-signal
+strategy (env vars → processes → config dirs → binaries), covering all
+agents in the skills.sh ecosystem. It adapts configuration paths
+accordingly and orchestrates multi-agent workflows. No agent-specific
+config is shipped — the skill reads your environment and adjusts.
 
 ## Capability constraints
 
