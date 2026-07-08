@@ -13,10 +13,9 @@ description: |
     generate rules, refresh rules, create skill, add skill,
     register skill, package skill.
 allowed-tools: Read, Write, Glob, Grep, Bash(git:*), Bash(mkdir:*),
-  Bash(ln:*), Bash(cp:*), Bash(test:*), Bash(uname:*), Bash(echo:*),
-  Bash(pwd:*), Bash(npx:*), Bash(ls:*), Bash(find:*), Bash(wc:*),
-  Bash(rm:*), Bash(diff:*), Bash(du:*), Bash(cat:*), Bash(npm:*)
-version: 1.3.0
+  Bash(ln:*), Bash(test:*), Bash(uname:*), Bash(echo:*),
+  Bash(pwd:*), Bash(ls:*), Bash(find:*)
+version: 1.4.0
 author: Luis Bovo <luis@luis.dev>
 license: MIT
 user-invocable: true
@@ -32,10 +31,10 @@ Load this skill, then route to the right subcommand:
 
 | Invocation | Read | When |
 |------------|------|------|
-| `openagents:global` / `openagents global` | [references/global.md](references/global.md) | Detect agent, handshake, verify global setup |
-| `openagents:init` / `openagents init` | [references/init.md](references/init.md) | Scaffold project, generate AGENTS.md |
-| `openagents:add` / `openagents add` | [references/add.md](references/add.md) | Create skills, rules, register distribution |
-| `openagents:rules` / `openagents rules` | [references/rules.md](references/rules.md) | Deep codebase analysis, generate rules |
+| `openagents:global` / `openagents global` | [references/global.md](references/global.md) | Detect agent, verify global multi-agent setup, handshake |
+| `openagents:init` / `openagents init` | [references/init.md](references/init.md) | Scaffold project AGENTS.md and rules |
+| `openagents:add` / `openagents add` | [references/add.md](references/add.md) | Create new skills or rules in multi-agent context |
+| `openagents:rules` / `openagents rules` | [references/rules.md](references/rules.md) | Deep codebase analysis for rule generation |
 
 ## How it works
 
@@ -43,3 +42,22 @@ The skill detects which AI coding agent is running, adapts configuration
 paths accordingly, and orchestrates multi-agent workflows across your
 ecosystem. No agent-specific config is shipped — the skill reads your
 environment and adjusts.
+
+## Capability constraints
+
+| Tool | Purpose | Scope |
+|------|---------|-------|
+| Read, Write, Glob, Grep | Read/write project files (AGENTS.md, rules, SKILL.md) | Local filesystem only |
+| Bash(mkdir:*) | Create `.agents/rules/`, per-agent symlink dirs | Local filesystem |
+| Bash(ln:*) | Create symlinks for agents that don't auto-discover `~/.agents/skills/` | Local filesystem |
+| Bash(test:*) | Check file existence, env vars, agent detection | Read-only checks |
+| Bash(uname:*) | Detect OS for agent-compatible paths | Read-only |
+| Bash(echo:*) | Report status to user | No side effects |
+| Bash(pwd:*) | Resolve project root | Read-only |
+| Bash(ls:*) | List project files for analysis | Read-only |
+| Bash(find:*) | Discover files for rule generation | Read-only |
+| Bash(git:*) | Stage/commit skill files (add, rules subcommands) | Git operations only |
+
+The skill does NOT execute downloaded code, make network requests,
+install packages, or fetch remote content. All operations are
+local filesystem and git operations.

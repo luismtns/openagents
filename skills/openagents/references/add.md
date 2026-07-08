@@ -70,15 +70,9 @@ Each reference file has no frontmatter and starts with `# $SKILL_NAME:<topic>`.
 bash scripts/validate.sh
 ```
 
-## Distribution
+## Local installation
 
-After creating skills, distribute via:
-
-```bash
-npx skills add luismtns/<repo>
-```
-
-Or for local development:
+For development, symlink skills into the agent's skill path:
 
 ```bash
 mkdir -p ~/.agents/skills
