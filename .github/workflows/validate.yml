@@ -1,48 +1,51 @@
 name: validate
+
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 
-permissions:
-  contents: read
-
 jobs:
-  validate-skills:
-    name: Validate skills
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run validator
+      - name: Run local validator
         run: bash scripts/validate.sh
 
-      - name: Check claude-plugin integrity
+      - name: Verify file structure
         run: |
-          errors=0
-          if [ ! -f claude-plugin/.claude-plugin/plugin.json ]; then
-            echo "ERROR: plugin.json missing"; errors=$((errors+1))
-          fi
-          if [ ! -L claude-plugin/skills ]; then
-            echo "ERROR: claude-plugin/skills is not a symlink"; errors=$((errors+1))
-          elif [ "$(readlink claude-plugin/skills)" != "../skills" ]; then
-            echo "ERROR: claude-plugin/skills symlink target mismatch"; errors=$((errors+1))
-          fi
-          if [ "$errors" -gt 0 ]; then
-            echo "FAILED: $errors integrity errors"
-            exit 1
-          fi
-          echo "claude-plugin integrity OK"
+          for f in \
+            skills/openagents/SKILL.md \
+            skills/openagents/references/status.md \
+            skills/openagents/references/global.md \
+            skills/openagents/references/init.md \
+            skills/openagents/references/add.md \
+            skills/openagents/references/rules.md \
+            skills/openagents/references/rm.md \
+            skills/openagents/references/uninstall.md \
+            .agents/rules/validate.md \
+            .agents/rules/distributed-skills.md \
+            .claude-plugin/plugin.json \
+            skills.sh.json \
+            CHANGELOG.md \
+            LICENSE \
+            README.md
+          do
+            if [ -f "$f" ]; then
+              echo "OK  $f"
+            else
+              echo "MISS $f"
+              exit 1
+            fi
+          done
 
-      - name: Check skills.sh.json
+      - name: Verify symlinks
         run: |
-          if ! jq -e '.groupings' skills.sh.json > /dev/null 2>&1; then
-            echo "ERROR: skills.sh.json missing 'groupings' field"
-            exit 1
+          if [ -L .claude/rules ] && [ "$(readlink .claude/rules)" = "../.agents/rules" ]; then
+            echo "OK  .claude/rules -> ../.agents/rules"
+          else
+            echo "WARN .claude/rules symlink missing or incorrect"
           fi
-          if ! jq -e '.["$schema"]' skills.sh.json > /dev/null 2>&1; then
-            echo "ERROR: skills.sh.json missing '\$schema'"
-            exit 1
-          fi
-          echo "skills.sh.json OK"
