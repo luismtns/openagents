@@ -1,4 +1,7 @@
 node_modules/
 .opencode/
+.agents/skills/
+.claude/skills/
+skills-lock.json
 *.log
 .DS_Store

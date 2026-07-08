@@ -16,10 +16,10 @@ orchestrates multi-agent workflows across your ecosystem.
 
 ```mermaid
 flowchart TD
-    User{User says...} -->|"setup multi-agent"| Skill[skill{ name: openagents }]
+    User{User says...} -->|"setup multi-agent"| Skill[skill() skill]
     User -->|"init project"| Skill
     User -->|"create skill"| Skill
-    User -->|"analyze & rules"| Skill
+    User -->|"analyze and rules"| Skill
 
     Skill --> Router[SKILL.md Router]
 
