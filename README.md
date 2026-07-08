@@ -1,6 +1,6 @@
-# OpenAgents
-
-![OpenAgents](assets/logo.gif)
+<h1 align="center">
+  <img src="assets/logo.gif" alt="OpenAgents">
+</h1>
 
 [![skills.sh](https://skills.sh/b/luismtns/openagents)](https://skills.sh/luismtns/openagents)
 [![validate](https://github.com/luismtns/openagents/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/luismtns/openagents/actions/workflows/validate.yml)
