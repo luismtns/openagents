@@ -4,25 +4,50 @@ on:
     tags:
       - "v*"
 
+permissions:
+  contents: write
+
 jobs:
-  release:
+  validate:
+    name: Validate
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/validate.sh
+
+  release:
+    name: Create release
+    needs: [validate]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Generate changelog
         id: changelog
-        run:
-          echo "changelog<<EOF" >> $GITHUB_OUTPUT
-          git log --oneline "$(git tag --sort=-version:refname | head -1)..HEAD" 2>/dev/null
-          || git log --oneline $(git rev-list --max-parents=0 HEAD)..HEAD
-          >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+        run: |
+          prev_tag=$(git tag --sort=-version:refname | head -2 | tail -1 || echo "")
+          if [ -n "$prev_tag" ]; then
+            log=$(git log "$prev_tag"..HEAD --oneline --no-decorate)
+          else
+            log=$(git log --oneline --no-decorate "$(git rev-list --max-parents=0 HEAD)"..HEAD)
+          fi
+          {
+            echo 'changelog<<EOF'
+            echo "$log"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          body: ${{ steps.changelog.outputs.changelog }}
+          body: |
+            ## What's changed
+
+            ${{ steps.changelog.outputs.changelog }}
+
+            ---
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ steps.changelog.outputs.changelog != '' && format('{0}..{1}', github.ref_name, github.ref_name) || 'initial' }}
           generate_release_notes: true
+          make_latest: true

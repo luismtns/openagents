@@ -1,50 +1,48 @@
 name: validate
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
   validate-skills:
+    name: Validate skills
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate skill directories
+
+      - name: Run validator
+        run: bash scripts/validate.sh
+
+      - name: Check claude-plugin integrity
         run: |
           errors=0
-          for dir in skills/*/; do
-            name=$(basename "$dir")
-            file="$dir/SKILL.md"
-            if [ ! -f "$file" ]; then
-              echo "ERROR: $file missing"; errors=$((errors+1))
-              continue
-            fi
-            if ! grep -q '^name: ' "$file"; then
-              echo "ERROR: $file missing 'name' in frontmatter"; errors=$((errors+1))
-            fi
-            if ! grep -q '^description: ' "$file"; then
-              echo "ERROR: $file missing 'description' in frontmatter"; errors=$((errors+1))
-            fi
-            if ! grep -q 'Use when' "$file"; then
-              echo "WARN: $file description missing 'Use when' pattern"
-            fi
-            if ! grep -q '^allowed-tools: ' "$file"; then
-              echo "ERROR: $file missing 'allowed-tools' in frontmatter"; errors=$((errors+1))
-            fi
-            if ! grep -q '^version: ' "$file"; then
-              echo "ERROR: $file missing 'version' in frontmatter"; errors=$((errors+1))
-            fi
-            if ! grep -q '^author: ' "$file"; then
-              echo "ERROR: $file missing 'author' in frontmatter"; errors=$((errors+1))
-            fi
-            if ! grep -q '^license: ' "$file"; then
-              echo "ERROR: $file missing 'license' in frontmatter"; errors=$((errors+1))
-            fi
-            lines=$(wc -l < "$file")
-            if [ "$lines" -gt 200 ]; then
-              echo "WARN: $file has $lines lines (consider splitting into references/)"
-            fi
-          done
+          if [ ! -f claude-plugin/.claude-plugin/plugin.json ]; then
+            echo "ERROR: plugin.json missing"; errors=$((errors+1))
+          fi
+          if [ ! -L claude-plugin/skills ]; then
+            echo "ERROR: claude-plugin/skills is not a symlink"; errors=$((errors+1))
+          elif [ "$(readlink claude-plugin/skills)" != "../skills" ]; then
+            echo "ERROR: claude-plugin/skills symlink target mismatch"; errors=$((errors+1))
+          fi
           if [ "$errors" -gt 0 ]; then
-            echo "---"
-            echo "FAILED: $errors validation errors"
+            echo "FAILED: $errors integrity errors"
             exit 1
           fi
-          echo "All skills validated successfully"
+          echo "claude-plugin integrity OK"
+
+      - name: Check skills.sh.json
+        run: |
+          if ! jq -e '.groupings' skills.sh.json > /dev/null 2>&1; then
+            echo "ERROR: skills.sh.json missing 'groupings' field"
+            exit 1
+          fi
+          if ! jq -e '.["$schema"]' skills.sh.json > /dev/null 2>&1; then
+            echo "ERROR: skills.sh.json missing '\$schema'"
+            exit 1
+          fi
+          echo "skills.sh.json OK"
