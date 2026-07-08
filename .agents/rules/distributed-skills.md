@@ -41,10 +41,13 @@ repo/
 │   └── openagents/
 │       ├── SKILL.md              # main skill definition
 │       └── references/           # progressive disclosure
-│           ├── global.md
-│           ├── init.md
-│           ├── add.md
-│           └── rules.md
+│           ├── status.md         # default status workflow
+│           ├── global.md         # agent handshake
+│           ├── init.md           # project scaffolding
+│           ├── add.md            # skill/rules creation
+│           ├── rules.md          # deep analysis + rule generation
+│           ├── rm.md             # remove project artifacts
+│           └── uninstall.md      # uninstall guidance
 ├── .agents/
 │   └── rules/                    # project rules (agent-agnostic)
 │       ├── validate.md

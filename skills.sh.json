@@ -4,7 +4,7 @@
   "groupings": [
     {
       "title": "OpenAgents",
-      "description": "Multi-agent workflow orchestration — global, init, add, rules.",
+      "description": "Multi-agent workflow orchestration — status, global, init, add, rules, rm, uninstall.",
       "skills": ["openagents"]
     }
   ]

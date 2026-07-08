@@ -12,7 +12,7 @@ bash scripts/validate.sh
 
 ```
 skills/openagents/SKILL.md           — main skill must exist
-skills/openagents/references/        — 4 reference files
+skills/openagents/references/        — 7 reference files
 scripts/validate.sh                  — local validator
 README.md, LICENSE, CHANGELOG.md, skills.sh.json
 ```
