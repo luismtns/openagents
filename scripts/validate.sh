@@ -8,10 +8,11 @@ root="$(cd "$(dirname "$0")/.." && pwd)"
 echo "=== OpenAgents Skill Validation ==="
 echo ""
 
+# === Skill validation ===
 for dir in "$root"/skills/*/; do
   name=$(basename "$dir")
   file="$dir/SKILL.md"
-  echo "--- [$name] ---"
+  echo "--- [skills/$name] ---"
 
   if [ ! -f "$file" ]; then
     echo "  ERROR: SKILL.md not found"
@@ -19,7 +20,7 @@ for dir in "$root"/skills/*/; do
     continue
   fi
 
-  # === Required frontmatter (agentskills.io spec: name + description are the only required fields) ===
+  # Required frontmatter (agentskills.io spec: name + description only)
   for field in name description; do
     if ! grep -q "^${field}: " "$file"; then
       echo "  ERROR: missing required '${field}' in frontmatter"
@@ -27,7 +28,7 @@ for dir in "$root"/skills/*/; do
     fi
   done
 
-  # === Optional frontmatter warnings ===
+  # Optional frontmatter warnings
   for field in allowed-tools version author license; do
     if ! grep -q "^${field}: " "$file"; then
       echo "  WARN: missing optional '${field}' in frontmatter (recommended for releases)"
@@ -35,14 +36,14 @@ for dir in "$root"/skills/*/; do
     fi
   done
 
-  # === "Use when" pattern in description ===
+  # "Use when" pattern in description
   if grep -q '^description:' "$file" && ! grep -q 'Use when' "$file"; then
     echo "  WARN: description missing 'Use when' pattern"
     warnings=$((warnings+1))
   fi
 
-  # === Description length check ===
-  if grep -q '^description:' "$file"; then
+  # Description length
+  if grep -q '^description: ' "$file"; then
     desc_line=$(grep '^description: ' "$file" | head -1)
     desc_text="${desc_line#description: }"
     if [ ${#desc_text} -gt 1024 ]; then
@@ -51,7 +52,7 @@ for dir in "$root"/skills/*/; do
     fi
   fi
 
-  # === Name regex validation ===
+  # Name regex
   if grep -q '^name: ' "$file"; then
     fname=$(grep '^name: ' "$file" | sed 's/^name: *//')
     if ! echo "$fname" | grep -qE '^[a-z0-9]+(-[a-z0-9]+)*$'; then
@@ -68,7 +69,7 @@ for dir in "$root"/skills/*/; do
     fi
   fi
 
-  # === Bash scoping in allowed-tools ===
+  # Bash scoping
   if grep -q '^allowed-tools:' "$file"; then
     tools=$(grep '^allowed-tools:' "$file" | sed 's/^allowed-tools: *//')
     if echo "$tools" | grep -q '\bBash\b' && ! echo "$tools" | grep -q 'Bash('; then
@@ -77,7 +78,7 @@ for dir in "$root"/skills/*/; do
     fi
   fi
 
-  # === Progressive disclosure: SKILL.md line count ===
+  # Progressive disclosure: SKILL.md line count
   lines=$(wc -l < "$file")
   if [ "$lines" -gt 500 ]; then
     echo "  ERROR: ${lines} lines (500 max — must split into references/)"
@@ -87,7 +88,7 @@ for dir in "$root"/skills/*/; do
     warnings=$((warnings+1))
   fi
 
-  # === References progressive disclosure ===
+  # References progressive disclosure
   ref_dir="$dir/references"
   if [ -d "$ref_dir" ]; then
     for ref_file in "$ref_dir"/*.md; do
@@ -105,10 +106,48 @@ for dir in "$root"/skills/*/; do
   echo ""
 done
 
+# === Required file structure ===
+echo "--- [file structure] ---"
+required_paths=(
+  "skills/openagents/SKILL.md"
+  "skills/openagents/references/status.md"
+  "skills/openagents/references/global.md"
+  "skills/openagents/references/init.md"
+  "skills/openagents/references/add.md"
+  "skills/openagents/references/rules.md"
+  "skills/openagents/references/rm.md"
+  "skills/openagents/references/uninstall.md"
+  ".agents/rules/validate.md"
+  ".agents/rules/distributed-skills.md"
+  "claude-plugin/.claude-plugin/plugin.json"
+  "skills.sh.json"
+  "CHANGELOG.md"
+  "LICENSE"
+  "README.md"
+  ".github/workflows/validate.yml"
+  ".github/workflows/publish.yml"
+)
+
+all_found=true
+for f in "${required_paths[@]}"; do
+  if [ -f "$root/$f" ]; then
+    echo "  OK  $f"
+  else
+    echo "  MISS $f"
+    all_found=false
+    errors=$((errors+1))
+  fi
+done
+
+if [ "$all_found" = true ]; then
+  echo "  All required files present"
+fi
+echo ""
+
 # === skills.sh.json validation ===
 echo "--- [skills.sh.json] ---"
 if [ -f "$root/skills.sh.json" ]; then
-  if ! echo "$(cat "$root/skills.sh.json")" | python3 -c "import sys,json; json.load(sys.stdin)" 2>/dev/null; then
+  if ! python3 -c "import sys,json; json.load(open(sys.argv[1]))" "$root/skills.sh.json" 2>/dev/null; then
     echo "  ERROR: skills.sh.json is not valid JSON"
     errors=$((errors+1))
   fi
@@ -124,8 +163,8 @@ else
 fi
 echo ""
 
-# === Claude Plugin validation ===
-echo "--- [claude-plugin] ---"
+# === Claude Plugin manifest ===
+echo "--- [claude-plugin/plugin.json] ---"
 plugin="$root/claude-plugin/.claude-plugin/plugin.json"
 if [ -f "$plugin" ]; then
   for field in name version description repository; do
@@ -136,23 +175,28 @@ if [ -f "$plugin" ]; then
   done
   echo "  OK (plugin.json present)"
 else
-  echo "  WARN: claude-plugin/plugin.json not found"
-  warnings=$((warnings+1))
+  echo "  ERROR: claude-plugin/.claude-plugin/plugin.json not found"
+  errors=$((errors+1))
 fi
 echo ""
 
-# === GitHub Actions validation ===
-echo "--- [.github/workflows] ---"
-if [ -f "$root/.github/workflows/validate.yml" ]; then
-  echo "  OK (validate.yml)"
+# === Claude Code marketplace (root-level) ===
+echo "--- [.claude-plugin/marketplace.json] ---"
+marketplace="$root/.claude-plugin/marketplace.json"
+if [ -f "$marketplace" ]; then
+  if ! python3 -c "import sys,json; json.load(open(sys.argv[1]))" "$marketplace" 2>/dev/null; then
+    echo "  ERROR: marketplace.json is not valid JSON"
+    errors=$((errors+1))
+  fi
+  for field in name plugins; do
+    if ! grep -q "\"${field}\"" "$marketplace"; then
+      echo "  ERROR: marketplace.json missing required '${field}'"
+      errors=$((errors+1))
+    fi
+  done
+  echo "  OK (marketplace.json present and valid)"
 else
-  echo "  WARN: validate.yml not found"
-  warnings=$((warnings+1))
-fi
-if [ -f "$root/.github/workflows/publish.yml" ]; then
-  echo "  OK (publish.yml)"
-else
-  echo "  WARN: publish.yml not found"
+  echo "  WARN: .claude-plugin/marketplace.json not found (recommended for plugin marketplace distribution)"
   warnings=$((warnings+1))
 fi
 echo ""

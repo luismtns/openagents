@@ -15,33 +15,6 @@ jobs:
       - name: Run local validator
         run: bash scripts/validate.sh
 
-      - name: Verify file structure
-        run: |
-          for f in \
-            skills/openagents/SKILL.md \
-            skills/openagents/references/status.md \
-            skills/openagents/references/global.md \
-            skills/openagents/references/init.md \
-            skills/openagents/references/add.md \
-            skills/openagents/references/rules.md \
-            skills/openagents/references/rm.md \
-            skills/openagents/references/uninstall.md \
-            .agents/rules/validate.md \
-            .agents/rules/distributed-skills.md \
-            .claude-plugin/plugin.json \
-            skills.sh.json \
-            CHANGELOG.md \
-            LICENSE \
-            README.md
-          do
-            if [ -f "$f" ]; then
-              echo "OK  $f"
-            else
-              echo "MISS $f"
-              exit 1
-            fi
-          done
-
       - name: Verify symlinks
         run: |
           if [ -L .claude/rules ] && [ "$(readlink .claude/rules)" = "../.agents/rules" ]; then

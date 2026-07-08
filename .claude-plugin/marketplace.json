@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "openagents",
+  "owner": {
+    "name": "Luis Bovo",
+    "url": "https://github.com/luismtns"
+  },
+  "description": "Multi-agent workflow orchestration for AI coding agents",
+  "plugins": [
+    {
+      "name": "openagents",
+      "source": "./claude-plugin",
+      "description": "Multi-agent workflow orchestration — status, global, init, add, rules, rm, uninstall.",
+      "version": "1.8.1"
+    }
+  ]
+}
