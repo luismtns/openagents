@@ -3,8 +3,8 @@
   "notGrouped": "bottom",
   "groupings": [
     {
-      "title": "Package",
-      "description": "OpenAgents skill pack — setup, init, rules, sync, audit, skills.",
+      "title": "OpenAgents",
+      "description": "Multi-agent workflow orchestration — global, init, add, rules.",
       "skills": ["openagents"]
     }
   ]

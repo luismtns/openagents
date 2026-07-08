@@ -1,66 +1,86 @@
 # openagents:init
 
-## Overview
+Per-project scaffolding for the OpenAgents ecosystem.
 
-Scans the current project repository and bootstraps a project-level AGENTS.md with conventions, commands, and architecture notes.
+Generates `AGENTS.md`, sets up `.agents/rules/`, and creates symlinks
+for the detected agent.
 
 ## Detection
 
-Read key files to determine project characteristics:
+Identify the project language, framework, and package manager:
 
-| File | What it reveals |
-|------|----------------|
-| `package.json` | Node.js, npm/bun/yarn, scripts, dependencies |
-| `Cargo.toml` | Rust, cargo commands |
-| `pyproject.toml` | Python, ruff/poetry/pdm, test commands |
-| `go.mod` | Go module, build commands |
-| `composer.json` | PHP, Laravel/Symfony |
-| `Gemfile` | Ruby, Rails |
-| `Makefile` | Custom build targets |
-| `Dockerfile` | Container setup |
-| `.github/workflows/` | CI pipeline commands |
+```bash
+# Language
+ls *.py &>/dev/null && LANG=python
+ls *.go &>/dev/null && LANG=go
+ls *.rs &>/dev/null && LANG=rust
+ls package.json &>/dev/null && LANG=node
 
-## Workflow
+# Framework (Node)
+grep -q '"next"' package.json 2>/dev/null && FRAMEWORK=next
+grep -q '"react"' package.json 2>/dev/null && FRAMEWORK=react
 
-1. **Scan** — Read project root for indicator files, read `README.md` if present
-2. **Question** — Ask user:
-   - Project type (library, app, monorepo, service)
-   - Build/test/lint commands if not auto-detectable
-   - Architecture conventions (layers, patterns)
-   - Any existing documentation to reference
-3. **Generate** — Create `.opencode/AGENTS.md` (primary) and/or `.claude/CLAUDE.md` (compatibility):
-   - Project identity and tech stack
-   - Build/test/lint commands with exact syntax
-   - Directory structure map
-   - Coding conventions
-   - Architecture decisions
-4. **Recommend** — Suggest relevant global skills for this project type
-5. **Verify** — Run a build or test command to confirm accuracy
-
-## Output template
-
-```markdown
-# <project> — <type>
-
-Tech stack: <language>, <framework>, <package-manager>
-
-## Commands
-- Build: `<command>`
-- Test: `<command>`
-- Lint: `<command>`
-- Typecheck: `<command>`
-
-## Structure
-- `<dir>` — <purpose>
-- `<dir>` — <purpose>
-
-## Conventions
-- <convention 1>
-- <convention 2>
+# Package manager
+ls pnpm-lock.yaml &>/dev/null && PM=pnpm
+ls yarn.lock &>/dev/null && PM=yarn
+ls package-lock.json &>/dev/null && PM=npm
 ```
 
-## Notes
+## Generate AGENTS.md
 
-- Never overwrite an existing AGENTS.md without showing a diff first
-- Preserve any pre-existing instructions, append new ones
-- Use `/init` as a lighter alternative when full OpenAgents setup is not needed
+Write `AGENTS.md` with:
+
+```markdown
+<!-- openagents -->
+# <project>
+
+<description>
+
+## Agent instructions
+
+- Language: <lang>
+- Framework: <framework>
+- Package manager: <pm>
+- Build: <build command>
+- Test: <test command>
+- Lint: <lint command>
+- Typecheck: <typecheck command>
+
+## Conventions
+
+Follow the existing patterns in this codebase.
+
+## Architecture
+
+<key modules and their responsibilities>
+```
+
+## Set up rules directory
+
+```bash
+mkdir -p .agents/rules
+```
+
+Create an initial rule file if useful patterns are detected:
+
+```markdown
+# <project>-rules
+
+## Commands
+
+- Build: `<build cmd>`
+- Test: `<test cmd>`
+- Lint: `<lint cmd>`
+
+## Conventions
+
+<project-specific conventions>
+```
+
+## Symlink for agent detection
+
+If the agent uses a different rules path, create a symlink:
+
+```bash
+ln -sfn .agents/rules .claude/rules  # claude-code
+```

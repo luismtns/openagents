@@ -8,16 +8,12 @@ bash scripts/validate.sh
 
 ## Manual e2e checklist
 
-Run these steps to simulate what CI does:
-
 ### 1. Structure check
 
 ```
-skills/openagents/SKILL.md       — main skill must exist
-skills/openagents/references/    — 6 reference files for subcommands
-claude-plugin/.claude-plugin/plugin.json
-claude-plugin/skills             — must be symlink to ../../skills
-scripts/validate.sh              — local validator
+skills/openagents/SKILL.md           — main skill must exist
+skills/openagents/references/        — 4 reference files
+scripts/validate.sh                  — local validator
 README.md, LICENSE, CHANGELOG.md, skills.sh.json
 ```
 
@@ -41,19 +37,13 @@ README.md, LICENSE, CHANGELOG.md, skills.sh.json
 tmpdir=$(mktemp -d)
 mkdir -p "$tmpdir/skills"
 ln -sfn "$(pwd)/skills"/* "$tmpdir/skills/"
-# verify each symlink resolves
 for d in "$tmpdir"/skills/*/; do
   [ -e "$d/SKILL.md" ] && echo "OK  $(basename "$d")" || echo "MISS $(basename "$d")"
 done
 rm -rf "$tmpdir"
 ```
 
-### 4. Claude plugin check
-
-- `claude-plugin/.claude-plugin/plugin.json` is valid JSON
-- `claude-plugin/skills` symlink resolves to `../../skills`
-
-### 5. skills.sh compatibility
+### 4. skills.sh compatibility
 
 - `skills.sh.json` uses `groupings` (not old `categories` format)
 - `$schema` points to `https://skills.sh/schemas/skills.sh.schema.json`

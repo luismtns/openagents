@@ -1,46 +1,45 @@
 ---
 name: openagents
 description: |
-  Manages the OpenAgents multi-agent ecosystem on the current machine
-  and across projects. Detects the running agent, configures agent-specific
-  settings for multi-agent compatibility, initializes projects with AGENTS.md,
-  runs deep analysis for rule generation, synchronizes skills across machines,
-  audits the ecosystem, and manages skill discovery and installation.
-  Use when setting up, configuring, auditing, or maintaining the OpenAgents
-  ecosystem on any machine or project.
-  Triggers: openagents setup, openagents init, openagents rules,
-    openagents sync, openagents audit, openagents skills,
-    configure agents, check agents, verify setup, init project,
-    project setup, analyze project, generate rules, refresh rules,
-    sync skills, update skills, sync project, audit skills,
-    check skills, inventory, manage skills, install skill,
-    search skills, remove skill.
+  Multi-agent workflow orchestration for AI coding agents.
+  Handles agent detection and handshake, project initialization,
+  skill creation and registration, and deep codebase analysis
+  for rule generation.
+  Use when setting up multi-agent, initializing projects,
+  creating skills or rules, or generating project rules.
+  Triggers: openagents global, openagents init, openagents add,
+    openagents rules, configure agents, check agents,
+    verify setup, init project, project setup, analyze project,
+    generate rules, refresh rules, create skill, add skill,
+    register skill, package skill.
 allowed-tools: Read, Write, Glob, Grep, Bash(git:*), Bash(mkdir:*),
   Bash(ln:*), Bash(cp:*), Bash(test:*), Bash(uname:*), Bash(echo:*),
-  Bash(pwd:*), Bash(npm:*), Bash(cargo:*), Bash(go:*), Bash(python3:*),
-  Bash(ls:*), Bash(find:*), Bash(wc:*), Bash(rm:*), Bash(diff:*),
-  Bash(du:*), Bash(cat:*), Bash(npx:*)
-version: 1.0.0
+  Bash(pwd:*), Bash(npx:*), Bash(ls:*), Bash(find:*), Bash(wc:*),
+  Bash(rm:*), Bash(diff:*), Bash(du:*), Bash(cat:*), Bash(npm:*)
+version: 1.3.0
 author: Luis Bovo <luis@luis.dev>
 license: MIT
 user-invocable: true
 compatible-with: opencode, claude-code, cursor, codex, cline, zed
-tags: [openagents, setup, init, rules, sync, audit, skills]
+tags: [openagents, multi-agent, orchestration, setup, init, rules, skills]
 ---
 
 # openagents
 
-A distributable skill pack for multi-agent workflow orchestration.
+Multi-agent workflow orchestration for AI coding agents.
 
-## Routing
+Load this skill, then route to the right subcommand:
 
-When the user invokes a subcommand, load the corresponding reference file and follow its instructions.
+| Invocation | Read | When |
+|------------|------|------|
+| `openagents:global` / `openagents global` | [references/global.md](references/global.md) | Detect agent, handshake, verify global setup |
+| `openagents:init` / `openagents init` | [references/init.md](references/init.md) | Scaffold project, generate AGENTS.md |
+| `openagents:add` / `openagents add` | [references/add.md](references/add.md) | Create skills, rules, register distribution |
+| `openagents:rules` / `openagents rules` | [references/rules.md](references/rules.md) | Deep codebase analysis, generate rules |
 
-| Invocation | Read |
-|------------|------|
-| `openagents:setup` / `openagents setup` | [references/setup.md](references/setup.md) |
-| `openagents:init` / `openagents init` | [references/init.md](references/init.md) |
-| `openagents:rules` / `openagents rules` | [references/rules.md](references/rules.md) |
-| `openagents:sync` / `openagents sync` | [references/sync.md](references/sync.md) |
-| `openagents:audit` / `openagents audit` | [references/audit.md](references/audit.md) |
-| `openagents:skills` / `openagents skills` | [references/skills.md](references/skills.md) |
+## How it works
+
+The skill detects which AI coding agent is running, adapts configuration
+paths accordingly, and orchestrates multi-agent workflows across your
+ecosystem. No agent-specific config is shipped — the skill reads your
+environment and adjusts.

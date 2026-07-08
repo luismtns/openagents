@@ -1,59 +1,54 @@
 # openagents:rules
 
-## Overview
+Deep codebase analysis for comprehensive rule generation.
 
-Generates or refreshes project-level agent rules by deep analysis of the codebase combined with user validation via the grill-me pattern.
+Scans the project, identifies architecture patterns and conventions,
+then generates or updates `.agents/rules/` with validated rules.
 
-## Phase 1: Scan
+## Scan
 
-Use parallel subagents (via `Task`) to scan multiple areas:
+### 1. Project structure
 
-| Area | What to extract |
-|------|----------------|
-| **Source tree** | Language, framework, entry points, module boundaries |
-| **Config files** | TSConfig, ESLint, Prettier, Tailwind, Docker, CI workflows, Makefile |
-| **Dependencies** | Key libraries, runtime versions, peer dependencies |
-| **Testing** | Test framework, coverage config, test patterns, mocks |
-| **Docs** | README, CONTRIBUTING, ADRs, architecture docs |
-| **Existing rules** | Current AGENTS.md, CLAUDE.md, `.cursor/rules/`, `.claude/rules/` |
-| **Git history** | Branch strategy, commit conventions, PR templates |
+```bash
+find . -maxdepth 3 -type f -name "*.md" -o -name "*.json" -o -name "*.yaml" | head -30
+ls src/ 2>/dev/null || ls lib/ 2>/dev/null || ls app/ 2>/dev/null
+```
 
-## Phase 2: Grill-me
+### 2. Configuration files
 
-Ask the user sequentially:
+Read these if present to understand the project:
 
-1. What is this project's primary purpose?
-2. What architecture patterns are in use (layered, hexagonal, feature-based)?
-3. What are the critical code paths a new agent must understand?
-4. Are there security-sensitive areas or deployment requirements?
-5. What conventions are not obvious from the code (naming, error handling, logging)?
-6. What should agents NEVER do in this project?
+- `README.md` — project purpose, commands
+- `package.json` / `Cargo.toml` / `go.mod` — dependencies, scripts
+- `tsconfig.json` / `pyproject.toml` — language settings
+- `.github/workflows/` — CI pipeline
+- `Dockerfile` — deployment model
 
-## Phase 3: Generate
+### 3. Architecture patterns
 
-Create/update project rules in this priority order:
+Identify:
+- Framework (React, Next.js, Django, etc.)
+- State management pattern
+- API style (REST, GraphQL, tRPC)
+- Database ORM
+- Testing approach
+- Code organization (feature-based, layer-based)
 
-1. `.opencode/AGENTS.md` — primary project instructions
-2. `.claude/CLAUDE.md` — Claude Code compatibility (if detected)
-3. `.opencode/skills/<project-topic>/SKILL.md` — project-specific skills if needed
-4. `.github/copilot-instructions.md` — GitHub Copilot (if relevant)
+## Generate rules
 
-Each rule file should contain:
-- Project identity and architecture
-- Exact build/test/lint/typecheck commands
-- Directory structure with purpose annotations
-- Code conventions with examples
-- Agent behavior rules (dos and don'ts)
+Write `.agents/rules/validate.md` with appropriate conventions.
 
-## Phase 4: Audit existing rules
+## Validate with user
 
-For each existing rule file and skill found:
+Present the generated rules and ask for confirmation before writing.
 
-| Question | Action |
-|----------|--------|
-| Is it still accurate? | Keep or update |
-| Is it redundant with another file? | Merge and remove |
-| Does it duplicate what the agent can infer? | Remove |
-| Has its project context changed? | Rewrite |
+Key questions:
+1. Does the architecture analysis match your understanding?
+2. Are the build/test commands correct?
+3. Any additional conventions to add?
+4. Any obsolete rules to remove?
 
-Present a summary of changes and let the user confirm before writing.
+## Update
+
+Write the validated rules to `.agents/rules/` and symlink if the agent
+expects a different path (`.claude/rules/`, `.cursor/rules/`).

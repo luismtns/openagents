@@ -1,12 +1,23 @@
 <!-- openagents -->
 # OpenAgents Skill Pack
 
-A single skill with multiple subcommands for multi-agent workflow orchestration.
+A single skill with built-in subcommands for multi-agent workflow orchestration.
 Install via `npx skills add luismtns/openagents` and load with:
 
-- `skill({ name: "openagents" })` — then use `/openagents:setup`, `:init`, `:rules`, `:sync`, `:audit`, `:skills`
+```
+skill({ name: "openagents" })
+```
 
-Agent-agnostic: opencode, claude-code, cursor, codex, cline, zed all supported.
+Then route to the right subcommand:
+
+| Subcommand | Use case |
+|------------|----------|
+| `openagents:global` | Detect agent, handshake, verify global multi-agent setup |
+| `openagents:init` | Scaffold project AGENTS.md and rules |
+| `openagents:add` | Create new skills or rules in multi-agent context |
+| `openagents:rules` | Deep codebase analysis for rule generation |
+
+Agent-agnostic: opencode, claude-code, cursor, codex, cline, zed.
 
 ## Project rules (`.agents/rules/`)
 

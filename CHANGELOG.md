@@ -4,34 +4,37 @@ All notable changes to this project are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.3.0] - 2026-07-08
+
+### Added
+
+- Agent-agnostic handshake protocol in `references/global.md`
+  - Detects running agent via env vars, config dirs, and process list
+  - Maps agent-specific config paths and skill discovery locations
+  - Creates symlinks for agents that don't auto-discover `~/.agents/skills/`
+- `references/add.md` — scaffold new skills, register distribution, validate structure
+- Mermaid architecture diagram in README showing full workflow
+- Comprehensive trigger descriptions for all agents
+
+### Changed
+
+- Restructured from 6 subcommands to 4: `global`, `init`, `add`, `rules`
+  - Removed: `sync`, `audit`, `skills` (too specialized; absorbed into `add`)
+  - Renamed: `setup` → `global` (broader scope: handshake + ecosystem verification)
+- Frontmatter follows opencode spec (`name`, `description`, `license`, `compatibility`,
+  `metadata`) with Anthropic extras in `metadata` for claude-code/codex compatibility
+- README now has Mermaid diagram + full documentation
+
+### Removed
+
+- `skills/openagents/references/setup.md`, `init.md`, `rules.md`, `sync.md`,
+  `audit.md`, `skills.md` — replaced by 4 new references
+- `.opencode/commands/` — custom commands are local config, not distribution
+
 ## [1.2.0] - 2026-07-08
 
 ### Changed
 
-- Consolidated 6 individual skills into a single `openagents` package with progressive disclosure
-- skills/openagents/SKILL.md now routes all subcommands (setup, init, rules, sync, audit, skills)
-- Each subcommand lives in `references/*.md` under the same skill directory
-
-### Upgrade Notes
-
-```bash
-npx skills add luismtns/openagents
-```
-
-## [1.0.0] - 2026-07-08
-
-### Added
-
-- 6 core skills: openagents-setup, openagents-init, openagents-rules, openagents-sync, openagents-audit, openagents-skills
-- Agent-agnostic distribution via skills.sh
-- Claude Code plugin format
-- Local validator script and CI workflows
-- skills.sh.json with orchestration and maintenance groupings
-- Project rules (.agents/rules/)
-- Makefile with validate and clean targets
-
-### Upgrade Notes
-
-```bash
-npx skills add luismtns/openagents
-```
+- Consolidated 6 individual skills into a single `openagents` package
+- skills/openagents/SKILL.md routes all subcommands via routing table
+- Each subcommand lives in `references/*.md`

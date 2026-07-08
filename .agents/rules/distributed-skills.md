@@ -5,38 +5,33 @@
 | Form | Where | Example |
 |------|-------|---------|
 | `openagents` | Directory name, frontmatter `name`, skills.sh slug | `openagents` |
-| `openagents:<subcommand>` | Reference file H1 heading | `# openagents:setup` |
-| `openagents <verb>` | Frontmatter `Triggers` field | `Triggers: openagents setup` |
+| `openagents:<subcommand>` | Reference file H1 heading | `# openagents:global` |
+| `openagents <verb>` | Frontmatter `Triggers` field | `Triggers: openagents global` |
 
 Directory name = frontmatter `name` = skills.sh slug. Always kebab-case.
 
-## Frontmatter (Anthropic 2026 spec)
+## Frontmatter (opencode spec)
 
-The main `SKILL.md` must have:
+The main `SKILL.md` must start with YAML frontmatter. Recognized fields:
 
-```yaml
----
-name: <kebab-case>
-description: |
-  <purpose sentence>.
-  <details about what it does>.
-  Use when <specific trigger conditions>.
-  Triggers: <space-separated trigger phrases>.
-allowed-tools: <comma-separated, Bash scoped>
-version: <semver>
-author: <name>
-license: <SPDX identifier>
-user-invocable: true
-compatible-with: opencode, claude-code, cursor, codex, cline
-tags: [openagents, <category>, ...]
----
-```
+| Field | Required | Notes |
+|-------|----------|-------|
+| `name` | yes | lowercase kebab-case, matches directory |
+| `description` | yes | 1-1024 chars, includes "Use when" + triggers |
+| `license` | no | SPDX identifier |
+| `compatibility` | no | Agent compatibility string |
+| `metadata` | no | string-to-string map for extra fields |
+
+Unknown frontmatter fields are ignored by opencode but may be read by
+other agents (claude-code, codex).
+
+Name regex: `^[a-z0-9]+(-[a-z0-9]+)*$`
 
 Rules (no exceptions):
 - `name` matches the enclosing directory name exactly
-- `description` contains "Use when" 
-- `allowed-tools` tools like Bash, Write, Read, Glob, Grep; Bash must be scoped: `Bash(git:*)`
-- Under 200 lines per reference (progressive disclosure); split further into `references/` if larger
+- `description` contains "Use when"
+- Under 200 lines per reference (progressive disclosure); split further
+  into `references/` if larger
 
 ## File layout
 
@@ -46,27 +41,21 @@ repo/
 │   └── openagents/
 │       ├── SKILL.md              # main skill definition
 │       └── references/           # progressive disclosure
-│           ├── setup.md
+│           ├── global.md
 │           ├── init.md
-│           ├── rules.md
-│           ├── sync.md
-│           ├── audit.md
-│           └── skills.md
+│           ├── add.md
+│           └── rules.md
 ├── .agents/
 │   └── rules/                    # project rules (agent-agnostic)
 │       ├── validate.md
 │       └── distributed-skills.md
 ├── .claude/
 │   └── rules -> ../.agents/rules/  # symlink for Claude Code
-├── claude-plugin/
-│   ├── .claude-plugin/
-│   │   └── plugin.json
-│   └── skills -> ../skills/        # symlink
 ├── scripts/
 │   ├── validate.sh
 │   └── clean.sh
 ├── skills.sh.json
-├── AGENTS.md                  # root-level skill pack description
+├── AGENTS.md
 ├── README.md
 ├── CHANGELOG.md
 └── LICENSE
@@ -75,5 +64,4 @@ repo/
 ## Distribution
 
 - skills.sh: `npx skills add luismtns/openagents`
-- Claude Code plugin: manual `plugin.json` + skills symlink
 - Always version-pin dependencies; never `npm install` without lockfile
