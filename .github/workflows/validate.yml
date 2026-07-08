@@ -1,0 +1,50 @@
+name: validate
+on: [push, pull_request]
+
+jobs:
+  validate-skills:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate skill directories
+        run: |
+          errors=0
+          for dir in skills/*/; do
+            name=$(basename "$dir")
+            file="$dir/SKILL.md"
+            if [ ! -f "$file" ]; then
+              echo "ERROR: $file missing"; errors=$((errors+1))
+              continue
+            fi
+            if ! grep -q '^name: ' "$file"; then
+              echo "ERROR: $file missing 'name' in frontmatter"; errors=$((errors+1))
+            fi
+            if ! grep -q '^description: ' "$file"; then
+              echo "ERROR: $file missing 'description' in frontmatter"; errors=$((errors+1))
+            fi
+            if ! grep -q 'Use when' "$file"; then
+              echo "WARN: $file description missing 'Use when' pattern"
+            fi
+            if ! grep -q '^allowed-tools: ' "$file"; then
+              echo "ERROR: $file missing 'allowed-tools' in frontmatter"; errors=$((errors+1))
+            fi
+            if ! grep -q '^version: ' "$file"; then
+              echo "ERROR: $file missing 'version' in frontmatter"; errors=$((errors+1))
+            fi
+            if ! grep -q '^author: ' "$file"; then
+              echo "ERROR: $file missing 'author' in frontmatter"; errors=$((errors+1))
+            fi
+            if ! grep -q '^license: ' "$file"; then
+              echo "ERROR: $file missing 'license' in frontmatter"; errors=$((errors+1))
+            fi
+            lines=$(wc -l < "$file")
+            if [ "$lines" -gt 200 ]; then
+              echo "WARN: $file has $lines lines (consider splitting into references/)"
+            fi
+          done
+          if [ "$errors" -gt 0 ]; then
+            echo "---"
+            echo "FAILED: $errors validation errors"
+            exit 1
+          fi
+          echo "All skills validated successfully"

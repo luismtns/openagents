@@ -1,0 +1,28 @@
+name: publish
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Generate changelog
+        id: changelog
+        run:
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          git log --oneline "$(git tag --sort=-version:refname | head -1)..HEAD" 2>/dev/null
+          || git log --oneline $(git rev-list --max-parents=0 HEAD)..HEAD
+          >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: ${{ steps.changelog.outputs.changelog }}
+          generate_release_notes: true
