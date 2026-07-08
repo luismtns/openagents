@@ -24,6 +24,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Extract version
+        id: version
+        run: echo "tag=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
       - name: Generate changelog
         id: changelog
         run: |
@@ -43,11 +47,31 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           body: |
-            ## What's changed
+            ## OpenAgents v${{ steps.version.outputs.tag }}
 
             ${{ steps.changelog.outputs.changelog }}
 
             ---
-            **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ steps.changelog.outputs.changelog != '' && format('{0}..{1}', github.ref_name, github.ref_name) || 'initial' }}
+
+            ### Install / Update
+
+            ```bash
+            # Via skills.sh (any agent)
+            npx skills add luismtns/openagents
+
+            # Via Claude Code plugin
+            /plugin install openagents@luismtns/openagents
+
+            # Via Make (clone or update)
+            git clone https://github.com/luismtns/openagents.git
+            cd openagents && make install
+            ```
+
+            ### Contents
+
+            - 6 OpenAgents skills (install, init, setup-rules, sync, audit, skills)
+            - Claude Code plugin format
+            - Project rules (.agents/rules/)
+            - Local validator (scripts/validate.sh)
           generate_release_notes: true
           make_latest: true
