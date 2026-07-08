@@ -9,11 +9,14 @@ description: |
   creating skills or rules, or generating project rules.
   Triggers: openagents, openagents status, openagents global,
     openagents init, openagents add, openagents rules,
+    openagents rm, openagents uninstall,
     configure agents, check agents, verify setup,
     init project, project setup, analyze project,
     generate rules, refresh rules, create skill, add skill,
+    remove skill, delete skill, remove rules, delete rules,
     register skill, package skill, detect agent, agent status,
-    multi-agent setup, ecosystem check.
+    multi-agent setup, ecosystem check, uninstall, cleanup,
+    remove openagents, delete openagents.
     Use `openagents` (bare) to show agent status and available commands.
 allowed-tools: Read, Write, Glob, Grep, Bash(git:*), Bash(mkdir:*),
   Bash(ln:*), Bash(test:*), Bash(uname:*), Bash(echo:*),
@@ -41,6 +44,8 @@ Load this skill, then route to the right subcommand:
 | `openagents:init` / `openagents init` | [references/init.md](references/init.md) | Scaffold project AGENTS.md and rules |
 | `openagents:add` / `openagents add` | [references/add.md](references/add.md) | Create new skills or rules in multi-agent context |
 | `openagents:rules` / `openagents rules` | [references/rules.md](references/rules.md) | Deep codebase analysis for rule generation |
+| `openagents:rm` / `openagents rm` | [references/rm.md](references/rm.md) | Remove rules, skills, AGENTS.md, or all project artifacts |
+| `openagents:uninstall` / `openagents uninstall` | [references/uninstall.md](references/uninstall.md) | Uninstall the openagents skill via npx skills remove |
 
 ## Invocation
 
