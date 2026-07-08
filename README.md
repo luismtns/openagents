@@ -16,37 +16,37 @@ orchestrates multi-agent workflows across your ecosystem.
 
 ```mermaid
 flowchart TD
-    User{User says...} -->|"setup multi-agent"| Skill[skill() skill]
-    User -->|"init project"| Skill
-    User -->|"create skill"| Skill
-    User -->|"analyze and rules"| Skill
+    U["you: setup multi-agent"] -->|trigger| S["skill(name: openagents)"]
+    U2["you: init project"] -->|trigger| S
+    U3["you: create a skill"] -->|trigger| S
+    U4["you: analyze the project"] -->|trigger| S
 
-    Skill --> Router[SKILL.md Router]
+    S -->|routes to| R["SKILL.md router"]
 
-    Router -->|global| Global[references/global.md]
-    Router -->|init| Init[references/init.md]
-    Router -->|add| Add[references/add.md]
-    Router -->|rules| Rules[references/rules.md]
+    R -->|global| G["references/global.md"]
+    R -->|init| I["references/init.md"]
+    R -->|add| A["references/add.md"]
+    R -->|rules| RL["references/rules.md"]
 
-    Global --> Detect{Detect Agent}
-    Detect -->|opencode| OC[~/.config/opencode/]
-    Detect -->|claude-code| CC[~/.claude/]
-    Detect -->|codex| CX[~/.codex/]
-    Detect -->|cursor| CR[~/.cursor/skills/]
-    Detect -->|cline| CL[~/.clinerules]
-    Detect -->|zed| ZD[~/.zed/]
+    G --> D{"detect agent"}
+    D -->|opencode| OC["~/.config/opencode/"]
+    D -->|claude-code| CC["~/.claude/"]
+    D -->|codex| CX["~/.codex/"]
+    D -->|cursor| CR["~/.cursor/skills/"]
+    D -->|cline| CL["~/.clinerules"]
+    D -->|zed| ZD["~/.zed/"]
 
-    Init --> Lang[Detect language]
-    Lang --> Gen[Generate AGENTS.md]
-    Gen --> RulesDir[Create .agents/rules/]
+    I --> L["detect language"]
+    L --> GEN["write AGENTS.md"]
+    GEN --> RD["create .agents/rules/"]
 
-    Add --> Scaffold[Scaffold SKILL.md]
-    Scaffold --> Register[Register skills.sh.json]
+    A --> SC["scaffold SKILL.md"]
+    SC --> REG["register in skills.sh.json"]
 
-    Rules --> Scan[Scan codebase]
-    Scan --> Patterns[Identify patterns]
-    Patterns --> GenRules[Generate rules]
-    GenRules --> Validate[Validate with user]
+    RL --> SN["scan codebase"]
+    SN --> P["identify patterns"]
+    P --> GR["generate rules"]
+    GR --> V["validate with user"]
 ```
 
 ## Installation
