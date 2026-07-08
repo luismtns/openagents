@@ -1,0 +1,12 @@
+{
+  "name": "openagents",
+  "version": "1.0.0",
+  "description": "Multi-agent workflow orchestration for AI coding agents",
+  "author": {
+    "name": "Luis Bovo",
+    "url": "https://github.com/luismtns"
+  },
+  "repository": "https://github.com/luismtns/openagents",
+  "license": "MIT",
+  "keywords": ["multi-agent", "orchestration", "workflow", "rules", "skills"]
+}
