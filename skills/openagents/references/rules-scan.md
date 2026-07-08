@@ -1,4 +1,4 @@
-# openagents rules: scan
+# openagents rules (scan)
 
 Steps 1-2 of `openagents rules` — sanity check then architecture extraction.
 

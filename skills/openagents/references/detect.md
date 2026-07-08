@@ -1,4 +1,4 @@
-# openagents detect (agent matrix)
+# openagents detect
 
 Canonical multi-signal agent detection. Used by `status`, `global`, and
 `init`. Strategy: env vars → config dirs → binaries (first match wins).

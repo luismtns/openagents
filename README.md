@@ -18,15 +18,13 @@ orchestrates multi-agent workflows across your ecosystem.
 
 ```mermaid
 flowchart TD
-    U["you: check status, setup,\ninit, add, rm, uninstall"] -->|trigger| S("skill(name: openagents)")
-
+    U["you: status, global, init, add, rules, rm, uninstall"] -->|trigger| S["skill: openagents"]
     S --> R["SKILL.md router"]
-
     R -->|status| ST["show agent + repo status"]
-    R -->|global| G["detect agent → map 14+ agents"]
+    R -->|global| G["detect agent and map ecosystem"]
     R -->|init| I["scaffold AGENTS.md + rules"]
     R -->|add| A["create new skills"]
-    R -->|rules| RL["scan → generate rules"]
+    R -->|rules| RL["scan and generate rules"]
     R -->|rm| RM["remove project artifacts"]
     R -->|uninstall| UI["guide: npx skills remove"]
 ```

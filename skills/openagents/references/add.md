@@ -9,7 +9,7 @@ frontmatter, registers in skills.sh.json, and validates the structure.
 |---|------|--------|
 | 1 | Name | Lowercase kebab-case, matches directory, unique ecosystem-wide |
 | 2 | Write SKILL.md | Frontmatter (see below) + instructions |
-| 3 | References | Split into `references/<topic>.md` when >~200 lines. No frontmatter; heading: `# <name>:<topic>` |
+| 3 | References | Split into `references/<topic>.md` when >~200 lines. No frontmatter; heading: `# <name> <topic>` (space-separated, matching the other reference files) |
 | 4 | Register | Add entry to `skills.sh.json` under `groupings` |
 | 5 | Validate | Run validation script |
 

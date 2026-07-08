@@ -1,4 +1,4 @@
-# openagents rules: validate
+# openagents rules (validate)
 
 Steps 4-5 of `openagents rules` — confirm with the user, then write.
 

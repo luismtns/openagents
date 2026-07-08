@@ -1,4 +1,4 @@
-# openagents rules: generate
+# openagents rules (generate)
 
 Step 3 of `openagents rules` — write three files to `.agents/rules/`.
 Every rule must be **generic** (pattern, not path), **positive**, and
