@@ -1,56 +1,59 @@
 # validate
 
-Before releasing or pushing, run the local validator:
+Pre-release validation checklist. Run before every release:
 
 ```bash
 bash scripts/validate.sh
 ```
 
-## Manual e2e checklist
-
-### 1. Structure check
+## Structure check
 
 ```
 skills/openagents/SKILL.md           — main skill must exist
 skills/openagents/references/        — 7 reference files
+.agents/rules/                       — validate.md + distributed-skills.md
+.claude-plugin/plugin.json           — plugin manifest
+.github/workflows/validate.yml       — CI validation
+.github/workflows/publish.yml        — CI release automation
 scripts/validate.sh                  — local validator
 README.md, LICENSE, CHANGELOG.md, skills.sh.json
 ```
 
-### 2. Frontmatter
+## Frontmatter validation (agentskills.io spec)
 
 | Field | Required | Notes |
 |-------|----------|-------|
-| `name` | yes | Must match directory name |
-| `description` | yes | Must contain "Use when" |
-| `allowed-tools` | yes | `Bash` must be scoped (e.g. `Bash(git:*)`) |
-| `version` | yes | Valid semver |
-| `author` | yes | |
-| `license` | yes | |
-| `user-invocable` | no | Include if skill is user-callable |
-| `compatible-with` | no | List target agents |
-| `tags` | no | Array of strings |
+| `name` | **yes** | Must match directory name, lowercase kebab-case, 1-64 chars |
+| `description` | **yes** | Must contain "Use when" + trigger keywords, 1-1024 chars |
+| `license` | no | SPDX identifier if present |
+| `compatibility` | no | Environment requirements if any |
+| `metadata` | no | Arbitrary key-value map |
+| `allowed-tools` | no | *Experimental* — scope Bash if present (e.g. `Bash(git:*)`) |
+| `version` | no | Valid semver if releasing |
+| `author` | no | Author info if releasing |
 
-### 3. Temp install smoke test
+## Progressive disclosure
 
-```bash
-tmpdir=$(mktemp -d)
-mkdir -p "$tmpdir/skills"
-ln -sfn "$(pwd)/skills"/* "$tmpdir/skills/"
-for d in "$tmpdir"/skills/*/; do
-  [ -e "$d/SKILL.md" ] && echo "OK  $(basename "$d")" || echo "MISS $(basename "$d")"
-done
-rm -rf "$tmpdir"
-```
+- SKILL.md under 200 lines (5000 tokens max)
+- Each reference file under 50 lines
+- No deeply nested file references (max 1 level deep from SKILL.md)
 
-### 4. Token efficiency
+## skills.sh compatibility
 
-- Each reference file should be under 50 lines (check with `wc -l`)
-- No `ps aux`, `which`, or platform-specific commands
-- Prefer declarative bullets over inline bash scripts
-
-### 5. skills.sh compatibility
-
-- `skills.sh.json` uses `groupings` (not old `categories` format)
+- `skills.sh.json` uses `groupings` (not old `categories`)
 - `$schema` points to `https://skills.sh/schemas/skills.sh.schema.json`
 - Each skill slug in `groupings` matches a directory under `skills/`
+
+## Claude Plugin
+
+- `.claude-plugin/plugin.json` has valid `name`, `version`, `description`, `repository`
+- `.claude-plugin/marketplace.json` has valid structure if present
+- `version` in plugin.json matches SKILL.md frontmatter
+
+## Release readiness
+
+- `version` bumped in SKILL.md frontmatter
+- `version` bumped in `.claude-plugin/plugin.json`
+- `CHANGELOG.md` has `[Unreleased]` or new version section
+- `git tag v{VERSION}` created and pushed
+- `bash scripts/validate.sh` passes cleanly
