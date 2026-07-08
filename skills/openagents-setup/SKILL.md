@@ -43,11 +43,10 @@ Check that the 6 skill directories exist under `~/.agents/skills/`:
 - openagents-audit
 - openagents-skills
 
-If this repository was cloned, symlink or copy:
+If missing, install via:
 
 ```bash
-mkdir -p ~/.agents/skills
-ln -sfn $(pwd)/skills/* ~/.agents/skills/
+npx skills add luismtns/openagents
 ```
 
 ### 2. Create global manifest

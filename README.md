@@ -9,7 +9,7 @@
 
 Multi-agent workflow orchestration for AI coding agents.
 
-OpenAgents is a **distributable skill pack** that configures your AI coding agent for multi-agent workflows. It provides project analysis, rule generation, skill synchronization, and ecosystem auditing. All self-contained and agent-agnostic.
+OpenAgents is a **distributable skill pack** that configures your AI coding agent for multi-agent workflows. It provides project analysis, rule generation, skill synchronization, and ecosystem auditing. Self-contained and agent-agnostic.
 
 ## Installation
 

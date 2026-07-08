@@ -14,12 +14,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - Local validator script and CI workflows
 - skills.sh.json with orchestration and maintenance groupings
 - Project rules (.agents/rules/)
-- Makefile with install, validate, and clean targets
+- Makefile with validate and clean targets
 
 ### Upgrade Notes
 
 ```bash
 npx skills add luismtns/openagents
-# or
-git clone https://github.com/luismtns/openagents.git
 ```

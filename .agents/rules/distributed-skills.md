@@ -72,5 +72,4 @@ repo/
 
 - skills.sh: `npx skills add luismtns/openagents`
 - Claude Code plugin: manual `plugin.json` + skills symlink
-- Manual: `ln -sfn $(pwd)/skills/* ~/.agents/skills/`
 - Always version-pin dependencies; never `npm install` without lockfile
