@@ -1,0 +1,8 @@
+{
+  "categories": {
+    "orchestration": ["openagents-install", "openagents-init", "openagents-setup-rules"],
+    "maintenance": ["openagents-sync", "openagents-audit", "openagents-skills"]
+  },
+  "description": "Multi-agent workflow orchestration for AI coding agents",
+  "tags": ["multi-agent", "orchestration", "workflow", "rules", "skills"]
+}
