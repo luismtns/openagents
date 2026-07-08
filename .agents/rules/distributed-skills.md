@@ -86,10 +86,17 @@ repo/
 
 ## Distribution channels
 
-| Channel | Method | Scope |
+The openagents `SKILL.md` is **spec-compatible with both the Anthropic Agent
+Skills format and the agentskills.io open standard** — they share the same
+`name` + `description` frontmatter and `references/` progressive-disclosure
+model. One source ships to every Agent Skills ecosystem below.
+
+| Channel | Install / obtain | Scope |
 |---------|--------|-------|
-| **skills.sh (GitHub)** | `npx skills add luismtns/openagents` | Primary — public registry |
-| **Claude Code Marketplace** | `/plugin marketplace add luismtns/openagents` then `/plugin install openagents@openagents` | Claude Code native discovery |
+| **skills.sh (GitHub)** | `npx skills add luismtns/openagents` | Primary public registry; auto-publishes on push |
+| **Claude Code Plugin Marketplace** | `/plugin marketplace add luismtns/openagents` then `/plugin install openagents@openagents` | Claude Code native discovery |
+| **Claude Agent Skills (Anthropic)** | Claude Code: `npx skills add` installs to `~/.claude/skills/`; claude.ai/API: upload skill zip | Spec-identical SKILL.md |
+| **agentskills.io (open format)** | Auto-discovered from `~/.agents/skills/` and `.agents/skills/`; install via skills.sh + `openagents global` | Any agentskills.io-compatible agent |
 | **Local path** | `npx skills add /path/to/repo` | Development and testing |
 | **Git URL** | `npx skills add https://git.example.com/repo.git` | Self-hosted / enterprise |
 | **Well-known URL** | Deploy to domain + configure `/.well-known/` | skills.sh well-known sources |
@@ -97,6 +104,45 @@ repo/
 The `skills` CLI auto-detects which agents are installed and installs
 skills to the correct directory. It supports GitHub, GitLab, any git URL,
 local paths, and well-known sources.
+
+## Agent Skills ecosystem matrix
+
+Discovery paths and symlink needs per client (source: agentskills.io client
+showcase + Anthropic Agent Skills docs). `openagents global` creates the
+symlinks automatically for agents that don't auto-discover `~/.agents/skills/`.
+
+| Agent | Discovery path | Auto-discovers `~/.agents/skills/` | Symlink needed |
+|-------|----------------|-----------------------------------|----------------|
+| opencode | `~/.agents/skills/` | Yes | No |
+| claude-code | `~/.agents/skills/` / `~/.claude/skills/` | Yes | No |
+| codex | `~/.agents/skills/` | Yes | No |
+| cursor | `~/.cursor/skills/` | No | Yes → `~/.agents/skills/openagents` |
+| cline | `~/.agents/skills/` | Yes | No |
+| zed | `~/.zed/skills/` | No | Yes → `~/.agents/skills/openagents` |
+| gemini-cli | `~/.agents/skills/` | Yes | No |
+| github-copilot | `.github/` / agent config | Varies | Per integration |
+| kiro | agent skills dir | Varies | Per integration |
+| roo-code | `.roo/skills/` or `.agents/skills/` | Varies | Per integration |
+| vs-code (Copilot) | `.agents/skills/` | Yes | No |
+| antigravity / deepagents / mimocode / warp / amp | per-agent | Varies | Per integration |
+
+> When in doubt, run `openagents global` after install — it detects the
+> running agent and links only what is needed. It never removes other skills.
+
+## Canonical references (base source)
+
+Use these as the authoritative source for the Agent Skills format, best
+practices, and efficiency:
+
+- **agentskills.io specification** — https://agentskills.io/specification
+- **agentskills.io best practices** — https://agentskills.io/skill-creation/best-practices
+- **agentskills.io optimizing descriptions** — https://agentskills.io/skill-creation/optimizing-descriptions
+- **agentskills.io evaluating skills** — https://agentskills.io/skill-creation/evaluating-skills
+- **agentskills.io client showcase** — https://agentskills.io/clients
+- **Anthropic Agent Skills overview** — https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview
+- **Anthropic authoring best practices** — https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices
+- **Anthropic engineering blog** — https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills
+- **skills-ref validator** — https://github.com/agentskills/agentskills/tree/main/skills-ref (`skills-ref validate ./my-skill`)
 
 ## Claude Code Plugin Marketplace
 

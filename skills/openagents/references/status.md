@@ -4,20 +4,8 @@ Default workflow for `openagents` (no subcommand) or `openagents status`.
 
 ## 1. Detect agent
 
-Check env vars first, then config dirs, then binaries:
-
-| Signal | Agent |
-|--------|-------|
-| `OPENCODE_CALLER` / `~/.config/opencode/` | opencode |
-| `CLAUDE_CODE_SSE_PORT` / `~/.claude/` | claude-code |
-| `CURSOR_TRACE_ID` / `~/.cursor/` | cursor |
-| `CODEX_CONFIG_DIR` / `~/.codex/` | codex |
-| `CLINE_CONFIG_DIR` / `~/.clinerules` | cline |
-| `ZED_CONFIG_DIR` / `~/.zed/` | zed |
-| `GEMINI_API_KEY` / `~/.gemini/` | gemini-cli |
-| `~/.mimocode/` | mimocode |
-| `command -v opencode` | opencode (binary) |
-| `command -v claude` | claude-code (binary) |
+Detect via env vars → config dirs → binaries (first match wins). Full matrix:
+[references/detect.md](references/detect.md).
 
 ## 2. Ecosystem check
 
@@ -38,15 +26,22 @@ test -L .claude/rules && echo "Claude rules: linked" || echo "Claude rules: not 
 
 ## 4. Available commands
 
+All subcommands — not just the recommended ones:
+
 | Command | Action |
 |---------|--------|
-| `openagents` | This status |
-| `openagents global` | Handshake + symlinks |
-| `openagents init` | Scaffold project |
-| `openagents add` | Create new skills |
-| `openagents rules` | Deep analysis |
-| `openagents rm` | Remove artifacts |
-| `openagents uninstall` | Remove skill |
+| `openagents` | This status (default) |
+| `openagents status` | Same as above |
+| `openagents global` | Agent detection + handshake + symlinks |
+| `openagents init` | Scaffold `AGENTS.md` + `.agents/rules/` |
+| `openagents add` | Create and register new skills or rules |
+| `openagents rules` | Deep codebase analysis → generate rules |
+| `openagents rm rules` | Remove `.agents/rules/` + symlinks |
+| `openagents rm agents` | Remove `AGENTS.md` |
+| `openagents rm skill <name>` | Remove `skills/<name>/` + `skills.sh.json` entry |
+| `openagents rm symlinks` | Remove agent-specific symlinks only |
+| `openagents rm all` | Remove everything openagents created (project only) |
+| `openagents uninstall` | Remove the openagents skill (scoped, defensive) |
 
 ## 5. Next steps
 

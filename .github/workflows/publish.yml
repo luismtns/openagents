@@ -43,6 +43,17 @@ jobs:
       - name: Run validator
         run: bash scripts/validate.sh
 
+      - name: Validate agentskills.io spec
+        continue-on-error: true
+        run: |
+          if command -v skills-ref >/dev/null 2>&1; then
+            skills-ref validate ./skills/openagents
+          else
+            echo "skills-ref not installed; attempting npx (best-effort)..."
+            npx -y skills-ref@latest validate ./skills/openagents || \
+              echo "WARN: skills-ref unavailable — skipping agentskills.io spec validation"
+          fi
+
       - name: Create git tag
         env:
           VERSION: ${{ needs.version-check.outputs.version }}

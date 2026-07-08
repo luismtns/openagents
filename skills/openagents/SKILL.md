@@ -21,7 +21,7 @@ description: |
 allowed-tools: Read, Write, Glob, Grep, Bash(git:*), Bash(mkdir:*),
   Bash(ln:*), Bash(test:*), Bash(uname:*), Bash(echo:*),
   Bash(pwd:*), Bash(ls:*), Bash(find:*)
-version: 1.8.1
+version: 1.9.0
 author: Luis Bovo <luis@luis.dev>
 license: MIT
 user-invocable: true

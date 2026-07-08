@@ -7,8 +7,8 @@ Guidelines for minimizing token consumption in AI agent reference files.
 - **Prefer declarative over imperative** — describe what to do in bullet points
   instead of writing inline bash scripts. Let the LLM generate code from the
   description.
-- **Keep reference files under 40 lines** — longer files increase token cost for
-  every invocation. If a file exceeds 40 lines, split into multiple files or
+- **Keep reference files under 50 lines** — longer files increase token cost for
+  every invocation. If a file exceeds 50 lines, split into multiple files or
   simplify.
 - **Use tables for structured data** — tables are token-efficient and
   LLM-friendly for mapping agent → signal → path (see `global.md`).

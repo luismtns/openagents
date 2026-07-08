@@ -10,8 +10,8 @@ bash scripts/validate.sh
 
 ```
 skills/openagents/SKILL.md           — main skill must exist
-skills/openagents/references/        — 7 reference files
-.agents/rules/                       — validate.md + distributed-skills.md
+skills/openagents/references/        — 11 reference files
+.agents/rules/                       — validate.md + distributed-skills.md + agentskills.md
 .claude-plugin/plugin.json           — plugin manifest
 .github/workflows/validate.yml       — CI validation
 .github/workflows/publish.yml        — CI release automation

@@ -40,6 +40,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - `claude-plugin/.claude-plugin/marketplace.json` — duplicative; marketplace format now
   lives at repo-root `.claude-plugin/marketplace.json` per official Claude Code spec
 
+## [1.9.0] - 2026-07-08
+
+### Added
+
+- `references/detect.md` — canonical agent detection matrix, de-duplicated from `status.md`/`global.md`
+- `.agents/rules/agentskills.md` — canonical Agent Skills references (agentskills.io + Anthropic) as base source
+- `scripts/publish.sh` — local release gate (validator + `skills-ref` spec check)
+- Ecosystem distribution matrix in `distributed-skills.md` (skills.sh, Claude Code Marketplace, agentskills.io, Anthropic, per-agent discovery)
+
+### Changed
+
+- `references/uninstall.md` rewritten to be defensively scoped to the openagents skill only (basename guard, explicit symlink/lock targets) with a mandatory "restart your agent" final step
+- `references/status.md` now lists ALL subcommands (incl. `rm` subcommands, `uninstall`), not just recommended ones
+- `references/rules.md` split into index + `rules-scan.md` / `rules-generate.md` / `rules-validate.md` to comply with the <50-line reference rule
+- `references/global.md` / `status.md` now reference `detect.md` instead of duplicating the agent matrix
+- `distributed-skills.md` expanded with canonical reference links and the Agent Skills ecosystem matrix
+- `token-efficiency.md` line limit unified to <50 (was 40)
+
+### Security
+
+- `uninstall.md` explicitly warns that `clean.sh` is a global nuke and must not be used to uninstall only openagents
+
 ## [1.8.0] - 2026-07-08
 
 ### Added

@@ -80,21 +80,27 @@ skill({ name: "openagents" })
 skills/openagents/
 ├── SKILL.md                  # Unified frontmatter + routing table
 └── references/
-    ├── status.md             # Default status workflow
+    ├── status.md             # Default status workflow (lists all commands)
     ├── global.md             # Agent-agnostic handshake protocol
+    ├── detect.md             # Canonical agent detection matrix
     ├── init.md               # Project scaffolding
     ├── add.md                # Skill/rules creation
-    ├── rules.md              # Deep analysis + rule generation
+    ├── rules.md              # Index: deep analysis + rule generation
+    ├── rules-scan.md         # Sanity check + architecture extraction
+    ├── rules-generate.md     # Generate the three rule files
+    ├── rules-validate.md     # Validate with user + write
     ├── rm.md                 # Remove project artifacts
-    └── uninstall.md          # Uninstall guidance
+    └── uninstall.md          # Defensive, scoped uninstall + restart
 
 .agents/rules/
 ├── validate.md               # Pre-release validation
-└── distributed-skills.md     # Naming and layout conventions
+├── distributed-skills.md     # Naming, layout, ecosystem distribution
+└── agentskills.md            # Canonical Agent Skills references (base source)
 
 scripts/
 ├── validate.sh               # Local CI validator
-└── clean.sh                  # Global skill cleanup
+├── clean.sh                  # Global skill cleanup (nuke — not for uninstall)
+└── publish.sh                # Release gate: skills-ref + skills.sh publish
 
 AGENTS.md                     # Root-level skill pack description
 CHANGELOG.md                  # Version history
