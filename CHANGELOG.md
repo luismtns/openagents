@@ -40,6 +40,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - `claude-plugin/.claude-plugin/marketplace.json` — duplicative; marketplace format now
   lives at repo-root `.claude-plugin/marketplace.json` per official Claude Code spec
 
+## [1.9.1] - 2026-07-08
+
+### Fixed
+
+- README "How it works" Mermaid diagram now renders on GitHub (removed the `\n` line break and parentheses inside a quoted node that caused a parse error: `Cannot read properties of undefined (reading 'render')`)
+- Reference heading convention unified to space-separated `# <name> <topic>` — the new `rules-*.md`/`detect.md` and `add.md` used colon syntax, conflicting with the project convention (1.7.0) and existing files like `# openagents global`
+
 ## [1.9.0] - 2026-07-08
 
 ### Added
