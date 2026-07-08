@@ -18,50 +18,17 @@ orchestrates multi-agent workflows across your ecosystem.
 
 ```mermaid
 flowchart TD
-    U["you: setup multi-agent"] -->|trigger| S["skill(name: openagents)"]
-    U2["you: init project"] -->|trigger| S
-    U3["you: create a skill"] -->|trigger| S
-    U4["you: analyze the project"] -->|trigger| S
-    U5["you: check status"] -->|trigger| S
-    U6["you: remove artifacts"] -->|trigger| S
+    U["you: check status, setup,\ninit, add, rm, uninstall"] -->|trigger| S("skill(name: openagents)")
 
-    S -->|routes to| R["SKILL.md router"]
+    S --> R["SKILL.md router"]
 
-    R -->|status| ST["references/status.md"]
-    R -->|global| G["references/global.md"]
-    R -->|init| I["references/init.md"]
-    R -->|add| A["references/add.md"]
-    R -->|rules| RL["references/rules.md"]
-    R -->|rm| RM["references/rm.md"]
-    R -->|uninstall| UI["references/uninstall.md"]
-
-    G --> D{"detect agent"}
-    D -->|opencode| OC["~/.config/opencode/"]
-    D -->|claude-code| CC["~/.claude/"]
-    D -->|codex| CX["~/.codex/"]
-    D -->|cursor| CR["~/.cursor/skills/"]
-    D -->|cline| CL["~/.clinerules"]
-    D -->|zed| ZD["~/.zed/"]
-    D -->|mimocode| MC["~/.mimocode/"]
-    D -->|antigravity| AG["~/.antigravity/"]
-    D -->|deepagents| DA["~/.deepagents/"]
-    D -->|gemini-cli| GC["~/.gemini/"]
-    D -->|github-copilot| GH["~/.github-copilot/"]
-    D -->|kimi-code-cli| KI["~/.kimi/"]
-    D -->|warp| WP["~/.warp/"]
-    D -->|amp| AP["~/.amp/"]
-
-    I --> L["detect language"]
-    L --> GEN["write AGENTS.md"]
-    GEN --> RD["create .agents/rules/"]
-
-    A --> SC["scaffold SKILL.md"]
-    SC --> REG["register in skills.sh.json"]
-
-    RL --> SN["scan codebase"]
-    SN --> P["identify patterns"]
-    P --> GR["generate rules"]
-    GR --> V["validate with user"]
+    R -->|status| ST["show agent + repo status"]
+    R -->|global| G["detect agent → map 14+ agents"]
+    R -->|init| I["scaffold AGENTS.md + rules"]
+    R -->|add| A["create new skills"]
+    R -->|rules| RL["scan → generate rules"]
+    R -->|rm| RM["remove project artifacts"]
+    R -->|uninstall| UI["guide: npx skills remove"]
 ```
 
 ## Installation
