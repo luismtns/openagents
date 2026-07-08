@@ -53,6 +53,5 @@ fi
 echo ""
 echo "=== Done — $removed skill(s) removed ==="
 echo ""
-echo "To reinstall, run:  skill({ name: \"openagents-install\" })"
-echo "or run manually:    ln -sfn \$(pwd)/skills/* ~/.agents/skills/"
+echo "To reinstall, run:  npx skills add luismtns/openagents"
 echo "                    cp AGENTS.md ~/.agents/AGENTS.md"

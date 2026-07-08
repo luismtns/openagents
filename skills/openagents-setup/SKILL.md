@@ -1,22 +1,22 @@
 ---
-name: openagents-install
+name: openagents-setup
 description: |
-  One-time global setup of the OpenAgents multi-agent ecosystem on the current machine.
-  Detects the running AI coding agent, creates the global skills directory structure,
-  configures agent-specific settings, writes the OpenAgents manifest, and verifies
-  that all 6 OpenAgents skills are discoverable by the agent.
-  Use when installing OpenAgents for the first time on a new machine.
-  Triggers: openagents install, setup openagents, init openagents global.
+  Verifies and configures AI coding agents on the current machine to follow the
+  OpenAgents multi-agent standard. Detects the running agent, checks that the
+  global skills directory and manifest are in place, configures agent-specific
+  settings for multi-agent compatibility, and verifies the ecosystem is operational.
+  Use when setting up OpenAgents for the first time on a new machine.
+  Triggers: openagents setup, configure agents, check agents, verify setup.
 allowed-tools: Read, Write, Glob, Bash(git:*), Bash(mkdir:*), Bash(ln:*), Bash(cp:*), Bash(test:*), Bash(uname:*), Bash(echo:*), Bash(pwd:*)
 version: 1.0.0
 author: Luis Bovo <luis@luis.dev>
 license: MIT
 user-invocable: true
 compatible-with: opencode, claude-code, cursor, codex, cline, zed
-tags: [openagents, setup, install, global]
+tags: [openagents, setup, configure, global]
 ---
 
-# openagents:install
+# openagents:setup
 
 ## Overview
 
@@ -36,9 +36,9 @@ Configures your current machine for the OpenAgents ecosystem. This is a one-time
 ### 1. Ensure skills directory structure
 
 Check that the 6 skill directories exist under `~/.agents/skills/`:
-- openagents-install
+- openagents-setup
 - openagents-init
-- openagents-setup-rules
+- openagents-rules
 - openagents-sync
 - openagents-audit
 - openagents-skills
@@ -57,7 +57,7 @@ Write `~/.agents/AGENTS.md`:
 ```markdown
 # OpenAgents — Global Manifest
 
-Available skills: openagents-install, openagents-init, openagents-setup-rules,
+Available skills: openagents-setup, openagents-init, openagents-rules,
 openagents-sync, openagents-audit, openagents-skills
 
 Load any with the `skill` tool: `skill({ name: "openagents-<name>" })`

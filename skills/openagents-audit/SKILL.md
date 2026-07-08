@@ -58,7 +58,7 @@ Total size:     <N> KB across <N> files
 
 | skill | path | v | author | lines | health |
 |-------|------|---|--------|-------|--------|
-| openagents-install | ~/.agents/skills/ | 1.0.0 | Luis Bovo | 87 | PASS |
+| openagents-setup | ~/.agents/skills/ | 1.0.0 | Luis Bovo | 87 | PASS |
 | obsolete-skill | .claude/skills/ | — | — | 320 | FAIL |
 
 ### Health checks

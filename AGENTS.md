@@ -4,9 +4,9 @@
 This repository provides 6 OpenAgents skills for multi-agent workflow orchestration.
 Install via `npx skills add luismtns/openagents` or load individual skills with:
 
-- `skill({ name: "openagents-install" })` — one-time global setup
+- `skill({ name: "openagents-setup" })` — verify and configure agents for multi-agent standard
 - `skill({ name: "openagents-init" })` — per-project scaffolding
-- `skill({ name: "openagents-setup-rules" })` — deep analysis + rule generation
+- `skill({ name: "openagents-rules" })` — deep analysis + rule generation
 - `skill({ name: "openagents-sync" })` — sync skills across machines
 - `skill({ name: "openagents-audit" })` — audit skill usage
 - `skill({ name: "openagents-skills" })` — discover and manage skills

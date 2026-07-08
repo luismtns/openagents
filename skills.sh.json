@@ -5,7 +5,7 @@
     {
       "title": "Orchestration",
       "description": "Set up and configure the OpenAgents ecosystem on any machine or project.",
-      "skills": ["openagents-install", "openagents-init", "openagents-setup-rules"]
+      "skills": ["openagents-setup", "openagents-init", "openagents-rules"]
     },
     {
       "title": "Maintenance",

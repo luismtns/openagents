@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
-- 6 core skills: openagents-install, openagents-init, openagents-setup-rules, openagents-sync, openagents-audit, openagents-skills
+- 6 core skills: openagents-setup, openagents-init, openagents-rules, openagents-sync, openagents-audit, openagents-skills
 - Agent-agnostic distribution via skills.sh
 - Claude Code plugin format
 - Local validator script and CI workflows
@@ -21,5 +21,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ```bash
 npx skills add luismtns/openagents
 # or
-git clone https://github.com/luismtns/openagents.git && make install
+git clone https://github.com/luismtns/openagents.git
 ```

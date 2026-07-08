@@ -4,8 +4,8 @@
 
 | Form | Where | Example |
 |------|-------|---------|
-| `openagents-<name>` | Directory name, frontmatter `name`, skills.sh slug | `openagents-install` |
-| `openagents:<name>` | SKILL.md H1 heading | `# openagents:install` |
+| `openagents-<name>` | Directory name, frontmatter `name`, skills.sh slug | `openagents-setup` |
+| `openagents:<name>` | SKILL.md H1 heading | `# openagents:setup` |
 | `openagents <verb>` | Frontmatter `Triggers` field | `Triggers: openagents install` |
 
 Directory name = frontmatter `name` = skills.sh slug. Always kebab-case.

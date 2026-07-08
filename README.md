@@ -13,25 +13,31 @@ OpenAgents is a **distributable skill pack** that configures your AI coding agen
 
 ## Installation
 
+The skills are distributed via any skill manager:
+
 ```bash
-# Via skills.sh (any agent)
+# Via skills.sh (recommended)
 npx skills add luismtns/openagents
 
 # Via Claude Code plugin
 /plugin install openagents@luismtns/openagents
+```
 
-# Clone + make install
-git clone https://github.com/luismtns/openagents.git
-cd openagents && make install
+Once installed, run the setup skill in your AI coding agent:
+
+```bash
+/openagents:setup     # verify and configure agents for multi-agent standard
+/openagents:init      # initialize a project
+/openagents:rules     # deep analysis + generate project rules
 ```
 
 ## Skills
 
 | Command | Purpose |
 |---------|---------|
-| `/openagents:install` | One-time global setup: structure, configs, manifest |
+| `/openagents:setup` | Verify and configure agents for multi-agent standard |
 | `/openagents:init` | Per-project init: analyze repo, create AGENTS.md |
-| `/openagents:setup-rules` | Deep analysis + grill-me + rule generation |
+| `/openagents:rules` | Deep analysis + grill-me + rule generation |
 | `/openagents:sync` | Synchronize global ↔ project skills |
 | `/openagents:audit` | Audit the skills ecosystem |
 | `/openagents:skills` | Search, install, and manage skills |

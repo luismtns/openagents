@@ -1,5 +1,5 @@
 ---
-name: openagents-setup-rules
+name: openagents-rules
 description: |
   Deep analysis of the current project for comprehensive rule generation.
   Scans the entire codebase, reads configuration files, identifies architecture
@@ -7,7 +7,7 @@ description: |
   with the user, and generates or updates all project-level agent rules and skills.
   Also suggests simplification or removal of obsolete rules.
   Use when a project needs thorough rule coverage or existing rules are stale.
-  Triggers: openagents setup-rules, analyze project, generate rules, refresh rules.
+  Triggers: openagents rules, analyze project, generate rules, refresh rules.
 allowed-tools: Read, Write, Glob, Grep, Bash(git:*), Bash(npm:*), Bash(cargo:*), Bash(python3:*), Bash(go:*), Bash(ls:*), Bash(test:*), Bash(find:*), Bash(echo:*), Bash(wc:*)
 version: 1.0.0
 author: Luis Bovo <luis@luis.dev>
@@ -17,7 +17,7 @@ compatible-with: opencode, claude-code, cursor, codex, cline
 tags: [openagents, rules, analysis, grill-me, architecture]
 ---
 
-# openagents:setup-rules
+# openagents:rules
 
 ## Overview
 

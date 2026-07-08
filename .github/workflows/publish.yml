@@ -63,8 +63,6 @@ jobs:
             printf "Update your skills with one command:\n\n"
             printf '```bash\n'
             printf "npx skills add luismtns/openagents\n"
-            printf "# or\n"
-            printf "git pull && make install\n"
             printf '```\n'
           } >> /tmp/release_body.md
 
