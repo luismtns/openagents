@@ -53,9 +53,9 @@ flowchart TD
 
 ## Installation
 
-Install with one command:
-
-`npx skills add luismtns/openagents`
+```bash
+npx skills add luismtns/openagents
+```
 
 Then load in any AI coding agent:
 
@@ -116,6 +116,6 @@ bash scripts/validate.sh
 # Full cleanup (removes all global skills, npm/npx cache)
 bash scripts/clean.sh
 
-# Fresh install
-bash scripts/install.sh
+# Reinstall after changes
+bash scripts/clean.sh && npx skills add luismtns/openagents -y -g
 ```
