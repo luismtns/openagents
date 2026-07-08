@@ -6,7 +6,7 @@ description: |
   name, path, version, author, line count, and origin. Identifies duplicates,
   conflicts, overly large skills, and skills missing required frontmatter fields.
   Use when reviewing the health of your skills installation or before cleanup.
-  Triggers: openagents audit, audit skills, list skills, check skills.
+  Triggers: openagents audit, audit skills, check skills, inventory.
 allowed-tools: Read, Glob, Grep, Bash(ls:*), Bash(echo:*), Bash(wc:*), Bash(find:*), Bash(test:*), Bash(du:*), Bash(cat:*)
 version: 1.0.0
 author: Luis Bovo <luis@luis.dev>

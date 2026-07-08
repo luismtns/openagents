@@ -1,5 +1,9 @@
 # OpenAgents
 
+[![skills.sh](https://skills.sh/b/luismtns/openagents)](https://skills.sh/luismtns/openagents)
+[![validate](https://github.com/luismtns/openagents/actions/workflows/validate.yml/badge.svg)](https://github.com/luismtns/openagents/actions/workflows/validate.yml)
+[![release](https://github.com/luismtns/openagents/actions/workflows/publish.yml/badge.svg)](https://github.com/luismtns/openagents/actions/workflows/publish.yml)
+
 Multi-agent workflow orchestration for AI coding agents.
 
 OpenAgents is a **distributable skill pack** that configures your AI coding agent for multi-agent workflows. It provides project analysis, rule generation, skill synchronization, and ecosystem auditing — all through self-contained, agent-agnostic skills.
@@ -47,15 +51,18 @@ All skills are stored in `~/.agents/skills/` — the universal global location r
 ## Quick Start
 
 ```bash
-# 1. Install the skills
+# Clone + make install (any agent)
+git clone https://github.com/luismtns/openagents.git
+cd openagents && make install
+
+# Or via skills.sh
 npx skills add luismtns/openagents
+```
 
-# 2. Run global setup (one-time)
-/openagents:install
-
-# 3. Initialize your project
-cd my-project
-/openagents:init
+Once installed:
+```bash
+/openagents:install    # one-time global setup
+/openagents:init       # init your project
 ```
 
 ## License

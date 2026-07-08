@@ -1,8 +1,16 @@
 {
-  "categories": {
-    "orchestration": ["openagents-install", "openagents-init", "openagents-setup-rules"],
-    "maintenance": ["openagents-sync", "openagents-audit", "openagents-skills"]
-  },
-  "description": "Multi-agent workflow orchestration for AI coding agents",
-  "tags": ["multi-agent", "orchestration", "workflow", "rules", "skills"]
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Orchestration",
+      "description": "Set up and configure the OpenAgents ecosystem on any machine or project.",
+      "skills": ["openagents-install", "openagents-init", "openagents-setup-rules"]
+    },
+    {
+      "title": "Maintenance",
+      "description": "Manage, sync, and audit your skills ecosystem over time.",
+      "skills": ["openagents-sync", "openagents-audit", "openagents-skills"]
+    }
+  ]
 }

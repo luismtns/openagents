@@ -12,7 +12,7 @@ version: 1.0.0
 author: Luis Bovo <luis@luis.dev>
 license: MIT
 user-invocable: true
-compatible-with: opencode, claude-code, cursor, codex, cline
+compatible-with: opencode, claude-code, cursor, codex, cline, zed
 tags: [openagents, setup, install, global]
 ---
 
@@ -35,7 +35,7 @@ Configures your current machine for the OpenAgents ecosystem. This is a one-time
 
 ### 1. Ensure skills directory structure
 
-Check `~/.agents/skills/openagents/` exists with the 6 skill directories:
+Check that the 6 skill directories exist under `~/.agents/skills/`:
 - openagents-install
 - openagents-init
 - openagents-setup-rules
@@ -73,6 +73,13 @@ If **claude-code**:
 - Ensure `~/.claude/CLAUDE.md` references OpenAgents
 - Claude Code already reads `~/.agents/skills/` automatically
 
+If **cursor**:
+- Symlink skills into Cursor's skill directory:
+  ```bash
+  mkdir -p ~/.cursor/skills
+  ln -sfn ~/.agents/skills/* ~/.cursor/skills/
+  ```
+
 ### 4. Verify
 
 Confirm all 6 skills appear in the agent's skill discovery. Load this skill as a smoke test.
@@ -85,3 +92,5 @@ Confirm all 6 skills appear in the agent's skill discovery. Load this skill as a
 | claude-code | `~/.claude/CLAUDE.md` | `~/.agents/skills/` (auto) |
 | codex | Codex UI settings | `~/.agents/skills/` (auto) |
 | cursor | `~/.cursor/rules/` | `~/.cursor/skills/` |
+| cline | `~/.clinerules` | `~/.agents/skills/` (auto) |
+| zed | Zed settings | `~/.agents/skills/` (auto) |

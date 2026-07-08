@@ -8,7 +8,7 @@ description: |
   plugins, and direct GitHub sources.
   Use when you want to discover, install, or remove AI coding agent skills.
   Triggers: openagents skills, manage skills, install skill, search skills,
-  list skills, remove skill.
+  remove skill.
 allowed-tools: Read, Write, Glob, Grep, Bash(git:*), Bash(ln:*), Bash(rm:*), Bash(cp:*), Bash(ls:*), Bash(echo:*), Bash(test:*), Bash(npx:*), Bash(mkdir:*)
 version: 1.0.0
 author: Luis Bovo <luis@luis.dev>
