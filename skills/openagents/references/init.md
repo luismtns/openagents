@@ -1,21 +1,3 @@
----
-name: openagents-init
-description: |
-  Per-project initialization of the OpenAgents ecosystem.
-  Scans the current repository for language, framework, package manager, and
-  project structure, then generates project-level AGENTS.md (or CLAUDE.md for
-  compatibility) with relevant conventions, build commands, and architecture notes.
-  Use when starting work on a new or unfamiliar project.
-  Triggers: openagents init, init project, project setup.
-allowed-tools: Read, Write, Glob, Grep, Bash(git:*), Bash(npm:*), Bash(cargo:*), Bash(go:*), Bash(python3:*), Bash(ls:*), Bash(echo:*), Bash(test:*)
-version: 1.0.0
-author: Luis Bovo <luis@luis.dev>
-license: MIT
-user-invocable: true
-compatible-with: opencode, claude-code, cursor, codex, cline
-tags: [openagents, init, project, setup]
----
-
 # openagents:init
 
 ## Overview

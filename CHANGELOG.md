@@ -4,6 +4,20 @@ All notable changes to this project are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.2.0] - 2026-07-08
+
+### Changed
+
+- Consolidated 6 individual skills into a single `openagents` package with progressive disclosure
+- skills/openagents/SKILL.md now routes all subcommands (setup, init, rules, sync, audit, skills)
+- Each subcommand lives in `references/*.md` under the same skill directory
+
+### Upgrade Notes
+
+```bash
+npx skills add luismtns/openagents
+```
+
 ## [1.0.0] - 2026-07-08
 
 ### Added

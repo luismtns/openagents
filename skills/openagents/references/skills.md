@@ -1,23 +1,3 @@
----
-name: openagents-skills
-description: |
-  Skill manager for the OpenAgents ecosystem.
-  Searches known skill repositories (mattpocock, anthropic, proyecto26,
-  vercel-labs) for available skills, lists currently installed skills, and
-  installs or removes skills on demand. Integrates with skills.sh, Claude
-  plugins, and direct GitHub sources.
-  Use when you want to discover, install, or remove AI coding agent skills.
-  Triggers: openagents skills, manage skills, install skill, search skills,
-  remove skill.
-allowed-tools: Read, Write, Glob, Grep, Bash(git:*), Bash(ln:*), Bash(rm:*), Bash(cp:*), Bash(ls:*), Bash(echo:*), Bash(test:*), Bash(npx:*), Bash(mkdir:*)
-version: 1.0.0
-author: Luis Bovo <luis@luis.dev>
-license: MIT
-user-invocable: true
-compatible-with: opencode, claude-code, cursor, codex, cline
-tags: [openagents, skills, manager, search, install]
----
-
 # openagents:skills
 
 ## Overview

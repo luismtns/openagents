@@ -13,7 +13,7 @@ echo ""
 
 # Discover
 shopt -s nullglob
-to_remove=("$SKILLS_DIR"/openagents-*)
+to_remove=("$SKILLS_DIR"/openagents*)
 
 if [ ${#to_remove[@]} -eq 0 ] && [ ! -f "$MANIFEST" ]; then
   echo "Nothing to clean — no OpenAgents skills or manifest found."

@@ -4,15 +4,15 @@
 
 | Form | Where | Example |
 |------|-------|---------|
-| `openagents-<name>` | Directory name, frontmatter `name`, skills.sh slug | `openagents-setup` |
-| `openagents:<name>` | SKILL.md H1 heading | `# openagents:setup` |
-| `openagents <verb>` | Frontmatter `Triggers` field | `Triggers: openagents install` |
+| `openagents` | Directory name, frontmatter `name`, skills.sh slug | `openagents` |
+| `openagents:<subcommand>` | Reference file H1 heading | `# openagents:setup` |
+| `openagents <verb>` | Frontmatter `Triggers` field | `Triggers: openagents setup` |
 
 Directory name = frontmatter `name` = skills.sh slug. Always kebab-case.
 
 ## Frontmatter (Anthropic 2026 spec)
 
-Every `SKILL.md` must have:
+The main `SKILL.md` must have:
 
 ```yaml
 ---
@@ -36,20 +36,24 @@ Rules (no exceptions):
 - `name` matches the enclosing directory name exactly
 - `description` contains "Use when" 
 - `allowed-tools` tools like Bash, Write, Read, Glob, Grep; Bash must be scoped: `Bash(git:*)`
-- Under 200 lines per skill (progressive disclosure); split into `references/` if larger
+- Under 200 lines per reference (progressive disclosure); split further into `references/` if larger
 
 ## File layout
 
 ```
 repo/
 ├── skills/
-│   ├── openagents-<name>/
-│   │   ├── SKILL.md          # skill definition
-│   │   └── references/       # optional, for progressive disclosure
-│   │       └── *.md
-│   └── ...
+│   └── openagents/
+│       ├── SKILL.md              # main skill definition
+│       └── references/           # progressive disclosure
+│           ├── setup.md
+│           ├── init.md
+│           ├── rules.md
+│           ├── sync.md
+│           ├── audit.md
+│           └── skills.md
 ├── .agents/
-│   └── rules/                # project rules (agent-agnostic)
+│   └── rules/                    # project rules (agent-agnostic)
 │       ├── validate.md
 │       └── distributed-skills.md
 ├── .claude/

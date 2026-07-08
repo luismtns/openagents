@@ -1,22 +1,3 @@
----
-name: openagents-sync
-description: |
-  Synchronizes skills between the global agents directory and the local project.
-  Compares skill versions and content between ~/.agents/skills/ and local
-  .opencode/skills/ or .claude/skills/, detects outdated or missing skills,
-  presents a diff for review, and applies updates on confirmation.
-  Also removes orphaned skills (present locally but absent globally).
-  Use when project skills may be out of sync with the global installation.
-  Triggers: openagents sync, sync skills, update skills, sync project.
-allowed-tools: Read, Write, Glob, Grep, Bash(ln:*), Bash(cp:*), Bash(rm:*), Bash(diff:*), Bash(ls:*), Bash(echo:*), Bash(test:*)
-version: 1.0.0
-author: Luis Bovo <luis@luis.dev>
-license: MIT
-user-invocable: true
-compatible-with: opencode, claude-code, cursor, codex, cline
-tags: [openagents, sync, skills, maintenance]
----
-
 # openagents:sync
 
 ## Overview

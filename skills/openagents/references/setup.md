@@ -1,21 +1,3 @@
----
-name: openagents-setup
-description: |
-  Verifies and configures AI coding agents on the current machine to follow the
-  OpenAgents multi-agent standard. Detects the running agent, checks that the
-  global skills directory and manifest are in place, configures agent-specific
-  settings for multi-agent compatibility, and verifies the ecosystem is operational.
-  Use when setting up OpenAgents for the first time on a new machine.
-  Triggers: openagents setup, configure agents, check agents, verify setup.
-allowed-tools: Read, Write, Glob, Bash(git:*), Bash(mkdir:*), Bash(ln:*), Bash(cp:*), Bash(test:*), Bash(uname:*), Bash(echo:*), Bash(pwd:*)
-version: 1.0.0
-author: Luis Bovo <luis@luis.dev>
-license: MIT
-user-invocable: true
-compatible-with: opencode, claude-code, cursor, codex, cline, zed
-tags: [openagents, setup, configure, global]
----
-
 # openagents:setup
 
 ## Overview
@@ -33,15 +15,9 @@ Configures your current machine for the OpenAgents ecosystem. This is a one-time
 
 ## Steps
 
-### 1. Ensure skills directory structure
+### 1. Ensure skill directory
 
-Check that the 6 skill directories exist under `~/.agents/skills/`:
-- openagents-setup
-- openagents-init
-- openagents-rules
-- openagents-sync
-- openagents-audit
-- openagents-skills
+Check that the `openagents` skill directory exists under `~/.agents/skills/`.
 
 If missing, install via:
 
@@ -56,10 +32,9 @@ Write `~/.agents/AGENTS.md`:
 ```markdown
 # OpenAgents — Global Manifest
 
-Available skills: openagents-setup, openagents-init, openagents-rules,
-openagents-sync, openagents-audit, openagents-skills
+Available skill: openagents
 
-Load any with the `skill` tool: `skill({ name: "openagents-<name>" })`
+Load with the `skill` tool: `skill({ name: "openagents" })`
 ```
 
 ### 3. Configure detected agent
@@ -81,7 +56,7 @@ If **cursor**:
 
 ### 4. Verify
 
-Confirm all 6 skills appear in the agent's skill discovery. Load this skill as a smoke test.
+Confirm the `openagents` skill appears in the agent's skill discovery. Load this skill as a smoke test.
 
 ## Agent-specific notes
 

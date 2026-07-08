@@ -13,14 +13,15 @@ Run these steps to simulate what CI does:
 ### 1. Structure check
 
 ```
-skills/*/SKILL.md          — 6 skills must exist
+skills/openagents/SKILL.md       — main skill must exist
+skills/openagents/references/    — 6 reference files for subcommands
 claude-plugin/.claude-plugin/plugin.json
-claude-plugin/skills       — must be symlink to ../../skills
-scripts/validate.sh        — local validator
+claude-plugin/skills             — must be symlink to ../../skills
+scripts/validate.sh              — local validator
 README.md, LICENSE, CHANGELOG.md, skills.sh.json
 ```
 
-### 2. Frontmatter per skill
+### 2. Frontmatter
 
 | Field | Required | Notes |
 |-------|----------|-------|

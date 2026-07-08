@@ -1,21 +1,3 @@
----
-name: openagents-audit
-description: |
-  Comprehensive audit of the entire skills ecosystem on the current machine.
-  Scans all skill locations (global, per-project, per-agent), reports each skill's
-  name, path, version, author, line count, and origin. Identifies duplicates,
-  conflicts, overly large skills, and skills missing required frontmatter fields.
-  Use when reviewing the health of your skills installation or before cleanup.
-  Triggers: openagents audit, audit skills, check skills, inventory.
-allowed-tools: Read, Glob, Grep, Bash(ls:*), Bash(echo:*), Bash(wc:*), Bash(find:*), Bash(test:*), Bash(du:*), Bash(cat:*)
-version: 1.0.0
-author: Luis Bovo <luis@luis.dev>
-license: MIT
-user-invocable: true
-compatible-with: opencode, claude-code, cursor, codex, cline
-tags: [openagents, audit, skills, list, review]
----
-
 # openagents:audit
 
 ## Overview
@@ -58,7 +40,7 @@ Total size:     <N> KB across <N> files
 
 | skill | path | v | author | lines | health |
 |-------|------|---|--------|-------|--------|
-| openagents-setup | ~/.agents/skills/ | 1.0.0 | Luis Bovo | 87 | PASS |
+| openagents | ~/.agents/skills/ | 1.0.0 | Luis Bovo | 87 | PASS |
 | obsolete-skill | .claude/skills/ | — | — | 320 | FAIL |
 
 ### Health checks

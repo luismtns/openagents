@@ -3,14 +3,9 @@
   "notGrouped": "bottom",
   "groupings": [
     {
-      "title": "Orchestration",
-      "description": "Set up and configure the OpenAgents ecosystem on any machine or project.",
-      "skills": ["openagents-setup", "openagents-init", "openagents-rules"]
-    },
-    {
-      "title": "Maintenance",
-      "description": "Manage, sync, and audit your skills ecosystem over time.",
-      "skills": ["openagents-sync", "openagents-audit", "openagents-skills"]
+      "title": "Package",
+      "description": "OpenAgents skill pack — setup, init, rules, sync, audit, skills.",
+      "skills": ["openagents"]
     }
   ]
 }
