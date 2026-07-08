@@ -2,7 +2,7 @@
 # OpenAgents Skill Pack
 
 A single skill with built-in subcommands for multi-agent workflow orchestration.
-Install via `npx skills add luismtns/openagents` and load with:
+Available from [skills.sh/luismtns/openagents](https://skills.sh/luismtns/openagents). Load with:
 
 ```
 skill({ name: "openagents" })

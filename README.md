@@ -53,9 +53,7 @@ flowchart TD
 
 ## Installation
 
-```bash
-npx skills add luismtns/openagents
-```
+[![Install from skills.sh](https://skills.sh/b/luismtns/openagents)](https://skills.sh/luismtns/openagents)
 
 Then load in any AI coding agent:
 
@@ -117,5 +115,5 @@ bash scripts/validate.sh
 bash scripts/clean.sh
 
 # Fresh install
-npx skills add luismtns/openagents -y -g
+bash scripts/install.sh
 ```

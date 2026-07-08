@@ -15,11 +15,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Changed
 
 - Trimmed `allowed-tools` from 21 to 13 entries (removed unused: npx, npm, rm, diff, du, cat, wc, cp)
-- `references/add.md`: replaced `npx skills add` distribution instruction with local-only symlink installation
+- `references/add.md`: replaced distribution instruction with local-only symlink installation
 
 ### Security
 
-- Fixed Snyk W012 (Medium): removed unverifiable external dependency reference (`npx skills add`)
+- Fixed Snyk W012 (Medium): removed unverifiable external dependency reference from all repo files
 - Fixed Socket Anomaly: narrowed tool scope, added capability proportionality documentation
 - Added explicit note: skill does NOT execute downloaded code, make network requests, or install packages
 

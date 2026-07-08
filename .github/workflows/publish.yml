@@ -60,10 +60,8 @@ jobs:
           {
             printf "\n---\n\n"
             printf "### Upgrade\n\n"
-            printf "Update your skills with one command:\n\n"
-            printf '```bash\n'
-            printf "npx skills add luismtns/openagents\n"
-            printf '```\n'
+            printf "Update to the latest version from skills.sh:\n\n"
+            printf "https://skills.sh/luismtns/openagents\n"
           } >> /tmp/release_body.md
 
       - name: Create release

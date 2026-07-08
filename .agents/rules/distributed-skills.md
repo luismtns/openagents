@@ -63,5 +63,5 @@ repo/
 
 ## Distribution
 
-- skills.sh: `npx skills add luismtns/openagents`
+- Always install from [skills.sh/luismtns/openagents](https://skills.sh/luismtns/openagents)
 - Always version-pin dependencies; never `npm install` without lockfile
