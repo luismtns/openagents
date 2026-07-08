@@ -53,7 +53,9 @@ flowchart TD
 
 ## Installation
 
-[![Install from skills.sh](https://skills.sh/b/luismtns/openagents)](https://skills.sh/luismtns/openagents)
+Install with one command:
+
+`npx skills add luismtns/openagents`
 
 Then load in any AI coding agent:
 
