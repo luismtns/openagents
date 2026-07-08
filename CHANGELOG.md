@@ -4,6 +4,24 @@ All notable changes to this project are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.7.0] - 2026-07-08
+
+### Added
+
+- `.agents/rules/token-efficiency.md` — guidelines for minimizing token consumption in reference files
+- Defensive sanity check in `openagents rules` — aborts gracefully if project is too minimal, suggests `openagents init`
+
+### Changed
+
+- `references/rules.md` rewritten: extracts real architecture from projects (entry points, configs, CI, directory tree), generates 3 positive rule files (`conventions.md`, `architecture.md`, `generation.md`) — never hardcoded paths, never prohibitive tone
+- Colon syntax (`openagents:subcommand`) removed entirely from all docs — space-separated only, works in all agents
+- All 7 reference files simplified: ~635 → ~300 total lines (47% reduction)
+- Removed `detect_agent()` bash script and `ps aux`/`which` from reference files — replaced with declarative detection tables
+
+### Removed
+
+- `compatible-with` frontmatter field (duplicates routing info)
+
 ## [1.5.0] - 2026-07-08
 
 ### Added
