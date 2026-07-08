@@ -6,6 +6,8 @@
 [![validate](https://github.com/luismtns/openagents/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/luismtns/openagents/actions/workflows/validate.yml)
 [![release](https://github.com/luismtns/openagents/actions/workflows/publish.yml/badge.svg?branch=main)](https://github.com/luismtns/openagents/actions/workflows/publish.yml)
 [![GitHub release](https://img.shields.io/github/v/release/luismtns/openagents)](https://github.com/luismtns/openagents/releases/latest)
+[![Socket](https://img.shields.io/badge/Socket-Pass-brightgreen?logo=socketdotio)](https://www.skills.sh/luismtns/openagents/openagents/security/socket)
+[![Snyk](https://img.shields.io/badge/Snyk-Medium-yellow?logo=snyk)](https://www.skills.sh/luismtns/openagents/openagents/security/snyk)
 
 Multi-agent workflow orchestration for AI coding agents.
 
@@ -111,6 +113,9 @@ skills.sh.json                # skills.sh distribution config
 # Validate locally
 bash scripts/validate.sh
 
-# Reinstall after changes
-bash scripts/clean.sh && npx skills add luismtns/openagents
+# Full cleanup (removes all global skills, npm/npx cache)
+bash scripts/clean.sh
+
+# Fresh install
+npx skills add luismtns/openagents -y -g
 ```

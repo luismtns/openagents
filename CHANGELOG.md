@@ -4,6 +4,25 @@ All notable changes to this project are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.4.0] - 2026-07-08
+
+### Added
+
+- Security badges in README (Socket, Snyk) linking to skills.sh audit pages
+- `scripts/clean.sh` — comprehensive cleanup of all global skills, symlinks, and npm/npx caches
+- Capability constraints table in SKILL.md documenting purpose and scope of each tool
+
+### Changed
+
+- Trimmed `allowed-tools` from 21 to 13 entries (removed unused: npx, npm, rm, diff, du, cat, wc, cp)
+- `references/add.md`: replaced `npx skills add` distribution instruction with local-only symlink installation
+
+### Security
+
+- Fixed Snyk W012 (Medium): removed unverifiable external dependency reference (`npx skills add`)
+- Fixed Socket Anomaly: narrowed tool scope, added capability proportionality documentation
+- Added explicit note: skill does NOT execute downloaded code, make network requests, or install packages
+
 ## [1.3.0] - 2026-07-08
 
 ### Added
