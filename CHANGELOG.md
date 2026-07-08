@@ -20,12 +20,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - `AGENTS.md` — updated with status subcommand and full agent list
 - SKILL.md description triggers — added `detect agent`, `agent status`, `multi-agent setup`, `ecosystem check`
 
-### Added (v1.5.0 follow-up)
+## [1.6.0] - 2026-07-08
+
+### Added
 
 - `openagents:rm` / `openagents rm` — remove rules, skills, AGENTS.md, symlinks, or all project artifacts
 - `openagents:uninstall` / `openagents uninstall` — uninstall guidance via `npx skills remove openagents`
 - `references/rm.md` — remove command with target-specific and batch removal
 - `references/uninstall.md` — standard uninstall workflow with global/project detection
+- Triggers expanded: `remove skill`, `delete skill`, `remove rules`, `delete rules`, `uninstall`, `cleanup`, `remove openagents`, `delete openagents`
 
 ## [1.4.0] - 2026-07-08
 
