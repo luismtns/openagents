@@ -5,9 +5,10 @@
 | Form | Where | Example |
 |------|-------|---------|
 | `openagents` | Directory name, frontmatter `name`, skills.sh slug | `openagents` |
-| `openagents:<subcommand>` | Reference file H1 heading | `# openagents:global` |
-| `openagents <verb>` | Frontmatter `Triggers` field | `Triggers: openagents global` |
+| `openagents <subcommand>` | Reference file H1 heading | `# openagents global` |
+| `openagents <subcommand>` | Frontmatter `Triggers` field | `Triggers: openagents global` |
 
+Use space-separated form `openagents <subcommand>` everywhere — it works in all agents.
 Directory name = frontmatter `name` = skills.sh slug. Always kebab-case.
 
 ## Frontmatter (opencode spec)

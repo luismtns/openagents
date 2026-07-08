@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
-- `openagents` bare command and `openagents:status` — default workflow shows agent status, repo status, available commands, and next steps
+- `openagents` bare command and `openagents status` — default workflow shows agent status, repo status, available commands, and next steps
 - Multi-signal agent detection: env vars → running processes → config dirs → binaries (covers 14+ agents)
 - Agent support expanded from 6 to 14: opencode, claude-code, cursor, codex, cline, zed, antigravity, deepagents, gemini-cli, github-copilot, kimi-code-cli, mimocode, warp, amp
 - `references/status.md` — new reference file for the default status workflow
@@ -24,8 +24,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
-- `openagents:rm` / `openagents rm` — remove rules, skills, AGENTS.md, symlinks, or all project artifacts
-- `openagents:uninstall` / `openagents uninstall` — uninstall guidance via `npx skills remove openagents`
+- `openagents rm` — remove rules, skills, AGENTS.md, symlinks, or all project artifacts
+- `openagents uninstall` — uninstall guidance via `npx skills remove openagents`
 - `references/rm.md` — remove command with target-specific and batch removal
 - `references/uninstall.md` — standard uninstall workflow with global/project detection
 - Triggers expanded: `remove skill`, `delete skill`, `remove rules`, `delete rules`, `uninstall`, `cleanup`, `remove openagents`, `delete openagents`

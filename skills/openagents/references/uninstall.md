@@ -1,69 +1,38 @@
-# openagents:uninstall
+# openagents uninstall
 
-Remove the openagents skill from the agent ecosystem.
-Uses the standard `npx skills remove` workflow.
+Remove the openagents skill from the agent ecosystem. The skill is
+distributed via [skills.sh](https://skills.sh/luismtns/openagents) and
+installed with `npx skills add`.
 
 ## Standard uninstall
 
-The openagents skill is distributed via [skills.sh](https://skills.sh/luismtns/openagents)
-and installed with `npx skills add`. The standard uninstall uses the same tool:
+| Scope | Command |
+|-------|---------|
+| Global | `npx skills remove openagents --global --yes` |
+| Project | `npx skills remove openagents --yes` |
+| Both | Run both commands above |
 
-### Global install (recommended)
-
-```bash
-npx skills remove openagents --global --yes
-```
-
-Removes from `~/.agents/skills/openagents/` and all agent-specific symlinks.
-
-### Project-level install
-
-```bash
-npx skills remove openagents --yes
-```
-
-Removes from `project/.agents/skills/openagents/`.
-
-### Remove from all locations
-
-```bash
-npx skills remove openagents --global --yes    # ~/.agents/skills/
-npx skills remove openagents --yes             # ./.agents/skills/
-```
+Global removal cleans `~/.agents/skills/openagents/` and all agent symlinks.
+Project removal cleans `project/.agents/skills/openagents/`.
 
 ## Manual cleanup
 
-If `npx skills remove` is unavailable, clean up manually:
+If `npx skills remove` is unavailable:
 
-```bash
-# Remove skill directory
-rm -rf ~/.agents/skills/openagents
-
-# Remove agent-specific symlinks
-rm -f ~/.cursor/skills/openagents 2>/dev/null
-rm -f ~/.zed/skills/openagents 2>/dev/null
-
-# Check if lock file needs updating
-# ~/.agents/.skill-lock.json will have a stale entry — safe to ignore
-```
+- Delete `~/.agents/skills/openagents/`
+- Remove agent-specific symlinks (`~/.cursor/skills/openagents`, etc.)
+- Stale lock file entries in `~/.agents/.skill-lock.json` are safe to ignore
 
 ## Post-uninstall project cleanup
 
-After uninstalling the skill, you may also want to remove project artifacts:
+Remove project artifacts separately:
 
-```bash
-openagents:rm all
-```
-
-Or manually:
-```bash
-rm -rf .agents
-rm -f AGENTS.md
-```
+- Run `openagents rm all` inside the project directory
+- Or manually delete `.agents/` and `AGENTS.md`
 
 These are project-level files and are not removed by `npx skills remove`.
 
 ## Note
 
-The skill cannot uninstall itself programmatically — it's loaded and running.
-The `uninstall` subcommand provides instructions for the user to execute.
+The skill cannot uninstall itself programmatically — it's loaded and
+running. This subcommand provides instructions for the user to execute.

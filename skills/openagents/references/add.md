@@ -1,30 +1,26 @@
-# openagents:add
+# openagents add
 
-Create and register new skills or rules in the multi-agent ecosystem.
-
-Generates a skill directory with `SKILL.md`, registers it in
-`skills.sh.json`, and validates the structure.
+Create and register new skills or rules. Generates a SKILL.md with
+frontmatter, registers in skills.sh.json, and validates the structure.
 
 ## Create a skill
 
-### 1. Choose a name
+| # | Step | Action |
+|---|------|--------|
+| 1 | Name | Lowercase kebab-case, matches directory, unique ecosystem-wide |
+| 2 | Write SKILL.md | Frontmatter (see below) + instructions |
+| 3 | References | Split into `references/<topic>.md` when >~200 lines. No frontmatter; heading: `# <name>:<topic>` |
+| 4 | Register | Add entry to `skills.sh.json` under `groupings` |
+| 5 | Validate | Run validation script |
 
-The name must be lowercase kebab-case, match the directory name, and
-be unique across the ecosystem.
-
-```bash
-SKILL_NAME="<name>"
-mkdir -p skills/$SKILL_NAME
-```
-
-### 2. Write SKILL.md
+### SKILL.md frontmatter
 
 ```yaml
 ---
-name: $SKILL_NAME
+name: <name>
 description: |
-  <what the skill does and when to use it>
-  Triggers: <space-separated trigger phrases>.
+  <what it does and when to use it>
+  Triggers: <trigger phrases>.
 allowed-tools: Read, Write, Glob, Grep, Bash(...)
 version: 0.1.0
 author: <name>
@@ -32,49 +28,18 @@ license: MIT
 user-invocable: true
 tags: [<category>]
 ---
-
-# $SKILL_NAME
-
-<instructions>
 ```
 
-Keep the description comprehensive — it's the primary trigger mechanism
-for all agents.
-
-### 3. Add references (if needed)
-
-```bash
-mkdir -p skills/$SKILL_NAME/references
-```
-
-Split content across reference files when the SKILL.md exceeds ~200 lines.
-Each reference file has no frontmatter and starts with `# $SKILL_NAME:<topic>`.
-
-### 4. Register in skills.sh.json
+### Registration entry
 
 ```json
-{
-  "groupings": [
-    {
-      "title": "<category>",
-      "description": "<group description>",
-      "skills": ["$SKILL_NAME"]
-    }
-  ]
-}
+{"groupings": [{"title": "<category>", "description": "<group description>", "skills": ["<name>"]}]}
 ```
 
-### 5. Validate
+## Local install
 
-```bash
-bash scripts/validate.sh
+Symlink into the agent's skill path:
+
 ```
-
-## Local installation
-
-For development, symlink skills into the agent's skill path:
-
-```bash
-mkdir -p ~/.agents/skills
-ln -sfn $(pwd)/skills/* ~/.agents/skills/
+mkdir -p ~/.agents/skills && ln -sfn $(pwd)/skills/<name> ~/.agents/skills/<name>
 ```

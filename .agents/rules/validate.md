@@ -43,7 +43,13 @@ done
 rm -rf "$tmpdir"
 ```
 
-### 4. skills.sh compatibility
+### 4. Token efficiency
+
+- Each reference file should be under 50 lines (check with `wc -l`)
+- No `ps aux`, `which`, or platform-specific commands
+- Prefer declarative bullets over inline bash scripts
+
+### 5. skills.sh compatibility
 
 - `skills.sh.json` uses `groupings` (not old `categories` format)
 - `$schema` points to `https://skills.sh/schemas/skills.sh.schema.json`

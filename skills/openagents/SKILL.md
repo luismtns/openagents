@@ -39,31 +39,26 @@ Load this skill, then route to the right subcommand:
 
 | Invocation | Read | When |
 |------------|------|------|
-| `openagents` / `openagents:status` / `openagents status` | [references/status.md](references/status.md) | Default — show agent status, repo status, and available commands |
-| `openagents:global` / `openagents global` | [references/global.md](references/global.md) | Detect agent, verify global multi-agent setup, handshake |
-| `openagents:init` / `openagents init` | [references/init.md](references/init.md) | Scaffold project AGENTS.md and rules |
-| `openagents:add` / `openagents add` | [references/add.md](references/add.md) | Create new skills or rules in multi-agent context |
-| `openagents:rules` / `openagents rules` | [references/rules.md](references/rules.md) | Deep codebase analysis for rule generation |
-| `openagents:rm` / `openagents rm` | [references/rm.md](references/rm.md) | Remove rules, skills, AGENTS.md, or all project artifacts |
-| `openagents:uninstall` / `openagents uninstall` | [references/uninstall.md](references/uninstall.md) | Uninstall the openagents skill via npx skills remove |
+| `openagents` / `openagents status` | [references/status.md](references/status.md) | Default — show agent status, repo status, and available commands |
+| `openagents global` | [references/global.md](references/global.md) | Detect agent, verify global multi-agent setup, handshake |
+| `openagents init` | [references/init.md](references/init.md) | Scaffold project AGENTS.md and rules |
+| `openagents add` | [references/add.md](references/add.md) | Create new skills or rules in multi-agent context |
+| `openagents rules` | [references/rules.md](references/rules.md) | Deep codebase analysis for rule generation |
+| `openagents rm` | [references/rm.md](references/rm.md) | Remove rules, skills, AGENTS.md, or all project artifacts |
+| `openagents uninstall` | [references/uninstall.md](references/uninstall.md) | Uninstall the openagents skill via npx skills remove |
 
 ## Invocation
 
-All subcommands accept two equivalent forms:
-- `openagents:<subcommand>` — colon syntax (opencode convention)
-- `openagents <subcommand>` — space syntax (natural language)
+Use space-separated subcommands: `openagents <subcommand>`.
+This works in all agents (opencode, claude-code, cursor, codex, etc.).
 
 The bare `openagents` (no subcommand) always runs the default status
 workflow in [references/status.md](references/status.md).
 
-If the user types `openagents` without a subcommand, route to status.
-If the user includes a subcommand (`:name` or ` name`), route to the
-corresponding reference file.
-
 ## How it works
 
 The skill detects which AI coding agent is running using a multi-signal
-strategy (env vars → processes → config dirs → binaries), covering all
+strategy (env vars → config dirs → binaries), covering all
 agents in the skills.sh ecosystem. It adapts configuration paths
 accordingly and orchestrates multi-agent workflows. No agent-specific
 config is shipped — the skill reads your environment and adjusts.

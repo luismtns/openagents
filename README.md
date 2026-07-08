@@ -48,12 +48,12 @@ skill({ name: "openagents" })
 | Subcommand | What it does | When to use |
 |------------|-------------|-------------|
 | `openagents` / `openagents status` | Shows agent status, repo status, available commands, and next steps | Default entry point, checking current setup |
-| `openagents:global` | Detects the running agent, maps config paths, verifies the multi-agent ecosystem | First-time setup, checking agent configurations |
-| `openagents:init` | Generates AGENTS.md, detects language/framework, creates `.agents/rules/` | Starting a new project, onboarding |
-| `openagents:add` | Scaffolds new skills, registers distribution, validates structure | Creating a new skill or rule pack |
-| `openagents:rules` | Deep codebase scan, pattern identification, rule generation | When a project needs thorough rule coverage |
-| `openagents:rm` | Removes rules, skills, AGENTS.md, symlinks, or all project artifacts | Cleaning up project scaffolding |
-| `openagents:uninstall` | Uninstalls the openagents skill via `npx skills remove` | Removing the skill from your ecosystem |
+| `openagents global` | Detects the running agent, maps config paths, verifies the multi-agent ecosystem | First-time setup, checking agent configurations |
+| `openagents init` | Generates AGENTS.md, detects language/framework, creates `.agents/rules/` | Starting a new project, onboarding |
+| `openagents add` | Scaffolds new skills, registers distribution, validates structure | Creating a new skill or rule pack |
+| `openagents rules` | Deep codebase scan, pattern identification, rule generation | When a project needs thorough rule coverage |
+| `openagents rm` | Removes rules, skills, AGENTS.md, symlinks, or all project artifacts | Cleaning up project scaffolding |
+| `openagents uninstall` | Uninstalls the openagents skill via `npx skills remove` | Removing the skill from your ecosystem |
 
 ## Agent compatibility
 
