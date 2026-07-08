@@ -4,6 +4,24 @@ All notable changes to this project are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Added
+
+- `.github/workflows/validate.yml` — CI validation on push/PR (frontmatter, file structure, symlinks)
+- `.github/workflows/publish.yml` — CD release automation triggered by `[Unreleased]` changelog
+- `.claude-plugin/.claude-plugin/marketplace.json` — Claude Plugin marketplace discovery
+- Multi-channel distribution rules in `distributed-skills.md` (skills.sh, plugin, well-known, git URL, local)
+- Release and versioning rules in `distributed-skills.md` (SemVer, CHANGELOG, tagging, CI/CD)
+- Progressive disclosure guidelines aligned with agentskills.io spec
+
+### Changed
+
+- `distributed-skills.md` rewritten to match agentskills.io specification exactly (required fields: only `name` + `description`; all others optional)
+- `validate.md` updated: `allowed-tools`/`version`/`author`/`license` now optional; added name regex, progressive disclosure, Claude Plugin, GitHub Actions checks
+- `scripts/validate.sh` rewritten: aligned with agentskills.io spec; added name regex validation, description length check, JSON validation for skills.sh.json, reference file progressive disclosure, Claude Plugin workflow checks
+- `plugin.json` bumped from `1.0.0` to `1.8.0` to match SKILL.md version
+
 ## [1.7.0] - 2026-07-08
 
 ### Added
