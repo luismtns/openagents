@@ -6,6 +6,42 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Fixed
+
+- `validate.yml`: wrong hardcoded path `.claude-plugin/plugin.json` → broken CI pipeline.
+  Now calls `validate.sh` as single source of truth; file structure checked by `validate.sh`
+- `publish.yml`: missing `git tag` creation before `gh release create` — pipeline silently
+  skipped release creation because tag already existed from a previous attempt
+- `claude-plugin/.claude-plugin/marketplace.json`: removed from inside plugin directory
+  (marketplace belongs at repo root, not inside a plugin)
+- `scripts/validate.sh`: consolidated file structure checks into same script;
+  added `required_paths` array covering all 17 mandatory files; added marketplace.json
+  validation at root-level path
+
+### Added
+
+- `.claude-plugin/marketplace.json` (repo root) — proper Claude Code Plugin Marketplace
+  format per `code.claude.com/docs/en/plugin-marketplaces`, with correct schema URL
+  `https://json.schemastore.org/claude-code-plugin-manifest.json`
+- Defensive CI/CD rules in `distributed-skills.md`: single validation source, fail-fast,
+  pre-submit gate, dry-run release (tag only, never pushes code), tag guard, unreleased
+  gate, path verification, no hardcoded paths in workflows
+
+### Changed
+
+- `distributed-skills.md`: corrected file layout (removed stale `.claude-plugin/`
+  references, added correct marketplace and plugin paths); added Claude Code Marketplace
+  distribution channel with example JSON; added defensive CI/CD rules section
+- `validate.yml`: removed duplicate inline file structure check (now delegated to
+  `validate.sh`); streamlined to just `validate.sh` + symlink verification
+
+### Removed
+
+- `claude-plugin/.claude-plugin/marketplace.json` — duplicative; marketplace format now
+  lives at repo-root `.claude-plugin/marketplace.json` per official Claude Code spec
+
+## [1.8.0] - 2026-07-08
+
 ### Added
 
 - `.github/workflows/validate.yml` — CI validation on push/PR (frontmatter, file structure, symlinks)
