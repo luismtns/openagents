@@ -28,50 +28,49 @@ jobs:
         id: version
         run: echo "tag=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
 
-      - name: Generate changelog
-        id: changelog
+      - name: Build release body
         run: |
-          prev_tag=$(git tag --sort=-version:refname | head -2 | tail -1 || echo "")
-          if [ -n "$prev_tag" ]; then
-            log=$(git log "$prev_tag"..HEAD --oneline --no-decorate)
-          else
-            log=$(git log --oneline --no-decorate "$(git rev-list --max-parents=0 HEAD)"..HEAD)
+          ver="${{ steps.version.outputs.tag }}"
+
+          # Header
+          printf "## OpenAgents v%s\n\n" "$ver" > /tmp/release_body.md
+
+          # Extract matching section from CHANGELOG.md
+          awk -v ver="$ver" '
+            /^## \['"$ver"'\]/ { found=1; next }
+            /^## \[/ && found { exit }
+            found { print }
+          ' CHANGELOG.md >> /tmp/release_body.md 2>/dev/null || true
+
+          # Fallback to git log if no changelog entry
+          if [ ! -s /tmp/release_body.md ] || [ "$(wc -l < /tmp/release_body.md)" -le 1 ]; then
+            {
+              printf "## OpenAgents v%s\n\n" "$ver"
+              printf "### Changes\n\n"
+              prev_tag=$(git tag --sort=-version:refname | head -2 | tail -1 || echo "")
+              if [ -n "$prev_tag" ]; then
+                git log "$prev_tag"..HEAD --oneline --no-decorate
+              else
+                git log --oneline --no-decorate "$(git rev-list --max-parents=0 HEAD)"..HEAD
+              fi
+            } > /tmp/release_body.md
           fi
+
+          # Append upgrade instructions
           {
-            echo 'changelog<<EOF'
-            echo "$log"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+            printf "\n---\n\n"
+            printf "### Upgrade\n\n"
+            printf "Update your skills with one command:\n\n"
+            printf '```bash\n'
+            printf "npx skills add luismtns/openagents\n"
+            printf "# or\n"
+            printf "git pull && make install\n"
+            printf '```\n'
+          } >> /tmp/release_body.md
 
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          body: |
-            ## OpenAgents v${{ steps.version.outputs.tag }}
-
-            ${{ steps.changelog.outputs.changelog }}
-
-            ---
-
-            ### Install / Update
-
-            ```bash
-            # Via skills.sh (any agent)
-            npx skills add luismtns/openagents
-
-            # Via Claude Code plugin
-            /plugin install openagents@luismtns/openagents
-
-            # Via Make (clone or update)
-            git clone https://github.com/luismtns/openagents.git
-            cd openagents && make install
-            ```
-
-            ### Contents
-
-            - 6 OpenAgents skills (install, init, setup-rules, sync, audit, skills)
-            - Claude Code plugin format
-            - Project rules (.agents/rules/)
-            - Local validator (scripts/validate.sh)
+          body_path: /tmp/release_body.md
           generate_release_notes: true
           make_latest: true

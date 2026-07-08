@@ -1,13 +1,25 @@
 # Changelog
 
-## 1.0.0 (2026-07-08)
+All notable changes to this project are documented here.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/).
+
+## [1.0.0] - 2026-07-08
 
 ### Added
+
 - 6 core skills: openagents-install, openagents-init, openagents-setup-rules, openagents-sync, openagents-audit, openagents-skills
-- Agent-agnostic distribution via skills.sh (`npx skills add luismtns/openagents`)
-- Claude Code plugin format (`claude-plugin/.claude-plugin/plugin.json`)
-- Local validator script (`scripts/validate.sh`)
-- CI workflows for validation (push/PR) and publishing (tag)
+- Agent-agnostic distribution via skills.sh
+- Claude Code plugin format
+- Local validator script and CI workflows
 - skills.sh.json with orchestration and maintenance groupings
-- Project rules (`.agents/rules/validate.md`, `distributed-skills.md`)
-- Makefile with install/validate/clean targets
+- Project rules (.agents/rules/)
+- Makefile with install, validate, and clean targets
+
+### Upgrade Notes
+
+```bash
+npx skills add luismtns/openagents
+# or
+git clone https://github.com/luismtns/openagents.git && make install
+```
