@@ -16,7 +16,7 @@ skills/openagents/references/        — 11 reference files
 .github/workflows/validate.yml       — CI validation
 .github/workflows/publish.yml        — CI release automation
 scripts/validate.sh                  — local validator
-README.md, LICENSE, CHANGELOG.md, skills.sh.json
+README.md, LICENSE, CHANGELOG.md, skills.sh.json, skillfish.json
 ```
 
 ## Frontmatter validation (agentskills.io spec)

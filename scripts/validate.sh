@@ -126,6 +126,7 @@ required_paths=(
   ".agents/rules/agentskills.md"
   "claude-plugin/.claude-plugin/plugin.json"
   "skills.sh.json"
+  "skillfish.json"
   "CHANGELOG.md"
   "LICENSE"
   "README.md"

@@ -78,6 +78,7 @@ repo/
 │   ├── validate.sh
 │   └── clean.sh
 ├── skills.sh.json
+├── skillfish.json               # skill.fish / MCPMarket team sync manifest
 ├── AGENTS.md
 ├── README.md
 ├── CHANGELOG.md
@@ -94,6 +95,7 @@ model. One source ships to every Agent Skills ecosystem below.
 | Channel | Install / obtain | Scope |
 |---------|--------|-------|
 | **skills.sh (GitHub)** | `npx skills add luismtns/openagents` | Primary public registry; auto-publishes on push |
+| **skill.fish + MCPMarket** | `npx skillfish add luismtns/openagents` ou `skillfish install` (com `skillfish.json`) | Team sync via manifesto; descoberta em skill.fish e mcpmarket.com |
 | **Claude Code Plugin Marketplace** | `/plugin marketplace add luismtns/openagents` then `/plugin install openagents@openagents` | Claude Code native discovery |
 | **Claude Agent Skills (Anthropic)** | Claude Code: `npx skills add` installs to `~/.claude/skills/`; claude.ai/API: upload skill zip | Spec-identical SKILL.md |
 | **agentskills.io (open format)** | Auto-discovered from `~/.agents/skills/` and `.agents/skills/`; install via skills.sh + `openagents global` | Any agentskills.io-compatible agent |
@@ -219,7 +221,10 @@ Follow [SemVer 2.0](https://semver.org/):
 3. Update `version` in `claude-plugin/.claude-plugin/plugin.json`
 4. Run `bash scripts/validate.sh`
 5. Commit: `chore: bump to v{VERSION}`
-6. Push to `main` — the `publish.yml` workflow creates the tag and release automatically
+6. Push to `main` — the `publish.yml` workflow creates the tag, release, and submits to skill.fish automatically
+
+> **First time only:** run `npx skillfish submit luismtns/openagents --yes` manually to register
+> the repo in the skill.fish + MCPMarket review queue. After that, CI handles re-submissions.
 
 ### CI/CD automation
 

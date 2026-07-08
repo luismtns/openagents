@@ -4,6 +4,17 @@ All notable changes to this project are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Added
+
+- `skillfish.json`: team sync manifest for `skillfish install` (skill.fish + MCPMarket)
+- `scripts/publish.sh`: skill.fish submission step (best-effort, via `npx skillfish submit`)
+- `.github/workflows/publish.yml`: CI step to submit to skill.fish + MCPMarket on release
+- `scripts/validate.sh`: `skillfish.json` added to required file paths
+- `README.md`: skill.fish installation instructions as alternative to skills.sh
+- `.agents/rules/distributed-skills.md`: skill.fish + MCPMarket documented as distribution channel
+
 ## [1.10.0] - 2026-07-08
 
 ### Added

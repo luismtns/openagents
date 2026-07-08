@@ -54,6 +54,12 @@ jobs:
               echo "WARN: skills-ref unavailable — skipping agentskills.io spec validation"
           fi
 
+      - name: Submit to skill.fish + MCPMarket
+        continue-on-error: true
+        run: |
+          npx -y skillfish@latest submit luismtns/openagents --yes --json || \
+            echo "WARN: skillfish unavailable — skipping skill.fish submission"
+
       - name: Create git tag
         env:
           VERSION: ${{ needs.version-check.outputs.version }}

@@ -38,7 +38,11 @@ flowchart TD
 ## Installation
 
 ```bash
+# Via skills.sh
 npx skills add luismtns/openagents
+
+# Via skill.fish
+npx skillfish add luismtns/openagents
 ```
 
 Then load in any AI coding agent:
