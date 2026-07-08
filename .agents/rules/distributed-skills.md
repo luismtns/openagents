@@ -129,6 +129,12 @@ symlinks automatically for agents that don't auto-discover `~/.agents/skills/`.
 > When in doubt, run `openagents global` after install — it detects the
 > running agent and links only what is needed. It never removes other skills.
 
+**Rules follow the same model.** `.agents/rules/` (project) and
+`~/.agents/rules/` (global) are the canonical sources; `openagents global`,
+`init`, and `rules` symlink them into each agent's native rules path
+(`.claude/rules`, `.cursor/rules`, `.zed/rules`, …) so every agent sees the
+same rules. This is what makes the setup unified across all your agents.
+
 ## Canonical references (base source)
 
 Use these as the authoritative source for the Agent Skills format, best

@@ -11,7 +11,7 @@
       "name": "openagents",
       "source": "./claude-plugin",
       "description": "Multi-agent workflow orchestration — status, global, init, add, rules, rm, uninstall.",
-      "version": "1.9.1"
+      "version": "1.10.0"
     }
   ]
 }

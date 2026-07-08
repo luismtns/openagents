@@ -15,8 +15,8 @@ Mirrors the creation side of `init`, `add`, and `global`.
 
 ## Details
 
-**Rules** — deletes `.agents/rules/` and any symlinks (`.claude/rules`,
-`.cursor/rules`).
+**Rules** — deletes `.agents/rules/` and any agent symlinks
+(`.claude/rules`, `.cursor/rules`, `.zed/rules`).
 
 **AGENTS.md** — deletes the file.
 

@@ -1,32 +1,31 @@
 # openagents (default)
 
-Default workflow for `openagents` (no subcommand) or `openagents status`.
-
 ## 1. Detect agent
 
-Detect via env vars → config dirs → binaries (first match wins). Full matrix:
+Detect via env vars → config dirs → binaries (first match wins). Matrix:
 [references/detect.md](references/detect.md).
 
-## 2. Ecosystem check
+## 2. Status check
+
+Per detected/installed agent, verify skill **and** rules are linked to the
+canonical source (unified multi-agent setup), plus repo state:
 
 ```bash
-test -f ~/.agents/skills/openagents/SKILL.md && echo "installed" || echo "MISSING"
-test -L ~/.cursor/skills/openagents && echo "cursor: linked" || echo "cursor: not linked"
-test -L ~/.zed/skills/openagents && echo "zed: linked" || echo "zed: not linked"
-```
-
-## 3. Repo status
-
-```bash
+test -f ~/.agents/skills/openagents/SKILL.md && echo "global skill: installed" || echo "global skill: MISSING"
+for a in claude cursor zed; do
+  test -L ~/.${a}/skills/openagents && echo "$a: skill linked" || echo "$a: skill NOT linked"
+  test -L ~/.${a}/rules && echo "$a: rules linked" || echo "$a: rules NOT linked"
+done
 echo "Repo: $(basename $(pwd))"
 test -f AGENTS.md && echo "AGENTS.md: present" || echo "AGENTS.md: missing"
 ls .agents/rules/*.md 2>/dev/null | awk '{print NR, $0}'
-test -L .claude/rules && echo "Claude rules: linked" || echo "Claude rules: not linked"
+for a in claude cursor zed; do test -L ".$a/rules" && echo "$a rules: linked" || echo "$a rules: NOT linked"; done
 ```
 
-## 4. Available commands
+Agents that auto-discover `~/.agents/` (opencode, codex, cline, gemini,
+warp, amp, …) need no symlink — see [references/detect.md](references/detect.md).
 
-All subcommands — not just the recommended ones:
+## 3. Available commands
 
 | Command | Action |
 |---------|--------|
@@ -36,16 +35,13 @@ All subcommands — not just the recommended ones:
 | `openagents init` | Scaffold `AGENTS.md` + `.agents/rules/` |
 | `openagents add` | Create and register new skills or rules |
 | `openagents rules` | Deep codebase analysis → generate rules |
-| `openagents rm rules` | Remove `.agents/rules/` + symlinks |
-| `openagents rm agents` | Remove `AGENTS.md` |
-| `openagents rm skill <name>` | Remove `skills/<name>/` + `skills.sh.json` entry |
-| `openagents rm symlinks` | Remove agent-specific symlinks only |
-| `openagents rm all` | Remove everything openagents created (project only) |
+| `openagents rm <rules\|agents\|skill <name>\|symlinks\|all>` | Remove project artifacts (rules, AGENTS.md, skill, symlinks, all) |
 | `openagents uninstall` | Remove the openagents skill (scoped, defensive) |
 
-## 5. Next steps
+## 4. Next steps
 
 - **skill MISSING** → `npx skills add luismtns/openagents`
 - **no AGENTS.md** → `openagents init`
-- **symlinks missing** → `openagents global`
-- **all green** → no action needed
+- **skill NOT linked** (cursor/zed) → `openagents global`
+- **rules NOT linked** → `openagents global` (global) or `openagents init` / `openagents rules` (project)
+- **all green** → unified setup is healthy, no action needed

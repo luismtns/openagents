@@ -34,10 +34,14 @@ appropriate file.
 
 Write all three files to `.agents/rules/`. Create the directory if missing.
 
-If the agent expects rules at a different path (`.claude/rules/`,
-`.cursor/rules/`), create a symlink:
+Make the rules visible to every agent you use. For agents that don't
+auto-discover `.agents/rules/`, symlink their native rules path:
 
 ```bash
-mkdir -p .claude
-ln -sfn ../.agents/rules .claude/rules
+for a in claude cursor zed; do
+  mkdir -p ".$a"
+  ln -sfn ../.agents/rules ".$a/rules"
+done
 ```
+
+This is what keeps the setup unified across all your agents.

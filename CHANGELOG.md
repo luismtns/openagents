@@ -4,6 +4,24 @@ All notable changes to this project are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+## [1.10.0] - 2026-07-08
+
+### Added
+
+- **Unified multi-agent setup**: openagents now treats `.agents/` (project) and `~/.agents/` (global) as the canonical source for skills **and** rules, symlinked into every agent's native path so the setup is identical across all agents you use
+- `references/detect.md`: added `rules_path` column to the agent matrix (auto-discovery vs symlink per agent)
+- `references/global.md`: handshake now symlinks **rules** globally (e.g. `~/.cursor/rules`, `~/.zed/rules`) for agents that don't auto-discover `~/.agents/rules/`, alongside skills
+- `references/init.md` / `rules-validate.md`: symlink project rules for **all** detected agents (`.claude/rules`, `.cursor/rules`, `.zed/rules`), not just `.claude`
+- `references/status.md`: replaced the single ecosystem check with a **multi-agent sync matrix** (skill linked? / rules linked? per agent) and clearer Next steps
+- `SKILL.md`: new "Unified multi-agent setup" concept section stating the openagents promise
+
+### Changed
+
+- `distributed-skills.md`: documented that rules follow the same symlink model as skills across agents
+- `README.md` "How it works": states the unified-setup promise and updates the diagram
+
 ## [1.9.1] - 2026-07-08
 
 ### Fixed

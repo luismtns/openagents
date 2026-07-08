@@ -16,15 +16,21 @@ orchestrates multi-agent workflows across your ecosystem.
 
 ## How it works
 
+openagents gives you **one unified setup of skills and rules for every AI
+agent you use**. `.agents/` (project) and `~/.agents/` (machine-global) are
+the canonical source; `openagents global` / `init` / `rules` symlink them
+into each agent's native path, so skills and rules are identical no matter
+which agent you open.
+
 ```mermaid
 flowchart TD
     U["you: status, global, init, add, rules, rm, uninstall"] -->|trigger| S["skill: openagents"]
     S --> R["SKILL.md router"]
-    R -->|status| ST["show agent + repo status"]
-    R -->|global| G["detect agent and map ecosystem"]
-    R -->|init| I["scaffold AGENTS.md + rules"]
+    R -->|status| ST["show agent + sync matrix"]
+    R -->|global| G["detect agent, link skills + rules"]
+    R -->|init| I["scaffold AGENTS.md + rules (all agents)"]
     R -->|add| A["create new skills"]
-    R -->|rules| RL["scan and generate rules"]
+    R -->|rules| RL["scan and generate rules (synced)"]
     R -->|rm| RM["remove project artifacts"]
     R -->|uninstall| UI["guide: npx skills remove"]
 ```

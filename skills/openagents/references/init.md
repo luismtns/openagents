@@ -31,8 +31,15 @@ lint commands and project conventions.
 
 ## Symlink
 
-If the agent expects a different rules path, create a symlink:
+Make the canonical project rules visible to every agent you use. For agents
+that don't auto-discover `.agents/rules/`, symlink their native rules path:
 
+```bash
+for a in claude cursor zed; do
+  mkdir -p ".$a"
+  ln -sfn ../.agents/rules ".$a/rules"
+done
 ```
-ln -sfn .agents/rules .claude/rules
-```
+
+This realizes the unified multi-agent setup: one `.agents/rules/` source,
+mirrored into each agent's path so skills and rules are identical everywhere.

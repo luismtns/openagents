@@ -21,7 +21,7 @@ description: |
 allowed-tools: Read, Write, Glob, Grep, Bash(git:*), Bash(mkdir:*),
   Bash(ln:*), Bash(test:*), Bash(uname:*), Bash(echo:*),
   Bash(pwd:*), Bash(ls:*), Bash(find:*)
-version: 1.9.1
+version: 1.10.0
 author: Luis Bovo <luis@luis.dev>
 license: MIT
 user-invocable: true
@@ -62,6 +62,18 @@ strategy (env vars → config dirs → binaries), covering all
 agents in the skills.sh ecosystem. It adapts configuration paths
 accordingly and orchestrates multi-agent workflows. No agent-specific
 config is shipped — the skill reads your environment and adjusts.
+
+## Unified multi-agent setup
+
+The core promise of openagents: **any repo or machine has one unified
+setup of skills and rules, shared by every AI agent you use.** The skill
+treats `.agents/` (project) and `~/.agents/` (machine-global) as the
+**canonical source** and symlinks them into each agent's native path, so
+skills **and** rules are identical no matter which agent you open. Agents
+that auto-discover `~/.agents/` need no action; agents that don't (cursor,
+zed, …) get symlinks created by `openagents global` / `init` / `rules`.
+See [references/detect.md](references/detect.md) for the per-agent
+`skill_path` and `rules_path` matrix.
 
 ## Capability constraints
 
