@@ -8,12 +8,29 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
-- `skillfish.json`: team sync manifest for `skillfish install` (skill.fish + MCPMarket)
-- `scripts/publish.sh`: skill.fish submission step (best-effort, via `npx skillfish submit`)
-- `.github/workflows/publish.yml`: CI step to submit to skill.fish + MCPMarket on release
-- `scripts/validate.sh`: `skillfish.json` added to required file paths
-- `README.md`: skill.fish installation instructions as alternative to skills.sh
-- `.agents/rules/distributed-skills.md`: skill.fish + MCPMarket documented as distribution channel
+- **Multi-skill architecture**: each subcommand is now an independent skill
+  (`openagents`, `openagents-global`, `openagents-init`, `openagents-add`,
+  `openagents-rules`, `openagents-rm`, `openagents-doctor`, `openagents-info`,
+  `openagents-upgrade`, `openagents-uninstall`) — each with its own SKILL.md,
+  frontmatter, description, triggers, and allowed-tools, enabling precise
+  agent activation and auto-discovery in opencode, claude-code, cursor, zed,
+  and all agentskills.io-compatible agents
+- `openagents-doctor`: diagnose and repair broken multi-agent setup
+- `openagents-info`: display version, detected agents, distribution channels
+- `openagents-upgrade`: execute `npx skills update` to fetch latest version
+- `skills.sh.json`: all 10 sub-skills registered in the OpenAgents group
+
+### Changed
+
+- `skills/openagents/SKILL.md`: simplified to hub role — status + command
+  palette + agent detection matrix (no longer a routing table for subcommands)
+- `skills/openagents/references/`: removed subcommand references (moved to
+  independent skills); only `status.md` remains
+- `scripts/validate.sh`: updated required paths to match new multi-skill layout
+- `.agents/rules/distributed-skills.md`: updated file layout diagram
+- `AGENTS.md`: lists all 10 independent skills with invocation table
+- `claude-plugin/.claude-plugin/plugin.json`: bumped to 1.12.0
+- `.claude-plugin/marketplace.json`: bumped plugin version to 1.12.0
 
 ## [1.10.0] - 2026-07-08
 
