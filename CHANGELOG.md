@@ -20,6 +20,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 - `openagents-upgrade`: execute `npx skills update` to fetch latest version
 - `skills.sh.json`: all 10 sub-skills registered in the OpenAgents group
 
+### Fixed
+
+- `openagents-global`: now symlinks all 10 sub-skills (not just `openagents`)
+  into cursor/zed paths — each subcommand is independently discoverable
+- `status.md`: sub-skill symlink check now enumerates actual skill names
+  (`global`, `init`, `add`, `rules`, `rm`, `doctor`, `info`, `upgrade`,
+  `uninstall`) instead of stale `enablement coding review` entries
+- `openagents-doctor`: scoped `Bash(rm:*)` to `Bash(rm -rf .agents/rules)`
+  and specific symlink paths for safety
+- `README.md`: restored missing `Development` section (validate, clean,
+  reinstall commands)
+- `skills.sh.json`: added trailing newline
+
 ### Changed
 
 - `skills/openagents/SKILL.md`: simplified to hub role — status + command

@@ -152,6 +152,26 @@ if [ "$all_found" = true ]; then
 fi
 echo ""
 
+# === Detection matrix sync check ===
+echo "--- [detection matrix sync] ---"
+hub_matrix="$root/skills/openagents/SKILL.md"
+global_skill="$root/skills/openagents-global/SKILL.md"
+if [ -f "$hub_matrix" ] && [ -f "$global_skill" ]; then
+  hub_agents=$(grep -c '^| [a-z]' "$hub_matrix" 2>/dev/null || true)
+  global_agents=$(grep -c '^| [a-z]' "$global_skill" 2>/dev/null || true)
+  if [ "$hub_agents" -ne "$global_agents" ]; then
+    echo "  WARN: detection matrix has $hub_agents entries in openagents/SKILL.md but $global_agents in openagents-global/SKILL.md"
+    echo "  WARN: update both files when adding/removing agents"
+    warnings=$((warnings+1))
+  else
+    echo "  OK (both files have $hub_agents agent entries)"
+  fi
+else
+  echo "  WARN: cannot check matrix sync — one or both SKILL.md files missing"
+  warnings=$((warnings+1))
+fi
+echo ""
+
 # === skills.sh.json validation ===
 echo "--- [skills.sh.json] ---"
 if [ -f "$root/skills.sh.json" ]; then
