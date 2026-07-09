@@ -76,6 +76,6 @@ Config: ~/.config/opencode/ (opencode.jsonc)
 Skill: ~/.agents/skills/openagents/SKILL.md -- installed
 Others: claude-code (dir), cursor (binary)
 Repo: myproject -- AGENTS.md (present), .agents/rules (N rules)
-Rules synced: claude ✓ cursor ✗ zed ✗  (run `openagents global` / `openagents init` to link)
+Rules synced: claude ✓ cursor ✗ zed ✗  (run `openagents-global` / `openagents-init` to link)
 Ecosystem: healthy
 ```

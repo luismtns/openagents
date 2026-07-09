@@ -6,7 +6,7 @@ description: |
   and suggests targeted fixes for each issue found. Use when the user
   says "doctor", "repair", "fix setup", "fix symlinks", "resolve issues",
   or when status reports problems that need fixing. Does NOT report
-  health — use `openagents status` for that. Part of the OpenAgents
+  health — use `openagents` for that. Part of the OpenAgents
   multi-agent orchestration suite.
 allowed-tools: Read Write Glob Grep Bash(test:*) Bash(echo:*)
   Bash(mkdir:*) Bash(ln:*) Bash(rm -rf .agents/rules) Bash(rm -f .claude/rules .cursor/rules .zed/rules) Bash(pwd:*) Bash(ls:*)
@@ -40,9 +40,9 @@ Run each check and report pass/fail:
 After each check, offer to fix on failure:
 
 - **Missing symlink** -> create it
-- **Missing AGENTS.md** -> suggest `openagents init`
+- **Missing AGENTS.md** -> suggest `openagents-init`
 - **Missing global skill** -> `npx skills add luismtns/openagents -g -y`
-- **Missing rules** -> suggest `openagents rules` or create minimal conventions.md
+- **Missing rules** -> suggest `openagents-rules` or create minimal conventions.md
 
 ## Report format
 
@@ -50,7 +50,7 @@ After each check, offer to fix on failure:
 OpenAgents Doctor
 ==================
 [PASS] Global skill installed
-[FAIL] AGENTS.md -- missing -> run: openagents init
+[FAIL] AGENTS.md -- missing -> run: openagents-init
 [PASS] Project rules present (3 files)
 [FAIL] .cursor/rules symlink -- broken -> repair? [Y/n]
 [PASS] Agent detection

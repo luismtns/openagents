@@ -1,7 +1,6 @@
-# openagents (default) — health report
+# openagents -- health report
 
-Report the current state of the multi-agent setup. Does NOT repair
-anything — use `openagents doctor` for repairs.
+Report the current state of the multi-agent setup. Use `openagents-doctor` for repairs.
 
 ## 1. Detect agent
 
@@ -33,22 +32,22 @@ gemini, warp, amp, ...) need no symlink.
 
 | Invocation | Action |
 |------------|--------|
-| `openagents` / `openagents status` | This status (default) |
-| `openagents global` | Agent detection + handshake + symlinks |
-| `openagents init` | Scaffold AGENTS.md + .agents/rules/ |
-| `openagents add` | Create and register new skills or rules |
-| `openagents rules` | Deep codebase analysis -> generate rules |
-| `openagents rm <rules|agents|skill <name>|symlinks|all>` | Remove project artifacts |
-| `openagents doctor` | Diagnose and repair broken setup |
-| `openagents info` | Show version, agents, distribution channels |
-| `openagents upgrade` | Update openagents to latest version |
-| `openagents uninstall` | Remove openagents skill globally |
+| `openagents` | This status (default) |
+| `openagents-global` | Agent detection + handshake + symlinks |
+| `openagents-init` | Scaffold AGENTS.md + .agents/rules/ |
+| `openagents-add` | Create and register new skills or rules |
+| `openagents-rules` | Deep codebase analysis -> generate rules |
+| `openagents-rm` | Remove project artifacts |
+| `openagents-doctor` | Diagnose and repair broken setup |
+| `openagents-info` | Show version, agents, distribution channels |
+| `openagents-upgrade` | Update openagents to latest version |
+| `openagents-uninstall` | Remove openagents skill globally |
 
 ## 4. Next steps
 
 - **skill MISSING** -> `npx skills add luismtns/openagents`
-- **no AGENTS.md** -> `openagents init`
-- **skill NOT linked** (cursor/zed) -> `openagents global`
-- **rules NOT linked** -> `openagents global` (global) or `openagents init` / `openagents rules` (project)
-- **symlinks broken** -> `openagents doctor`
+- **no AGENTS.md** -> `openagents-init`
+- **skill NOT linked** (cursor/zed) -> `openagents-global`
+- **rules NOT linked** -> `openagents-global` (global) or `openagents-init` / `openagents-rules` (project)
+- **symlinks broken** -> `openagents-doctor`
 - **all green** -> unified setup is healthy, no action needed

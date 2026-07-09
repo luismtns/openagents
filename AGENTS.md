@@ -14,16 +14,16 @@ skill({ name: "openagents-<name>" })
 
 | Invocation | Skill name | Use case |
 |------------|-----------|----------|
-| `openagents` / `openagents status` | `openagents` | Show agent status, repo health, available commands |
-| `openagents global` | `openagents-global` | Detect agent, handshake, verify global multi-agent setup |
-| `openagents init` | `openagents-init` | Scaffold project AGENTS.md and rules |
-| `openagents add` | `openagents-add` | Create new skills or rules in multi-agent context |
-| `openagents rules` | `openagents-rules` | Deep codebase analysis for rule generation |
-| `openagents rm` | `openagents-rm` | Remove rules, skills, AGENTS.md, or all project artifacts |
-| `openagents doctor` | `openagents-doctor` | Diagnose and repair broken setup |
-| `openagents info` | `openagents-info` | Show version, detected agents, distribution channels |
-| `openagents upgrade` | `openagents-upgrade` | Update openagents to latest version |
-| `openagents uninstall` | `openagents-uninstall` | Uninstall the openagents skill globally |
+| `openagents` | `openagents` | Show agent status, repo health, available commands |
+| `openagents-global` | `openagents-global` | Detect agent, handshake, verify global multi-agent setup |
+| `openagents-init` | `openagents-init` | Scaffold project AGENTS.md and rules |
+| `openagents-add` | `openagents-add` | Create new skills or rules in multi-agent context |
+| `openagents-rules` | `openagents-rules` | Deep codebase analysis for rule generation |
+| `openagents-rm` | `openagents-rm` | Remove rules, skills, AGENTS.md, or all project artifacts |
+| `openagents-doctor` | `openagents-doctor` | Diagnose and repair broken setup |
+| `openagents-info` | `openagents-info` | Show version, detected agents, distribution channels |
+| `openagents-upgrade` | `openagents-upgrade` | Update openagents to latest version |
+| `openagents-uninstall` | `openagents-uninstall` | Uninstall the openagents skill globally |
 
 Agent-agnostic: opencode, claude-code, cursor, codex, cline, zed,
 antigravity, deepagents, gemini-cli, github-copilot,

@@ -5,10 +5,10 @@
 | Form | Where | Example |
 |------|-------|---------|
 | `openagents` | Directory name, frontmatter `name`, skills.sh slug | `openagents` |
-| `openagents <subcommand>` | Reference file H1 heading | `# openagents global` |
-| `openagents <subcommand>` | Frontmatter `Triggers` field | `Triggers: openagents global` |
+| `openagents-<subcommand>` | Reference file H1 heading | `# openagents-global` |
+| `openagents-<subcommand>` | Frontmatter `Triggers` field | `Triggers: openagents-global` |
 
-Use space-separated form `openagents <subcommand>` everywhere.
+Use hyphen-separated form `openagents-<subcommand>` everywhere.
 Directory name = frontmatter `name` = skills.sh slug. Always kebab-case.
 
 ## Frontmatter (agentskills.io spec)
@@ -126,7 +126,7 @@ local paths, and well-known sources.
 ## Agent Skills ecosystem matrix
 
 Discovery paths and symlink needs per client (source: agentskills.io client
-showcase + Anthropic Agent Skills docs). `openagents global` creates the
+showcase + Anthropic Agent Skills docs). `openagents-global` creates the
 symlinks automatically for agents that don't auto-discover `~/.agents/skills/`.
 
 | Agent | Discovery path | Auto-discovers `~/.agents/skills/` | Symlink needed |
@@ -144,12 +144,12 @@ symlinks automatically for agents that don't auto-discover `~/.agents/skills/`.
 | vs-code (Copilot) | `.agents/skills/` | Yes | No |
 | antigravity / deepagents / mimocode / warp / amp | per-agent | Varies | Per integration |
 
-> When in doubt, run `openagents global` after install — it detects the
+> When in doubt, run `openagents-global` after install — it detects the
 > running agent and links only what is needed. It never removes other skills.
 
 **Rules follow the same model.** `.agents/rules/` (project) and
-`~/.agents/rules/` (global) are the canonical sources; `openagents global`,
-`init`, and `rules` symlink them into each agent's native rules path
+`~/.agents/rules/` (global) are the canonical sources; `openagents-global`,
+`openagents-init`, and `openagents-rules` symlink them into each agent's native rules path
 (`.claude/rules`, `.cursor/rules`, `.zed/rules`, …) so every agent sees the
 same rules. This is what makes the setup unified across all your agents.
 

@@ -13,7 +13,7 @@ main.py, src/main.py, index.js, main.go, CMakeLists.txt
 ```
 
 If the project is too minimal (no entry point, no config):
-> "Project seems minimal. Run `openagents init` first to scaffold
+> "Project seems minimal. Run `openagents-init` first to scaffold
 > structure, then `openagents rules` for deep analysis.
 > Generate minimal conventions-only rules anyway? [y/N]"
 

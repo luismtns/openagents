@@ -30,4 +30,4 @@ Update the OpenAgents skill suite to the latest version.
 
 - After upgrading, restart your agent session for changes to take effect.
 - This updates all skills from skills.sh, not just OpenAgents.
-- To check the current version before upgrading, use `openagents info`.
+- To check the current version before upgrading, use `openagents-info`.

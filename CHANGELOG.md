@@ -113,7 +113,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Added
 
 - `.agents/rules/token-efficiency.md` — guidelines for minimizing token consumption in reference files
-- Defensive sanity check in `openagents rules` — aborts gracefully if project is too minimal, suggests `openagents init`
+- Defensive sanity check in `openagents-rules` — aborts gracefully if project is too minimal, suggests `openagents-init`
 
 ### Changed
 
@@ -146,7 +146,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
-- `openagents rm` — remove rules, skills, AGENTS.md, symlinks, or all project artifacts
+- `openagents-rm` — remove rules, skills, AGENTS.md, symlinks, or all project artifacts
 - `openagents uninstall` — uninstall guidance via `npx skills remove openagents`
 - `references/rm.md` — remove command with target-specific and batch removal
 - `references/uninstall.md` — standard uninstall workflow with global/project detection

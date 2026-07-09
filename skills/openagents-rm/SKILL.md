@@ -24,11 +24,11 @@ Mirrors the creation side of `init`, `add`, and `global`.
 
 | Command | Action |
 |---------|--------|
-| `openagents rm rules` | Remove `.agents/rules/` and agent symlinks |
-| `openagents rm agents` | Remove `AGENTS.md` |
-| `openagents rm skill <name>` | Remove `skills/<name>/` and its `skills.sh.json` entry |
-| `openagents rm all` | Remove everything openagents created |
-| `openagents rm symlinks` | Remove agent-specific symlinks only |
+| `openagents-rm rules` | Remove `.agents/rules/` and agent symlinks |
+| `openagents-rm agents` | Remove `AGENTS.md` |
+| `openagents-rm skill <name>` | Remove `skills/<name>/` and its `skills.sh.json` entry |
+| `openagents-rm all` | Remove everything openagents created |
+| `openagents-rm symlinks` | Remove agent-specific symlinks only |
 
 ## Details
 
@@ -47,4 +47,4 @@ artifacts.
 
 - All destructive operations ask for confirmation before proceeding
 - Never removes files outside the current project directory
-- `openagents rm all` does not touch `~/.agents/` -- use `openagents uninstall` for global cleanup
+- `openagents-rm all` does not touch `~/.agents/` -- use `openagents-uninstall` for global cleanup

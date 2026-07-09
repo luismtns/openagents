@@ -3,10 +3,10 @@ name: openagents
 description: |
   Multi-agent workflow orchestration hub for AI coding agents.
   Shows agent status, repo health, available commands, and next steps.
-  Use when the user types "openagents", "openagents status", "status",
-  or wants to check or repair the multi-agent setup. Status check detects
-  which agents are installed, verifies skills and rules symlinks, and
-  reports ecosystem health.
+  Use when the user types "openagents" or wants to check
+  the multi-agent setup health. Status check detects which agents are
+  installed, verifies skills and rules symlinks, and reports
+  ecosystem health. Use `openagents-doctor` for repairs.
 allowed-tools: Read Write Glob Grep Bash(test:*) Bash(echo:*)
   Bash(pwd:*) Bash(ls:*) Bash(find:*)
 version: 1.12.0
@@ -18,8 +18,8 @@ tags: [openagents, multi-agent, orchestration, hub]
 
 # openagents
 
-Multi-agent workflow orchestration hub. Run `openagents` (no subcommand)
-or `openagents status` for the default status workflow.
+Multi-agent workflow orchestration hub. Run `openagents` for the
+default status workflow.
 
 ## Status check
 
@@ -31,24 +31,24 @@ Read [references/status.md](references/status.md) for the full workflow.
 
 | Invocation | Installed as | Action |
 |------------|-------------|--------|
-| `openagents` / `openagents status` | openagents | Show agent status, repo health, next steps |
-| `openagents global` | openagents-global | Agent detection + handshake + symlinks |
-| `openagents init` | openagents-init | Scaffold AGENTS.md + .agents/rules/ |
-| `openagents add` | openagents-add | Create and register new skills or rules |
-| `openagents rules` | openagents-rules | Deep codebase analysis -> generate rules |
-| `openagents rm` | openagents-rm | Remove project artifacts (rules, skill, all) |
-| `openagents doctor` | openagents-doctor | Diagnose and repair broken setup |
-| `openagents info` | openagents-info | Show version, agents, distribution channels |
-| `openagents upgrade` | openagents-upgrade | Update openagents to latest version |
-| `openagents uninstall` | openagents-uninstall | Remove openagents skill globally |
+| `openagents` | openagents | Show agent status, repo health, next steps |
+| `openagents-global` | openagents-global | Agent detection + handshake + symlinks |
+| `openagents-init` | openagents-init | Scaffold AGENTS.md + .agents/rules/ |
+| `openagents-add` | openagents-add | Create and register new skills or rules |
+| `openagents-rules` | openagents-rules | Deep codebase analysis -> generate rules |
+| `openagents-rm` | openagents-rm | Remove project artifacts (rules, skill, all) |
+| `openagents-doctor` | openagents-doctor | Diagnose and repair broken setup |
+| `openagents-info` | openagents-info | Show version, agents, distribution channels |
+| `openagents-upgrade` | openagents-upgrade | Update openagents to latest version |
+| `openagents-uninstall` | openagents-uninstall | Remove openagents skill globally |
 
 ## Invocation
 
-Each subcommand is installed as an independent skill (openagents-global,
-openagents-init, etc.). Agents auto-discover them:
-- **opencode**: `skill({ name: "openagents-<name>" })`
-- **claude-code**: `/openagents-<name>` (standalone) or `/openagents:<name>` (plugin)
-- **cursor/zed**: `/openagents-<name>`
+Each subcommand is installed as an independent skill (`openagents-global`,
+`openagents-init`, etc.). Invoke with hyphens:
+- **opencode**: `skill({ name: "openagents-global" })` for `openagents-global`
+- **claude-code**: `/openagents-global` (standalone) or `/openagents:openagents-global` (plugin)
+- **cursor/zed**: `/openagents-global`
 
 ## Capability constraints
 
