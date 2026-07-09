@@ -64,16 +64,32 @@ repo/
 │   │   └── plugin.json          # Plugin manifest (name, version, etc.)
 │   └── skills/                   # Symlink to ../skills
 ├── skills/
-│   └── openagents/
-│       ├── SKILL.md
-│       └── references/
-│           ├── status.md
-│           ├── global.md
-│           ├── init.md
-│           ├── add.md
-│           ├── rules.md
-│           ├── rm.md
-│           └── uninstall.md
+│   ├── openagents/               # Hub: status + doctor
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       └── status.md
+│   ├── openagents-global/        # Handshake + symlinks
+│   │   └── SKILL.md
+│   ├── openagents-init/          # Project scaffolding
+│   │   └── SKILL.md
+│   ├── openagents-add/           # Create skills/rules
+│   │   └── SKILL.md
+│   ├── openagents-rules/         # Codebase analysis
+│   │   ├── SKILL.md
+│   │   └── references/
+│   │       ├── scan.md
+│   │       ├── generate.md
+│   │       └── validate.md
+│   ├── openagents-rm/            # Remove artifacts
+│   │   └── SKILL.md
+│   ├── openagents-doctor/        # Diagnose + repair
+│   │   └── SKILL.md
+│   ├── openagents-info/          # Version + channels
+│   │   └── SKILL.md
+│   ├── openagents-upgrade/       # Self-update
+│   │   └── SKILL.md
+│   └── openagents-uninstall/     # Global uninstall
+│       └── SKILL.md
 ├── scripts/
 │   ├── validate.sh
 │   └── clean.sh

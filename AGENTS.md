@@ -1,24 +1,29 @@
 <!-- openagents -->
-# OpenAgents Skill Pack
+# OpenAgents Skill Suite
 
-A single skill with built-in subcommands for multi-agent workflow orchestration.
+A multi-skill orchestration suite for AI coding agents. Each subcommand is
+an independent, discoverable skill.
+
 Install via `npx skills add luismtns/openagents` and load with:
 
 ```
-skill({ name: "openagents" })
+skill({ name: "openagents-<name>" })
 ```
 
-Route to the right subcommand:
+## Skills
 
-| Subcommand | Use case |
-|------------|----------|
-| `openagents` / `openagents status` | Default — show agent status, repo status, and available commands |
-| `openagents global` | Detect agent, handshake, verify global multi-agent setup |
-| `openagents init` | Scaffold project AGENTS.md and rules |
-| `openagents add` | Create new skills or rules in multi-agent context |
-| `openagents rules` | Deep codebase analysis for rule generation |
-| `openagents rm` | Remove rules, skills, AGENTS.md, or all project artifacts |
-| `openagents uninstall` | Uninstall the openagents skill via npx skills remove |
+| Invocation | Skill name | Use case |
+|------------|-----------|----------|
+| `openagents` / `openagents status` | `openagents` | Show agent status, repo health, available commands |
+| `openagents global` | `openagents-global` | Detect agent, handshake, verify global multi-agent setup |
+| `openagents init` | `openagents-init` | Scaffold project AGENTS.md and rules |
+| `openagents add` | `openagents-add` | Create new skills or rules in multi-agent context |
+| `openagents rules` | `openagents-rules` | Deep codebase analysis for rule generation |
+| `openagents rm` | `openagents-rm` | Remove rules, skills, AGENTS.md, or all project artifacts |
+| `openagents doctor` | `openagents-doctor` | Diagnose and repair broken setup |
+| `openagents info` | `openagents-info` | Show version, detected agents, distribution channels |
+| `openagents upgrade` | `openagents-upgrade` | Update openagents to latest version |
+| `openagents uninstall` | `openagents-uninstall` | Uninstall the openagents skill globally |
 
 Agent-agnostic: opencode, claude-code, cursor, codex, cline, zed,
 antigravity, deepagents, gemini-cli, github-copilot,
@@ -30,4 +35,3 @@ kimi-code-cli, mimocode, warp, amp.
 - `distributed-skills.md` — naming, frontmatter, and layout conventions
 
 Rules are agent-agnostic in `.agents/rules/` and symlinked from `.claude/rules/`.
-<!-- openagents -->

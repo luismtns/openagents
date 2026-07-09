@@ -1,104 +1,33 @@
-<h1 align="center">
-  <img src="assets/logo.gif" alt="OpenAgents">
-</h1>
-
-[![skills.sh](https://skills.sh/b/luismtns/openagents)](https://skills.sh/luismtns/openagents)
-[![validate](https://github.com/luismtns/openagents/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/luismtns/openagents/actions/workflows/validate.yml)
-[![release](https://github.com/luismtns/openagents/actions/workflows/publish.yml/badge.svg?branch=main)](https://github.com/luismtns/openagents/actions/workflows/publish.yml)
-[![GitHub release](https://img.shields.io/github/v/release/luismtns/openagents)](https://github.com/luismtns/openagents/releases/latest)
-[![Socket](https://img.shields.io/badge/Socket-Pass-brightgreen?logo=socketdotio)](https://www.skills.sh/luismtns/openagents/openagents/security/socket)
-[![Snyk](https://img.shields.io/badge/Snyk-Medium-yellow?logo=snyk)](https://www.skills.sh/luismtns/openagents/openagents/security/snyk)
-
-Multi-agent workflow orchestration for AI coding agents.
-
-A single distributable skill that detects your agent, adapts to it, and
-orchestrates multi-agent workflows across your ecosystem.
-
-## How it works
-
-openagents gives you **one unified setup of skills and rules for every AI
-agent you use**. `.agents/` (project) and `~/.agents/` (machine-global) are
-the canonical source; `openagents global` / `init` / `rules` symlink them
-into each agent's native path, so skills and rules are identical no matter
-which agent you open.
-
-```mermaid
-flowchart TD
-    U["you: status, global, init, add, rules, rm, uninstall"] -->|trigger| S["skill: openagents"]
-    S --> R["SKILL.md router"]
-    R -->|status| ST["show agent + sync matrix"]
-    R -->|global| G["detect agent, link skills + rules"]
-    R -->|init| I["scaffold AGENTS.md + rules (all agents)"]
-    R -->|add| A["create new skills"]
-    R -->|rules| RL["scan and generate rules (synced)"]
-    R -->|rm| RM["remove project artifacts"]
-    R -->|uninstall| UI["guide: npx skills remove"]
-```
-
-## Installation
-
-```bash
-# Via skills.sh
-npx skills add luismtns/openagents
-
-# Via skill.fish
-npx skillfish add luismtns/openagents
-```
-
-Then load in any AI coding agent:
-
-```
-skill({ name: "openagents" })
-```
-
-## Subcommands
-
-| Subcommand | What it does | When to use |
-|------------|-------------|-------------|
-| `openagents` / `openagents status` | Shows agent status, repo status, available commands, and next steps | Default entry point, checking current setup |
-| `openagents global` | Detects the running agent, maps config paths, verifies the multi-agent ecosystem | First-time setup, checking agent configurations |
-| `openagents init` | Generates AGENTS.md, detects language/framework, creates `.agents/rules/` | Starting a new project, onboarding |
-| `openagents add` | Scaffolds new skills, registers distribution, validates structure | Creating a new skill or rule pack |
-| `openagents rules` | Deep codebase scan, pattern identification, rule generation | When a project needs thorough rule coverage |
-| `openagents rm` | Removes rules, skills, AGENTS.md, symlinks, or all project artifacts | Cleaning up project scaffolding |
-| `openagents uninstall` | Uninstalls the openagents skill via `npx skills remove` | Removing the skill from your ecosystem |
-
-## Agent compatibility
-
-| Agent | Skill discovery | Auto-discover `~/.agents/skills/` |
-|-------|----------------|-----------------------------------|
-| opencode | `~/.agents/skills/` | Yes |
-| claude-code | `~/.agents/skills/` | Yes |
-| codex | `~/.agents/skills/` | Yes |
-| cursor | `~/.cursor/skills/` (symlink) | No |
-| cline | `~/.agents/skills/` | Yes |
-| zed | `~/.zed/skills/` (symlink) | No |
-| antigravity | `~/.agents/skills/` | Yes |
-| deepagents | `~/.agents/skills/` | Yes |
-| gemini-cli | `~/.agents/skills/` | Yes |
-| github-copilot | `~/.agents/skills/` | Yes |
-| kimi-code-cli | `~/.agents/skills/` | Yes |
-| mimocode | `~/.local/share/mimocode/` (plugin-based) | No |
-| warp | `~/.agents/skills/` | Yes |
-| amp | `~/.agents/skills/` | Yes |
-
 ## Project structure
 
 ```
-skills/openagents/
-├── SKILL.md                  # Unified frontmatter + routing table
-└── references/
-    ├── status.md             # Default status workflow (lists all commands)
-    ├── global.md             # Agent-agnostic handshake protocol
-    ├── detect.md             # Canonical agent detection matrix
-    ├── init.md               # Project scaffolding
-    ├── add.md                # Skill/rules creation
-    ├── rules.md              # Index: deep analysis + rule generation
-    ├── rules-scan.md         # Sanity check + architecture extraction
-    ├── rules-generate.md     # Generate the three rule files
-    ├── rules-validate.md     # Validate with user + write
-    ├── rm.md                 # Remove project artifacts
-    └── uninstall.md          # Defensive, scoped uninstall + restart
+skills/
+├── openagents/                    # Hub: status + doctor + detection matrix
+│   ├── SKILL.md
+│   └── references/
+│       └── status.md
+├── openagents-global/             # Handshake + symlinks
+│   └── SKILL.md
+├── openagents-init/               # Project scaffolding
+│   └── SKILL.md
+├── openagents-add/                # Create skills/rules
+│   └── SKILL.md
+├── openagents-rules/              # Codebase analysis
+│   ├── SKILL.md
+│   └── references/
+│       ├── scan.md
+│       ├── generate.md
+│       └── validate.md
+├── openagents-rm/                 # Remove artifacts
+│   └── SKILL.md
+├── openagents-doctor/             # Diagnose + repair
+│   └── SKILL.md
+├── openagents-info/               # Version + channels
+│   └── SKILL.md
+├── openagents-upgrade/            # Self-update
+│   └── SKILL.md
+└── openagents-uninstall/          # Global uninstall
+    └── SKILL.md
 
 .agents/rules/
 ├── validate.md               # Pre-release validation
@@ -110,20 +39,7 @@ scripts/
 ├── clean.sh                  # Global skill cleanup (nuke — not for uninstall)
 └── publish.sh                # Release gate: skills-ref + skills.sh publish
 
-AGENTS.md                     # Root-level skill pack description
+AGENTS.md                     # Skill pack documentation
 CHANGELOG.md                  # Version history
-skills.sh.json                # skills.sh distribution config
-```
-
-## Development
-
-```bash
-# Validate locally
-bash scripts/validate.sh
-
-# Full cleanup (removes all global skills, npm/npx cache)
-bash scripts/clean.sh
-
-# Reinstall after changes
-bash scripts/clean.sh && npx skills add luismtns/openagents -y -g
+skills.sh.json                # skills.sh distribution config (10 skills)
 ```

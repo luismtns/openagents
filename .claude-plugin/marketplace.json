@@ -5,13 +5,13 @@
     "name": "Luis Bovo",
     "url": "https://github.com/luismtns"
   },
-  "description": "Multi-agent workflow orchestration for AI coding agents",
+  "description": "Multi-agent workflow orchestration suite — status, global, init, add, rules, rm, doctor, info, upgrade, uninstall.",
   "plugins": [
     {
       "name": "openagents",
       "source": "./claude-plugin",
-      "description": "Multi-agent workflow orchestration — status, global, init, add, rules, rm, uninstall.",
-      "version": "1.10.0"
+      "description": "Multi-agent workflow orchestration — status, global, init, add, rules, rm, doctor, info, upgrade, uninstall.",
+      "version": "1.12.0"
     }
   ]
 }

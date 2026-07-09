@@ -4,16 +4,22 @@ set -euo pipefail
 echo "=== OpenAgents — Publish gate ==="
 echo ""
 
+root="$(cd "$(dirname "$0")/.." && pwd)"
+
 # 1. Local validator (single source of truth)
 bash "$(dirname "$0")/validate.sh"
 
 # 2. Canonical agentskills.io spec validation (best-effort)
 if command -v skills-ref >/dev/null 2>&1; then
-  skills-ref validate ./skills/openagents
+  for skill_dir in "$root"/skills/*/; do
+    skills-ref validate "$skill_dir" || true
+  done
 else
   echo "skills-ref not found locally; attempting npx (best-effort)..."
-  npx -y skills-ref@latest validate ./skills/openagents || \
-    echo "WARN: skills-ref unavailable — skipping agentskills.io spec validation"
+  for skill_dir in "$root"/skills/*/; do
+    npx -y skills-ref@latest validate "$skill_dir" || \
+      echo "WARN: skills-ref unavailable — skipping agentskills.io spec validation for $(basename "$skill_dir")"
+  done
 fi
 
 # 3. Submit to skill.fish + MCPMarket (best-effort)

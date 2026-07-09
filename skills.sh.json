@@ -4,8 +4,19 @@
   "groupings": [
     {
       "title": "OpenAgents",
-      "description": "Multi-agent workflow orchestration — status, global, init, add, rules, rm, uninstall.",
-      "skills": ["openagents"]
+      "description": "Multi-agent workflow orchestration — status, global, init, add, rules, rm, doctor, info, upgrade, uninstall.",
+      "skills": [
+        "openagents",
+        "openagents-global",
+        "openagents-init",
+        "openagents-add",
+        "openagents-rules",
+        "openagents-rm",
+        "openagents-doctor",
+        "openagents-info",
+        "openagents-upgrade",
+        "openagents-uninstall"
+      ]
     }
   ]
 }

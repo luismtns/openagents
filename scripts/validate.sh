@@ -54,7 +54,7 @@ for dir in "$root"/skills/*/; do
 
   # Name regex
   if grep -q '^name: ' "$file"; then
-    fname=$(grep '^name: ' "$file" | sed 's/^name: *//')
+    fname=$(grep '^name: ' "$file" | head -1 | sed 's/^name: *//')
     if ! echo "$fname" | grep -qE '^[a-z0-9]+(-[a-z0-9]+)*$'; then
       echo "  ERROR: name '${fname}' must match ^[a-z0-9]+(-[a-z0-9]+)*$"
       errors=$((errors+1))
@@ -81,7 +81,7 @@ for dir in "$root"/skills/*/; do
   # Progressive disclosure: SKILL.md line count
   lines=$(wc -l < "$file")
   if [ "$lines" -gt 500 ]; then
-    echo "  ERROR: ${lines} lines (500 max — must split into references/)"
+    echo "  ERROR: ${lines} lines (500 max -- must split into references/)"
     errors=$((errors+1))
   elif [ "$lines" -gt 200 ]; then
     echo "  WARN: ${lines} lines (consider splitting into references/)"
@@ -111,16 +111,18 @@ echo "--- [file structure] ---"
 required_paths=(
   "skills/openagents/SKILL.md"
   "skills/openagents/references/status.md"
-  "skills/openagents/references/global.md"
-  "skills/openagents/references/init.md"
-  "skills/openagents/references/add.md"
-  "skills/openagents/references/rules.md"
-  "skills/openagents/references/rules-scan.md"
-  "skills/openagents/references/rules-generate.md"
-  "skills/openagents/references/rules-validate.md"
-  "skills/openagents/references/detect.md"
-  "skills/openagents/references/rm.md"
-  "skills/openagents/references/uninstall.md"
+  "skills/openagents-global/SKILL.md"
+  "skills/openagents-init/SKILL.md"
+  "skills/openagents-add/SKILL.md"
+  "skills/openagents-rules/SKILL.md"
+  "skills/openagents-rules/references/scan.md"
+  "skills/openagents-rules/references/generate.md"
+  "skills/openagents-rules/references/validate.md"
+  "skills/openagents-rm/SKILL.md"
+  "skills/openagents-doctor/SKILL.md"
+  "skills/openagents-info/SKILL.md"
+  "skills/openagents-upgrade/SKILL.md"
+  "skills/openagents-uninstall/SKILL.md"
   ".agents/rules/validate.md"
   ".agents/rules/distributed-skills.md"
   ".agents/rules/agentskills.md"
