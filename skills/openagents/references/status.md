@@ -1,14 +1,17 @@
-# openagents (default)
+# openagents (default) — health report
+
+Report the current state of the multi-agent setup. Does NOT repair
+anything — use `openagents doctor` for repairs.
 
 ## 1. Detect agent
 
-Detect via env vars -> config dirs -> binaries (first match wins). The
-detection matrix is in the openagents SKILL.md -- read on demand.
+Detect via env vars -> config dirs -> binaries (first match wins).
+The detection matrix is in the openagents SKILL.md -- read on demand.
 
 ## 2. Status check
 
 Per detected/installed agent, verify skill **and** rules are linked to the
-canonical source (unified multi-agent setup), plus repo state:
+canonical source, plus repo state:
 
 ```bash
 test -f ~/.agents/skills/openagents/SKILL.md && echo "global skill: installed" || echo "global skill: MISSING"
@@ -20,11 +23,11 @@ echo "Repo: $(basename $(pwd))"
 test -f AGENTS.md && echo "AGENTS.md: present" || echo "AGENTS.md: missing"
 ls .agents/rules/*.md 2>/dev/null | awk '{print NR, $0}'
 for a in claude cursor zed; do test -L ".$a/rules" && echo "$a rules: linked" || echo "$a rules: NOT linked"; done
-for a in enablement coding review; do test -L ".claude/skills/openagents-$a" && echo "openagents-$a: linked" || echo "openagents-$a: NOT linked"; done
+for a in global init add rules rm doctor info upgrade uninstall; do test -L ".claude/skills/openagents-$a" && echo "openagents-$a: linked" || echo "openagents-$a: NOT linked"; done
 ```
 
-Agents that auto-discover `~/.agents/` (opencode, codex, cline, gemini,
-warp, amp, ...) need no symlink.
+Agents that auto-discover `~/.agents/` (opencode, codex, cline,
+gemini, warp, amp, ...) need no symlink.
 
 ## 3. Available commands
 

@@ -33,13 +33,13 @@ frontmatter, registers in skills.sh.json, and validates the structure.
 
 ```yaml
 ---
-name: SKILL_NAME_HERE
+name: <SKILL_NAME>
 description: |
   <what it does and when to use it>
   Triggers: <trigger phrases>.
 allowed-tools: Read, Write, Glob, Grep, Bash(...)
 version: 0.1.0
-author: AUTHOR_NAME_HERE
+author: <AUTHOR>
 license: MIT
 user-invocable: true
 tags: [<category>]

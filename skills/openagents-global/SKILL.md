@@ -20,6 +20,7 @@ Agent-agnostic handshake and ecosystem verification.
 ## Agent detection
 
 Multi-signal strategy (env vars -> config dirs -> binaries, first match wins).
+<!-- Matrix sync: update both openagents/SKILL.md and openagents-global/SKILL.md when adding agents -->
 The detection matrix is defined in `openagents` hub; read it on demand.
 
 | Agent | Env / Config | Binary | Auto-discovers |
@@ -46,12 +47,16 @@ The detection matrix is defined in `openagents` hub; read it on demand.
 **2. Verify skill** -- `test -f ~/.agents/skills/openagents/SKILL.md`
 
 **3. Create symlinks** -- for every agent that doesn't auto-discover
-`~/.agents/`, mirror the canonical source into its native path:
+`~/.agents/`, mirror the canonical source into its native path.
+Symlink all openagents-* skills so every subcommand is discoverable:
 
 Skills:
 ```bash
-mkdir -p ~/.cursor/skills && ln -sfn ~/.agents/skills/openagents ~/.cursor/skills/openagents
-mkdir -p ~/.zed/skills && ln -sfn ~/.agents/skills/openagents ~/.zed/skills/openagents
+mkdir -p ~/.cursor/skills ~/.zed/skills
+for d in ~/.agents/skills/openagents*; do
+  [ -e "$d" ] || [ -L "$d" ] && ln -sfn "$d" ~/.cursor/skills/$(basename "$d")
+  [ -e "$d" ] || [ -L "$d" ] && ln -sfn "$d" ~/.zed/skills/$(basename "$d")
+done
 ```
 
 Rules (global, unified across agents):

@@ -68,6 +68,7 @@ local filesystem operations.
 ## Agent detection matrix
 
 Multi-signal strategy: env vars -> config dirs -> binaries (first match wins).
+<!-- Matrix sync: update both openagents/SKILL.md and openagents-global/SKILL.md when adding agents -->
 
 | Agent | Env var / Config dir | Binary | Auto-discovers ~/.agents/ |
 |-------|---------------------|--------|--------------------------|

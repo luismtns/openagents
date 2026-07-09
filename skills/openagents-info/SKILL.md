@@ -1,12 +1,14 @@
 ---
 name: openagents-info
 description: |
-  Display detailed information about the OpenAgents installation:
-  current version, installed sub-skills, detected AI agents, active
-  distribution channels, and install path. Use when the user says
-  "info", "version", "about", "installed skills", "what's installed",
-  or "show configuration". Part of the OpenAgents multi-agent
-  orchestration suite.
+  Display technical details about the OpenAgents installation: version
+  number, list of installed sub-skills, detected AI coding agents,
+  active distribution channels (skills.sh, skill.fish, plugin), and
+  install path (global vs project). Use when the user says "info",
+  "version", "about", "installed skills", "what's installed", or
+  "show configuration". Does NOT check health — use `openagents status`
+  for that. Does NOT repair — use `openagents doctor` for that.
+  Part of the OpenAgents multi-agent orchestration suite.
 allowed-tools: Read Bash(test:*) Bash(echo:*) Bash(pwd:*)
   Bash(ls:*) Bash(uname:*)
 version: 1.12.0

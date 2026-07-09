@@ -1,15 +1,16 @@
 ---
 name: openagents-doctor
 description: |
-  Diagnose and repair a broken OpenAgents multi-agent setup. Checks
-  symlink integrity, global installation, AGENTS.md presence,
-  .agents/rules/ validity, version consistency, and agent detection.
-  Attempts to fix common issues like missing symlinks. Use when the
-  user says "doctor", "diagnose", "repair", "fix setup", "check setup",
-  "something is broken", or after running status and seeing issues.
-  Part of the OpenAgents multi-agent orchestration suite.
+  Repair a broken OpenAgents multi-agent setup. Fixes missing symlinks,
+  recreates broken skill links in agent paths, resolves version mismatches,
+  and suggests targeted fixes for each issue found. Use when the user
+  says "doctor", "repair", "fix setup", "fix symlinks", "resolve issues",
+  or when status reports problems that need fixing. Does NOT report
+  health — use `openagents status` for that. Part of the OpenAgents
+  multi-agent orchestration suite.
 allowed-tools: Read Write Glob Grep Bash(test:*) Bash(echo:*)
-  Bash(mkdir:*) Bash(ln:*) Bash(rm:*) Bash(pwd:*) Bash(ls:*)
+  Bash(mkdir:*) Bash(ln:*) Bash(rm -rf .agents/rules) Bash(rm -f .claude/rules .cursor/rules .zed/rules) Bash(pwd:*) Bash(ls:*)
+  Bash(uname:*)
 version: 1.12.0
 author: Luis Bovo <luis@luis.dev>
 license: MIT

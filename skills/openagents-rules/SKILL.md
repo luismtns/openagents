@@ -22,9 +22,9 @@ prohibitive tone. Output is three `.agents/rules/` files.
 
 Workflow (read each on demand -- one level deep):
 
-1. **Sanity + extract** -> [references/scan.md](references/scan.md)
-2. **Generate** the three rule files -> [references/generate.md](references/generate.md)
-3. **Validate with user + write** -> [references/validate.md](references/validate.md)
+1. **Sanity + extract** -> read [references/scan.md](references/scan.md) **before starting** — it checks project sanity and extracts architecture
+2. **Generate** -> read [references/generate.md](references/generate.md) after scan completes — write three rule files
+3. **Validate with user + write** -> read [references/validate.md](references/validate.md) before writing — confirm with user first
 
 ## Safety
 
