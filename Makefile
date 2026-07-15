@@ -1,7 +1,4 @@
-.PHONY: validate clean
+.PHONY: validate
 
 validate:
 	bash scripts/validate.sh
-
-clean:
-	bash scripts/clean.sh

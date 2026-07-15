@@ -1,16 +1,15 @@
 {
-  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "openagents",
   "owner": {
     "name": "Luis Bovo",
     "url": "https://github.com/luismtns"
   },
-  "description": "Multi-agent workflow orchestration suite — hub, global, init, add, rules, rm, doctor, info, upgrade, uninstall.",
+  "description": "Portable cross-agent handoffs with read-only diagnostics.",
   "plugins": [
     {
       "name": "openagents",
       "source": "./claude-plugin",
-      "description": "Multi-agent workflow orchestration — hub, global, init, add, rules, rm, doctor, info, upgrade, uninstall.",
+      "description": "Portable cross-agent handoffs with read-only diagnostics.",
       "version": "1.12.0"
     }
   ]

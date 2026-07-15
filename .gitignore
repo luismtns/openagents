@@ -1,7 +1,9 @@
 node_modules/
+__pycache__/
 .opencode/
 .agents/skills/
 .claude/skills/
+.openagents/handoffs/
 skills-lock.json
 *.log
 .DS_Store
