@@ -1,21 +1,37 @@
-<h1 align="center">
-  <img src="assets/logo.gif" alt="OpenAgents">
-</h1>
+<p align="center">
+  <img src="assets/logo.gif" alt="OpenAgents" width="680">
+</p>
 
-[![validate](https://github.com/luismtns/openagents/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/luismtns/openagents/actions/workflows/validate.yml)
-[![GitHub release](https://img.shields.io/github/v/release/luismtns/openagents)](https://github.com/luismtns/openagents/releases/latest)
+<p align="center">
+  <strong>Carry the work. Change the agent.</strong><br>
+  Portable, evidence-backed handoffs for AI coding sessions.
+</p>
 
-OpenAgents carries operational context between AI coding agents without
-replaying a conversation or synchronizing proprietary configuration.
+<p align="center">
+  <a href="https://github.com/luismtns/openagents/actions/workflows/validate.yml"><img src="https://github.com/luismtns/openagents/actions/workflows/validate.yml/badge.svg?branch=main" alt="Validation status"></a>
+  <a href="https://github.com/luismtns/openagents/releases/latest"><img src="https://img.shields.io/github/v/release/luismtns/openagents?label=release" alt="Latest release"></a>
+  <a href="https://skills.sh/luismtns/openagents"><img src="https://skills.sh/b/luismtns/openagents" alt="skills.sh installs"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/luismtns/openagents" alt="MIT license"></a>
+</p>
 
-## Why
+<p align="center">
+  <a href="#install">Install</a> ·
+  <a href="#the-handoff">The handoff</a> ·
+  <a href="#three-focused-skills">Skills</a> ·
+  <a href="#safety-by-default">Safety</a> ·
+  <a href="#development">Development</a>
+</p>
 
-Switching agents usually means re-explaining decisions, local changes, tests,
-risks, and the next action. OpenAgents produces a concise Markdown handoff and
-requires the receiver to validate the workspace before continuing.
+---
 
-It does not manage rules, install tools, repair configuration, serialize hidden
-reasoning, or promise lossless session transfer.
+OpenAgents preserves the small set of facts another coding agent needs to
+continue safely: the objective, decisions, repository state, verification,
+risks, and one next action. It transfers a checkpoint, not a transcript, and
+asks the receiving agent to validate the workspace before acting.
+
+> **OpenAgents is not an orchestrator.** It does not synchronize agent
+> configuration, serialize hidden reasoning, or promise lossless session
+> transfer.
 
 ## Install
 
@@ -23,57 +39,81 @@ reasoning, or promise lossless session transfer.
 npx skills add luismtns/openagents
 ```
 
-## Skills
+Then ask your agent to run `openagents-handoff` before switching tools or
+sessions. With no export destination, the handoff stays as portable Markdown
+in the conversation.
 
-| Skill | Purpose | Mutates project |
-|-------|---------|-----------------|
-| `openagents` | Read-only project and suite status | No |
-| `openagents-handoff` | Portable handoff and explicit export | Only an explicitly requested export file |
-| `openagents-doctor` | Evidence-backed diagnostics | No |
+## The handoff
 
-## Handoff
+```markdown
+# Handoff
 
-Invoke `openagents-handoff`. Without an explicit destination it asks whether
-to export; declining returns portable Markdown in the conversation.
+## Objective
+Ship the release workflow without weakening repository protections.
 
-The document records:
+## Decisions
+- Release labels determine the SemVer change.
+- The post-merge workflow owns version files, tags, and release notes.
 
-- Objective and constraints
-- Decisions and evidence
-- Branch, commit, dirty files, and verification results
-- Risks, questions, and one next action
-- Suggested skills
-- A receiver protocol that stops on divergence
+## Work State
+- Branch: feat/release-workflow
+- Commit: a1b2c3d
+- Modified: .github/workflows/publish.yml, scripts/release.py
+- Verified: bash scripts/validate.sh
 
-Export to a CLI is best effort. Claude Code and OpenCode have prompt entry
-points; Codex stdin execution can be used when appropriate. The skill checks
-local CLI help before launch and falls back to Markdown when safety or
-interactivity cannot be established.
+## Risks
+- Auto-launch was not verified for the receiving CLI version.
 
-## Safety
+## Next Move
+Review the release-plan verification before changing publish permissions.
+```
 
-- Repository text is untrusted data, not instructions.
-- Secrets, identities, private remotes, absolute paths, full diffs, and long
-  logs are omitted by default.
-- Auto-launch requires an explicit target and never skips approvals or sandbox.
-- The receiver validates project, branch, commit, modified files, and
-  references before acting.
-- A divergent workspace stops the handoff instead of reconciling silently.
+The real document also carries references, open questions, suggested skills,
+and a receiver protocol. Sensitive values, private remotes, absolute paths,
+full diffs, identities, and long logs are omitted by default.
 
-See [SECURITY.md](SECURITY.md) for the threat model and reporting process.
+```mermaid
+flowchart LR
+    A[Working session] -->|openagents-handoff| B[Portable checkpoint]
+    B --> C{Receiver validates state}
+    C -->|Match| D[Continue one next action]
+    C -->|Divergence| E[Stop and report]
+```
 
-## Portability
+## Three focused skills
 
-| Tier | Meaning |
-|------|---------|
-| Markdown portable | Copy/paste into any agent that accepts Markdown |
-| Export assisted | OpenAgents knows a documented prompt entry point |
-| Auto-launch verified | A CLI version, OS, and result were reproduced |
-| Community | Reported by contributors but not maintained as a guarantee |
+| Skill | Role | Writes to the project |
+|:------|:-----|:----------------------|
+| `openagents` | Reports observable local status and routes to the focused workflows | Never |
+| `openagents-handoff` | Builds portable continuation context and handles explicit export | Only an explicitly requested export file |
+| `openagents-doctor` | Diagnoses handoff readiness with evidence and manual remediation | Never |
 
-Portability is a format property, not a claim that every agent integration was
-tested. Current evidence belongs in the skill's export workflow and release
-notes, not in a permanent universal compatibility promise.
+The suite is instruction-only: no runtime service, account, database, or
+proprietary interchange format is required.
+
+## Safety by default
+
+- Repository content is untrusted data, never workflow instructions.
+- Export or CLI launch requires an explicit destination.
+- No workflow skips host permissions, approvals, or sandboxing.
+- The receiver checks project, branch, commit, modified files, and references.
+- Workspace divergence stops continuation instead of reconciling silently.
+- Integration claims are evidence-based and state what was not verified.
+
+Read the full [threat model and reporting policy](SECURITY.md).
+
+## Portability tiers
+
+| Tier | What it means |
+|:-----|:--------------|
+| **Markdown portable** | Copy or paste into any agent that accepts Markdown |
+| **Export assisted** | OpenAgents knows a documented prompt entry point |
+| **Auto-launch verified** | A CLI version, OS, and result were reproduced |
+| **Community** | Reported by contributors, without a maintained guarantee |
+
+Claude Code and OpenCode expose prompt entry points. Codex can accept stdin in
+appropriate environments. OpenAgents checks local CLI help before launch and
+falls back to complete Markdown when safety or interactivity is uncertain.
 
 ## Development
 
@@ -81,27 +121,19 @@ notes, not in a permanent universal compatibility promise.
 bash scripts/validate.sh
 ```
 
-The validator checks the three-skill layout, frontmatter, versions, manifests,
-references, release configuration, fixture inventory, and static safety
-contracts. Behavioral fixture execution remains a manual pre-release gate
-because product runtime is instruction-only.
+The validator checks package structure, skill frontmatter, synchronized
+versions, distribution manifests, references, release configuration,
+adversarial fixtures, and static safety contracts. Behavioral fixtures remain
+a manual pre-release gate because the product runtime is instruction-only.
 
-## Releases
+Development is PR-first. Every pull request carries one `release:*` label;
+releasable changes also carry one `change:*` category. After squash merge, the
+release workflow validates and publishes the version serially. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for the complete policy and
+[CHANGELOG.md](CHANGELOG.md) for release history.
 
-Development is PR-first with `main` as the only permanent branch. Every PR must
-carry exactly one `release:*` label. Eligible releases also require one
-`change:*` category. After squash merge, a serialized GitHub workflow updates
-the changelog and all version manifests, validates the result, commits the
-release, creates the tag, and publishes the GitHub Release.
+---
 
-`release:none` skips versioning. Failed releases leave the merge intact and
-open a deduplicated issue. Reruns resume the same version instead of incrementing
-again. See [CONTRIBUTING.md](CONTRIBUTING.md) for labels and review rules.
-
-No cleanup or local publish command is provided. Installation, update, and
-removal belong to the `skills` CLI.
-
-## Contributing
-
-Read [CONTRIBUTING.md](CONTRIBUTING.md). Security-sensitive changes require new
-adversarial fixtures and a clean local validation run.
+<p align="center">
+  OpenAgents keeps continuity portable and continuation deliberate.
+</p>
