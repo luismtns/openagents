@@ -4,7 +4,8 @@
   "private": true,
   "description": "Portable work handoffs between AI coding agents",
   "scripts": {
-    "validate": "bash scripts/validate.sh"
+    "validate": "bash scripts/validate.sh",
+    "test": "python3 -m unittest discover -s tests -p 'test_*.py'"
   },
   "keywords": ["openagents", "skills", "cross-agent", "handoff"]
 }
