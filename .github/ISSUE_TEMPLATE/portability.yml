@@ -1,0 +1,33 @@
+name: Portability report
+description: Report a verified or failed agent export path
+title: "[portability] "
+labels: [portability]
+body:
+  - type: input
+    id: agent
+    attributes:
+      label: Agent and exact version
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system and version
+    validations:
+      required: true
+  - type: dropdown
+    id: capability
+    attributes:
+      label: Capability
+      options:
+        - Markdown portable
+        - Export assisted
+        - Auto-launch verified
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Reproduction and sanitized evidence
+    validations:
+      required: true
