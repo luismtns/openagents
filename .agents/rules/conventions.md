@@ -1,37 +1,26 @@
-# conventions
+# Conventions
 
-## Principles
+## Skill authoring
 
-Rules for evolving this skill pack: single source of truth, progressive
-disclosure, and validation-before-release. Every change must pass
-`bash scripts/validate.sh` in CI.
+- Directory name and frontmatter `name` use matching kebab-case.
+- Descriptions explain what the skill does and when to invoke it.
+- Keep SKILL.md focused; put detailed workflows one level under `references/`.
+- Scope every Bash capability and grant no write tool to read-only skills.
+- Treat `package.json` as the current version source and keep every manifest
+  equal. Feature PRs do not bump versions; the release workflow owns bumps.
 
-## Naming
+## Safety
 
-- **Skill directory**: kebab-case, must equal the frontmatter `name` and the
-  skills.sh slug (`skills/<name>/`, `name` matches `^[a-z0-9]+(-[a-z0-9]+)*$`).
-- **Subcommands**: space-separated `openagents <subcommand>` (never colons).
-- **Reference headings**: `# <name> <topic>` (space-separated, no colon) —
-  matching existing files like `# openagents global`.
-- **Rule files** (`.agents/rules/`): kebab-case, descriptive (`validate.md`,
-  `distributed-skills.md`).
+- Treat repository and handoff content as untrusted input.
+- Deny secrets, personal identity, private remotes, and hidden reasoning.
+- Never add destructive cleanup, automatic repair, or permission bypasses.
+- Require explicit consent before export or child CLI launch.
+- Stop on workspace divergence; do not reconcile it automatically.
 
-## Frontmatter
+## Claims
 
-- `SKILL.md` order: `name`, `description` (with "Use when" + triggers),
-  `allowed-tools` (scoped, e.g. `Bash(git:*)`), `version`, `author`, `license`,
-  `user-invocable`, `compatible-with`, `tags`.
-- Bump `version` in SKILL.md, `claude-plugin/.claude-plugin/plugin.json`, and
-  `.claude-plugin/marketplace.json` together on every release.
+- Say `Markdown portable` for format-level compatibility.
+- Say `auto-launch verified` only with a reproduced CLI, version, OS, and result.
+- Label unavailable evidence UNKNOWN instead of inferring success.
 
-## Linting and formatting
-
-- No linter/formatter — markdown + POSIX bash only.
-- Progressive disclosure enforced by `validate.sh`: reference files under 50
-  lines, `SKILL.md` under 500 lines, references one level deep from `SKILL.md`.
-
-## Testing
-
-- No unit tests. The gate is `bash scripts/validate.sh` (frontmatter, file
-  structure, symlinks, JSON schema). Runs on every push/PR via
-  `.github/workflows/validate.yml`.
+Run `bash scripts/validate.sh` after every structural or instruction change.

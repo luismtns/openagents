@@ -1,80 +1,267 @@
-name: publish
+name: release
 
 on:
-  push:
+  pull_request_target:
+    types: [closed]
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Merged pull request number to resume
+        required: true
+        type: number
+
+concurrency:
+  group: release-main
+  cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  version-check:
+  prepare:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     outputs:
-      version: ${{ steps.check-version.outputs.version }}
-      should_release: ${{ steps.check-version.outputs.should_release }}
+      count: ${{ steps.queue.outputs.count }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          fetch-tags: true
           fetch-depth: 0
+          persist-credentials: false
+          ref: main
 
-      - name: Check for unreleased changelog
-        id: check-version
-        run: |
-          if grep -q "^## \[Unreleased\]" CHANGELOG.md; then
-            V=$(grep '^version: ' skills/openagents/SKILL.md | sed 's/^version: *//')
-            echo "version=$V" >> "$GITHUB_OUTPUT"
-            echo "should_release=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "should_release=false" >> "$GITHUB_OUTPUT"
-          fi
-
-  release:
-    needs: version-check
-    if: needs.version-check.outputs.should_release == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-tags: true
-          fetch-depth: 0
-
-      - name: Run validator
-        run: bash scripts/validate.sh
-
-      - name: Validate agentskills.io spec
-        continue-on-error: true
-        run: |
-          if command -v skills-ref >/dev/null 2>&1; then
-            skills-ref validate ./skills/openagents
-          else
-            echo "skills-ref not installed; attempting npx (best-effort)..."
-            npx -y skills-ref@latest validate ./skills/openagents || \
-              echo "WARN: skills-ref unavailable — skipping agentskills.io spec validation"
-          fi
-
-      - name: Submit to skill.fish + MCPMarket
-        continue-on-error: true
-        run: |
-          npx -y skillfish@latest submit luismtns/openagents --yes --json || \
-            echo "WARN: skillfish unavailable — skipping skill.fish submission"
-
-      - name: Create git tag
-        env:
-          VERSION: ${{ needs.version-check.outputs.version }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag "v$VERSION" "${{ github.sha }}"
-          git push origin "v$VERSION"
-
-      - name: Create GitHub Release
+      - name: Build deterministic release queue
+        id: queue
         env:
           GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ needs.version-check.outputs.version }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_PR: ${{ inputs.pr_number }}
+          EVENT_PR: ${{ github.event.pull_request.number }}
         run: |
-          gh release create "v$VERSION" \
-            --title "v$VERSION" \
-            --generate-notes \
-            --target "${{ github.sha }}"
+          gh pr list --repo "$GITHUB_REPOSITORY" --state merged --base main --limit 1000 \
+            --json number,title,url,mergedAt,baseRefName,labels > /tmp/merged-prs.json
+          TARGET_PR="$EVENT_PR"
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then TARGET_PR="$INPUT_PR"; fi
+          QUEUE="$(python3 scripts/release.py queue --prs /tmp/merged-prs.json --through "$TARGET_PR")"
+          echo "queue=$QUEUE" >> "$GITHUB_OUTPUT"
+          echo "count=$(python3 -c 'import json,sys; print(len(json.loads(sys.argv[1])))' "$QUEUE")" >> "$GITHUB_OUTPUT"
+          for pr in $(python3 -c 'import json,sys; print(" ".join(map(str,json.loads(sys.argv[1]))))' "$QUEUE"); do
+            gh api "repos/$GITHUB_REPOSITORY/pulls/$pr" > "/tmp/release-pr-$pr.json"
+          done
+
+      - name: Prepare release commits, tags, and notes
+        if: steps.queue.outputs.count != '0'
+        env:
+          QUEUE: ${{ steps.queue.outputs.queue }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mkdir -p /tmp/release-artifact
+          git rev-parse HEAD > /tmp/release-artifact/base.txt
+          : > /tmp/release-artifact/releases.tsv
+          for pr in $(python3 -c 'import json,os; print(" ".join(map(str,json.loads(os.environ["QUEUE"]))))'); do
+            RESULT="$(python3 scripts/release.py prepare --event "/tmp/release-pr-$pr.json")"
+            VERSION="$(python3 -c 'import json,sys; print(json.loads(sys.argv[1])["version"])' "$RESULT")"
+            EXISTING="$(python3 -c 'import json,sys; print(str(json.loads(sys.argv[1])["existing"]).lower())' "$RESULT")"
+            if [ "$EXISTING" = "false" ]; then
+              bash scripts/validate.sh
+              CHANGED="$(git diff --name-only)"
+              printf '%s\n' "$CHANGED" | python3 -c '
+          import sys
+          allowed = {"CHANGELOG.md", "package.json", ".claude-plugin/marketplace.json", "claude-plugin/.claude-plugin/plugin.json", "skills/openagents/SKILL.md", "skills/openagents-handoff/SKILL.md", "skills/openagents-doctor/SKILL.md"}
+          changed = {line.strip() for line in sys.stdin if line.strip()}
+          unexpected = changed - allowed
+          if unexpected: raise SystemExit(f"unexpected release changes: {sorted(unexpected)}")
+          if not changed: raise SystemExit("release preparation changed no files")
+          '
+              git add CHANGELOG.md package.json .claude-plugin/marketplace.json \
+                claude-plugin/.claude-plugin/plugin.json skills/*/SKILL.md
+              git commit -m "chore(release): v$VERSION [skip ci]"
+              RELEASE_COMMIT="$(git rev-parse HEAD)"
+            else
+              RELEASE_COMMIT="$(git log -S "[#${pr}](" --format=%H -1 -- CHANGELOG.md)"
+            fi
+            test -n "$RELEASE_COMMIT"
+            TAG="v$VERSION"
+            if git rev-parse "$TAG" >/dev/null 2>&1; then
+              test "$(git rev-list -n 1 "$TAG")" = "$RELEASE_COMMIT"
+            else
+              git tag "$TAG" "$RELEASE_COMMIT"
+            fi
+            python3 scripts/release.py notes --version "$VERSION" > "/tmp/release-artifact/notes-$VERSION.md"
+            printf '%s\t%s\t%s\t%s\n' "$pr" "$VERSION" "$RELEASE_COMMIT" "$EXISTING" >> /tmp/release-artifact/releases.tsv
+          done
+          TAG_REFS="$(awk -F '\t' '{printf " refs/tags/v%s", $2}' /tmp/release-artifact/releases.tsv)"
+          git branch -f release-plan HEAD
+          git bundle create /tmp/release-artifact/release.bundle refs/heads/release-plan $TAG_REFS
+
+      - name: Upload validated release plan
+        if: steps.queue.outputs.count != '0'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: release-plan-${{ github.run_id }}
+          path: /tmp/release-artifact
+          if-no-files-found: error
+          retention-days: 1
+
+  publish:
+    needs: prepare
+    if: needs.prepare.outputs.count != '0'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download validated release plan
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: release-plan-${{ github.run_id }}
+          path: /tmp/release-artifact
+
+      - name: Verify release plan without write credentials
+        run: |
+          test ! -L /tmp/release-artifact/release.bundle
+          test ! -L /tmp/release-artifact/releases.tsv
+          test ! -L /tmp/release-artifact/base.txt
+          git init --bare /tmp/bundle-verifier.git
+          git -C /tmp/bundle-verifier.git bundle verify /tmp/release-artifact/release.bundle
+          git clone --branch release-plan /tmp/release-artifact/release.bundle /tmp/release-repo
+          python3 - <<'PY'
+          import json, pathlib, re, subprocess
+
+          artifact = pathlib.Path('/tmp/release-artifact')
+          repo = pathlib.Path('/tmp/release-repo')
+          base = (artifact / 'base.txt').read_text().strip()
+          remote = subprocess.check_output(
+              ['git', 'ls-remote', f'https://github.com/${{ github.repository }}.git', 'refs/heads/main'],
+              text=True,
+          ).split()[0]
+          if base != remote:
+              raise SystemExit(f'main advanced after preparation: {base} != {remote}')
+          subprocess.run(['git', '-C', repo, 'merge-base', '--is-ancestor', base, 'release-plan'], check=True)
+
+          allowed = {
+              'CHANGELOG.md', 'package.json', '.claude-plugin/marketplace.json',
+              'claude-plugin/.claude-plugin/plugin.json',
+              'skills/openagents/SKILL.md', 'skills/openagents-handoff/SKILL.md',
+              'skills/openagents-doctor/SKILL.md',
+          }
+          changed = set(subprocess.check_output(
+              ['git', '-C', repo, 'diff', '--name-only', base, 'release-plan'], text=True
+          ).splitlines())
+          if changed - allowed:
+              raise SystemExit(f'invalid release paths: {sorted(changed - allowed)}')
+
+          rows = []
+          for line in (artifact / 'releases.tsv').read_text().splitlines():
+              fields = line.split('\t')
+              if len(fields) != 4:
+                  raise SystemExit('invalid releases.tsv row')
+              pr, version, commit, existing = fields
+              if not pr.isdigit() or not re.fullmatch(r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)', version):
+                  raise SystemExit(f'invalid release identity: {fields}')
+              if not re.fullmatch(r'[0-9a-f]{40}', commit):
+                  raise SystemExit(f'invalid release commit: {commit}')
+              if existing not in {'true', 'false'}:
+                  raise SystemExit(f'invalid existing flag: {existing}')
+              rows.append((pr, version, commit, existing))
+          if not rows or len({row[0] for row in rows}) != len(rows) or len({row[1] for row in rows}) != len(rows):
+              raise SystemExit('release PRs and versions must be non-empty and unique')
+
+          commits = subprocess.check_output(
+              ['git', '-C', repo, 'rev-list', '--reverse', f'{base}..release-plan'], text=True
+          ).splitlines()
+          new_rows = [row for row in rows if row[3] == 'false']
+          if commits != [row[2] for row in new_rows]:
+              raise SystemExit(f'new release commits do not match plan: {commits}')
+          if bool(changed) != bool(new_rows):
+              raise SystemExit('release diff and new release rows disagree')
+          for commit in commits:
+              commit_paths = set(subprocess.check_output(
+                  ['git', '-C', repo, 'diff-tree', '--no-commit-id', '--name-only', '-r', commit],
+                  text=True,
+              ).splitlines())
+              if not commit_paths or commit_paths - allowed:
+                  raise SystemExit(f'invalid paths in release commit {commit}: {sorted(commit_paths)}')
+
+          changelog = (repo / 'CHANGELOG.md').read_text()
+          for pr, version, commit, existing in rows:
+              subprocess.run(['git', '-C', repo, 'cat-file', '-e', f'{commit}^{{commit}}'], check=True)
+              ancestor = base if existing == 'true' else 'release-plan'
+              subprocess.run(['git', '-C', repo, 'merge-base', '--is-ancestor', commit, ancestor], check=True)
+              tag_commit = subprocess.check_output(
+                  ['git', '-C', repo, 'rev-list', '-n', '1', f'refs/tags/v{version}'], text=True
+              ).strip()
+              if tag_commit != commit or f'[#{pr}](' not in changelog:
+                  raise SystemExit(f'tag or changelog mismatch for PR #{pr}')
+              start = re.search(rf'(?m)^## \[{re.escape(version)}\] - .+$', changelog)
+              if not start:
+                  raise SystemExit(f'missing changelog release {version}')
+              following = re.search(r'(?m)^## \[', changelog[start.end():])
+              end = start.end() + following.start() if following else len(changelog)
+              expected_notes = changelog[start.start():end].strip() + '\n'
+              notes_path = artifact / f'notes-{version}.md'
+              if notes_path.is_symlink() or notes_path.read_text() != expected_notes:
+                  raise SystemExit(f'release notes mismatch for {version}')
+
+          versions = [json.loads((repo / 'package.json').read_text())['version']]
+          versions.append(json.loads((repo / 'claude-plugin/.claude-plugin/plugin.json').read_text())['version'])
+          versions.append(json.loads((repo / '.claude-plugin/marketplace.json').read_text())['plugins'][0]['version'])
+          for skill in ('openagents', 'openagents-handoff', 'openagents-doctor'):
+              text = (repo / f'skills/{skill}/SKILL.md').read_text()
+              values = re.findall(r'(?m)^version:\s*(\S+)\s*$', text)
+              if len(values) != 1:
+                  raise SystemExit(f'invalid skill version in {skill}')
+              versions.append(values[0])
+          if len(set(versions)) != 1:
+              raise SystemExit(f'final manifest versions disagree: {versions}')
+          if new_rows and set(versions) != {new_rows[-1][1]}:
+              raise SystemExit(f'final manifest versions do not match {new_rows[-1][1]}: {versions}')
+          PY
+
+      - name: Push release commits and tags
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          cd /tmp/release-repo
+          REMOTE="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push "$REMOTE" release-plan:main
+          while IFS=$'\t' read -r pr version commit existing; do
+            git push "$REMOTE" "refs/tags/v$version"
+          done < /tmp/release-artifact/releases.tsv
+
+      - name: Create GitHub Releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          while IFS=$'\t' read -r pr version commit existing; do
+            tag="v$version"
+            if ! gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+              gh release create "$tag" --repo "$GITHUB_REPOSITORY" --verify-tag \
+                --title "$tag" --notes-file "/tmp/release-artifact/notes-$version.md"
+            fi
+          done < /tmp/release-artifact/releases.tsv
+
+  report-failure:
+    needs: [prepare, publish]
+    if: ${{ always() && (needs.prepare.result == 'failure' || needs.publish.result == 'failure') }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Open or update release failure issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number || github.event.pull_request.number }}
+        run: |
+          TITLE="Release automation failed for PR #$PR_NUMBER"
+          EXISTING="$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty')"
+          BODY="Workflow run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --repo "$GITHUB_REPOSITORY" --body "$BODY"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body "$BODY"
+          fi

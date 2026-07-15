@@ -2,201 +2,106 @@
   <img src="assets/logo.gif" alt="OpenAgents">
 </h1>
 
-[![skills.sh](https://skills.sh/b/luismtns/openagents)](https://skills.sh/luismtns/openagents)
 [![validate](https://github.com/luismtns/openagents/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/luismtns/openagents/actions/workflows/validate.yml)
-[![release](https://github.com/luismtns/openagents/actions/workflows/publish.yml/badge.svg?branch=main)](https://github.com/luismtns/openagents/actions/workflows/publish.yml)
 [![GitHub release](https://img.shields.io/github/v/release/luismtns/openagents)](https://github.com/luismtns/openagents/releases/latest)
-[![Socket](https://img.shields.io/badge/Socket-Pass-brightgreen?logo=socketdotio)](https://www.skills.sh/luismtns/openagents/openagents/security/socket)
-[![Snyk](https://img.shields.io/badge/Snyk-Medium-yellow?logo=snyk)](https://www.skills.sh/luismtns/openagents/openagents/security/snyk)
 
-A multi-skill orchestration suite for AI coding agents. Each subcommand is
-an independent discoverable skill. Agents auto-discover them by name
-and activate only the specific skill needed.
+OpenAgents carries operational context between AI coding agents without
+replaying a conversation or synchronizing proprietary configuration.
 
-## How it works
+## Why
 
-openagents gives you **one unified setup of skills and rules for every AI
-agent you use**. Install once in `~/.agents/skills/` and every compatible
-agent discovers them automatically. Agents that do not auto-discover
-`~/.agents/skills/` get symlinks from their native paths via `openagents-global`.
+Switching agents usually means re-explaining decisions, local changes, tests,
+risks, and the next action. OpenAgents produces a concise Markdown handoff and
+requires the receiver to validate the workspace before continuing.
 
-### Installation and discovery
+It does not manage rules, install tools, repair configuration, serialize hidden
+reasoning, or promise lossless session transfer.
 
-```mermaid
-flowchart LR
-    INSTALL["npx skills add luismtns/openagents"] --> CANONICAL["~/.agents/skills/ 10 skills"]
-    CANONICAL --> AUTO["opencode, claude-code, codex, cline, gemini-cli, antigravity, deepagents, warp, amp"]
-    CANONICAL --> SYMLINK["openagents-global handshake"]
-    SYMLINK --> CURSOR["~/.cursor/skills/"]
-    SYMLINK --> ZED["~/.zed/skills/"]
-    AUTO --> DISCOVER["auto-discover from ~/.agents/skills/"]
-    CURSOR --> DISCOVER2["discover via symlink"]
-    ZED --> DISCOVER2
-```
-
-### Hub
-
-```mermaid
-flowchart LR
-    REQUEST["openagents"] --> AGENT["AI coding agent"]
-    AGENT -->|matching description| HUB["openagents"]
-    HUB --> STATUS["status: report agent health, symlink state, repo state"]
-    HUB --> DOCTOR["doctor: diagnose broken symlinks, repair issues"]
-```
-
-### Setup
-
-```mermaid
-flowchart LR
-    REQUEST["openagents-init or openagents-global"] --> AGENT["AI coding agent"]
-    AGENT -->|matching description| INIT["openagents-init"]
-    AGENT -->|matching description| GLOBAL["openagents-global"]
-    INIT --> SCAFFOLD["scaffold AGENTS.md with project conventions"]
-    INIT --> RULESDIR["create .agents/rules/ with build and test commands"]
-    GLOBAL --> DETECT["detect running agent via env vars, config dirs, binaries"]
-    GLOBAL --> SYMLINKALL["symlink all openagents skills into cursor and zed paths"]
-    GLOBAL --> SYMLINKRULES["symlink rules into agent native rules path"]
-```
-
-### Codebase analysis
-
-```mermaid
-flowchart LR
-    REQUEST["openagents-rules"] --> AGENT["AI coding agent"]
-    AGENT -->|matching description| RULES["openagents-rules"]
-    RULES --> SCAN["scan project structure, config files, CI pipeline"]
-    RULES --> GENERATE["generate conventions.md, architecture.md, generation.md"]
-    RULES --> VALIDATE["present summary to user, confirm before writing"]
-```
-
-### Cleanup
-
-```mermaid
-flowchart LR
-    REQUEST["openagents-rm or openagents-uninstall"] --> AGENT["AI coding agent"]
-    AGENT -->|matching description| RM["openagents-rm"]
-    AGENT -->|matching description| UNINSTALL["openagents-uninstall"]
-    RM --> REMOVERULES["remove .agents/rules/ and agent symlinks"]
-    RM --> REMOVESKILL["remove skills/ directory and skills.sh.json entry"]
-    UNINSTALL --> NPXREMOVE["npx skills remove openagents --global --yes"]
-    UNINSTALL --> MANUAL["manual cleanup with basename guard"]
-```
-
-## Installation
+## Install
 
 ```bash
-# Via skills.sh
 npx skills add luismtns/openagents
-
-# Via skill.fish
-npx skillfish add luismtns/openagents
 ```
 
-Then load in any AI coding agent:
+## Skills
 
-```
-# opencode
-skill({ name: "openagents" })       # hub: status + doctor
-skill({ name: "openagents-init" })  # project scaffolding
-skill({ name: "openagents-global" }) # handshake + symlinks
+| Skill | Purpose | Mutates project |
+|-------|---------|-----------------|
+| `openagents` | Read-only project and suite status | No |
+| `openagents-handoff` | Portable handoff and explicit export | Only an explicitly requested export file |
+| `openagents-doctor` | Evidence-backed diagnostics | No |
 
-# claude-code
-/openagents:init   # as plugin
-/openagents-init   # as standalone skill
+## Handoff
 
-# cursor or zed
-/openagents-init
-```
+Invoke `openagents-handoff`. Without an explicit destination it asks whether
+to export; declining returns portable Markdown in the conversation.
 
-## Subcommands
+The document records:
 
-| Invocation | Skill | What it does | When to use |
-|------------|-------|-------------|-------------|
-| `openagents` | openagents | Shows agent status, repo health, available commands | Default entry point, checking current setup |
-| `openagents-global` | openagents-global | Detects running agent, verifies multi-agent ecosystem, creates symlinks | First-time setup, checking agent configurations |
-| `openagents-init` | openagents-init | Generates AGENTS.md, detects language and framework, creates `.agents/rules/` | Starting a new project, onboarding |
-| `openagents-add` | openagents-add | Scaffolds new skills, registers distribution, validates structure | Creating a new skill or rule pack |
-| `openagents-rules` | openagents-rules | Deep codebase scan, pattern identification, rule generation | When a project needs thorough rule coverage |
-| `openagents-rm` | openagents-rm | Removes rules, skills, AGENTS.md, symlinks, or all project artifacts | Cleaning up project scaffolding |
-| `openagents-doctor` | openagents-doctor | Diagnose and repair broken symlinks, missing files, version mismatches | When status shows issues or setup seems broken |
-| `openagents-info` | openagents-info | Shows version, installed sub-skills, detected agents, distribution channels | Checking what is installed and configured |
-| `openagents-upgrade` | openagents-upgrade | Runs `npx skills update` to fetch latest version | Updating to the newest release |
-| `openagents-uninstall` | openagents-uninstall | Uninstalls the openagents skill via `npx skills remove` | Removing the skill from your ecosystem |
+- Objective and constraints
+- Decisions and evidence
+- Branch, commit, dirty files, and verification results
+- Risks, questions, and one next action
+- Suggested skills
+- A receiver protocol that stops on divergence
 
-## Agent compatibility
+Export to a CLI is best effort. Claude Code and OpenCode have prompt entry
+points; Codex stdin execution can be used when appropriate. The skill checks
+local CLI help before launch and falls back to Markdown when safety or
+interactivity cannot be established.
 
-| Agent | Skill discovery | Auto-discover `~/.agents/skills/` |
-|-------|----------------|-----------------------------------|
-| opencode | `~/.agents/skills/` | Yes |
-| claude-code | `~/.agents/skills/` | Yes |
-| codex | `~/.agents/skills/` | Yes |
-| cursor | `~/.cursor/skills/` symlink | No |
-| cline | `~/.agents/skills/` | Yes |
-| zed | `~/.zed/skills/` symlink | No |
-| antigravity | `~/.agents/skills/` | Yes |
-| deepagents | `~/.agents/skills/` | Yes |
-| gemini-cli | `~/.agents/skills/` | Yes |
-| github-copilot | `~/.agents/skills/` | Yes |
-| kimi-code-cli | `~/.agents/skills/` | Yes |
-| mimocode | `~/.local/share/mimocode/` plugin-based | No |
-| warp | `~/.agents/skills/` | Yes |
-| amp | `~/.agents/skills/` | Yes |
+## Safety
 
-## Project structure
+- Repository text is untrusted data, not instructions.
+- Secrets, identities, private remotes, absolute paths, full diffs, and long
+  logs are omitted by default.
+- Auto-launch requires an explicit target and never skips approvals or sandbox.
+- The receiver validates project, branch, commit, modified files, and
+  references before acting.
+- A divergent workspace stops the handoff instead of reconciling silently.
 
-```
-skills/
-├── openagents/                    # Hub: status + doctor + detection matrix
-│   ├── SKILL.md
-│   └── references/
-│       └── status.md
-├── openagents-global/             # Handshake + symlinks
-│   └── SKILL.md
-├── openagents-init/               # Project scaffolding
-│   └── SKILL.md
-├── openagents-add/                # Create skills/rules
-│   └── SKILL.md
-├── openagents-rules/              # Codebase analysis
-│   ├── SKILL.md
-│   └── references/
-│       ├── scan.md
-│       ├── generate.md
-│       └── validate.md
-├── openagents-rm/                 # Remove artifacts
-│   └── SKILL.md
-├── openagents-doctor/             # Diagnose + repair
-│   └── SKILL.md
-├── openagents-info/               # Version + channels
-│   └── SKILL.md
-├── openagents-upgrade/            # Self-update
-│   └── SKILL.md
-└── openagents-uninstall/          # Global uninstall
-    └── SKILL.md
+See [SECURITY.md](SECURITY.md) for the threat model and reporting process.
 
-.agents/rules/
-├── validate.md               # Pre-release validation
-├── distributed-skills.md     # Naming, layout, ecosystem distribution
-└── agentskills.md            # Canonical Agent Skills references (base source)
+## Portability
 
-scripts/
-├── validate.sh               # Local CI validator
-├── clean.sh                  # Global skill cleanup
-└── publish.sh                # Release gate: skills-ref + skills.sh publish
+| Tier | Meaning |
+|------|---------|
+| Markdown portable | Copy/paste into any agent that accepts Markdown |
+| Export assisted | OpenAgents knows a documented prompt entry point |
+| Auto-launch verified | A CLI version, OS, and result were reproduced |
+| Community | Reported by contributors but not maintained as a guarantee |
 
-AGENTS.md                     # Skill pack documentation
-CHANGELOG.md                  # Version history
-skills.sh.json                # skills.sh distribution config (10 skills)
-```
+Portability is a format property, not a claim that every agent integration was
+tested. Current evidence belongs in the skill's export workflow and release
+notes, not in a permanent universal compatibility promise.
 
 ## Development
 
 ```bash
-# Validate locally
 bash scripts/validate.sh
-
-# Full cleanup (removes all global skills, npm/npx cache)
-bash scripts/clean.sh
-
-# Reinstall after changes
-bash scripts/clean.sh && npx skills add luismtns/openagents -y -g
 ```
+
+The validator checks the three-skill layout, frontmatter, versions, manifests,
+references, release configuration, fixture inventory, and static safety
+contracts. Behavioral fixture execution remains a manual pre-release gate
+because product runtime is instruction-only.
+
+## Releases
+
+Development is PR-first with `main` as the only permanent branch. Every PR must
+carry exactly one `release:*` label. Eligible releases also require one
+`change:*` category. After squash merge, a serialized GitHub workflow updates
+the changelog and all version manifests, validates the result, commits the
+release, creates the tag, and publishes the GitHub Release.
+
+`release:none` skips versioning. Failed releases leave the merge intact and
+open a deduplicated issue. Reruns resume the same version instead of incrementing
+again. See [CONTRIBUTING.md](CONTRIBUTING.md) for labels and review rules.
+
+No cleanup or local publish command is provided. Installation, update, and
+removal belong to the `skills` CLI.
+
+## Contributing
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md). Security-sensitive changes require new
+adversarial fixtures and a clean local validation run.

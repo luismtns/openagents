@@ -1,8 +1,9 @@
 <!-- openagents -->
-# OpenAgents Skill Suite
+# OpenAgents
 
-A multi-skill orchestration suite for AI coding agents. Each subcommand is
-an independent, discoverable skill.
+A small skill suite for carrying operational context between AI coding agents.
+Runtime behavior is instruction-only; repository scripts validate packaging
+and adversarial fixtures.
 
 Install via `npx skills add luismtns/openagents` and load with:
 
@@ -14,24 +15,20 @@ skill({ name: "openagents-<name>" })
 
 | Invocation | Skill name | Use case |
 |------------|-----------|----------|
-| `openagents` | `openagents` | Show agent status, repo health, available commands |
-| `openagents-global` | `openagents-global` | Detect agent, handshake, verify global multi-agent setup |
-| `openagents-init` | `openagents-init` | Scaffold project AGENTS.md and rules |
-| `openagents-add` | `openagents-add` | Create new skills or rules in multi-agent context |
-| `openagents-rules` | `openagents-rules` | Deep codebase analysis for rule generation |
-| `openagents-rm` | `openagents-rm` | Remove rules, skills, AGENTS.md, or all project artifacts |
-| `openagents-doctor` | `openagents-doctor` | Diagnose and repair broken setup |
-| `openagents-info` | `openagents-info` | Show version, detected agents, distribution channels |
-| `openagents-upgrade` | `openagents-upgrade` | Update openagents to latest version |
-| `openagents-uninstall` | `openagents-uninstall` | Uninstall the openagents skill globally |
+| `openagents` | `openagents` | Read-only local status and routing |
+| `openagents-handoff` | `openagents-handoff` | Portable Markdown handoff and explicit export |
+| `openagents-doctor` | `openagents-doctor` | Read-only diagnostics with manual remediation |
 
-Agent-agnostic: opencode, claude-code, cursor, codex, cline, zed,
-antigravity, deepagents, gemini-cli, github-copilot,
-kimi-code-cli, mimocode, warp, amp.
+Markdown output is portable by design. Auto-launch is best effort and must not
+be described as verified for an agent without a reproduced test.
 
 ## Project rules (`.agents/rules/`)
 
-- `validate.md` — pre-release validation checklist
-- `distributed-skills.md` — naming, frontmatter, and layout conventions
+- `architecture.md` - v2 boundaries and responsibilities
+- `conventions.md` - authoring and safety conventions
+- `validate.md` - local and pre-release gates
+- `distributed-skills.md` - distribution claims and versioning
 
-Rules are agent-agnostic in `.agents/rules/` and symlinked from `.claude/rules/`.
+Run `bash scripts/validate.sh` before asking the user to review the unstaged diff.
+Do not bump versions in feature changes. Release labels on the merged PR drive
+the post-merge version and changelog automation.

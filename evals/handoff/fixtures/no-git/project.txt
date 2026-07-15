@@ -1,0 +1,2 @@
+Synthetic project without Git metadata. Expected result: checkpoint validation
+is unavailable, not silently successful.

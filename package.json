@@ -1,10 +1,11 @@
 {
   "name": "openagents",
-  "version": "1.0.0",
+  "version": "1.12.0",
   "private": true,
-  "description": "Multi-agent workflow orchestration for AI coding agents",
+  "description": "Portable work handoffs between AI coding agents",
   "scripts": {
-    "validate": "bash scripts/validate.sh"
+    "validate": "bash scripts/validate.sh",
+    "test": "python3 -m unittest discover -s tests -p 'test_*.py'"
   },
-  "keywords": ["openagents", "skills", "multi-agent", "orchestration"]
+  "keywords": ["openagents", "skills", "cross-agent", "handoff"]
 }

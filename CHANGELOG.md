@@ -8,42 +8,54 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
-- **Multi-skill architecture**: each subcommand is now an independent skill
-  (`openagents`, `openagents-global`, `openagents-init`, `openagents-add`,
-  `openagents-rules`, `openagents-rm`, `openagents-doctor`, `openagents-info`,
-  `openagents-upgrade`, `openagents-uninstall`) — each with its own SKILL.md,
-  frontmatter, description, triggers, and allowed-tools, enabling precise
-  agent activation and auto-discovery in opencode, claude-code, cursor, zed,
-  and all agentskills.io-compatible agents
-- `openagents-doctor`: diagnose and repair broken multi-agent setup
-- `openagents-info`: display version, detected agents, distribution channels
-- `openagents-upgrade`: execute `npx skills update` to fetch latest version
-- `skills.sh.json`: all 10 sub-skills registered in the OpenAgents group
-
-### Fixed
-
-- `openagents-global`: now symlinks all 10 sub-skills (not just `openagents`)
-  into cursor/zed paths — each subcommand is independently discoverable
-- `status.md`: sub-skill symlink check now enumerates actual skill names
-  (`global`, `init`, `add`, `rules`, `rm`, `doctor`, `info`, `upgrade`,
-  `uninstall`) instead of stale `enablement coding review` entries
-- `openagents-doctor`: scoped `Bash(rm:*)` to `Bash(rm -rf .agents/rules)`
-  and specific symlink paths for safety
-- `README.md`: restored missing `Development` section (validate, clean,
-  reinstall commands)
-- `skills.sh.json`: added trailing newline
+- `openagents-handoff` for portable Markdown continuation context, explicit
+  file export, and best-effort CLI launch.
+- Receiver protocol that stops on branch, commit, worktree, or reference
+  divergence before the next agent acts.
+- Adversarial fixtures for prompt injection, secret disclosure, stale state,
+  missing Git metadata, and unavailable CLIs.
+- Public security, support, and contribution policies.
+- PR label policy and idempotent post-merge release automation.
 
 ### Changed
 
-- `skills/openagents/SKILL.md`: simplified to hub role — status + command
-  palette + agent detection matrix (no longer a routing table for subcommands)
-- `skills/openagents/references/`: removed subcommand references (moved to
-  independent skills); only `status.md` remains
-- `scripts/validate.sh`: updated required paths to match new multi-skill layout
-- `.agents/rules/distributed-skills.md`: updated file layout diagram
-- `AGENTS.md`: lists all 10 independent skills with invocation table
-- `claude-plugin/.claude-plugin/plugin.json`: bumped to 1.12.0
-- `.claude-plugin/marketplace.json`: bumped plugin version to 1.12.0
+- Repositioned OpenAgents from orchestration and configuration lifecycle
+  management to safe cross-agent work continuity.
+- Reduced the public suite to `openagents`, `openagents-handoff`, and
+  `openagents-doctor`.
+- Made hub and doctor read-only and changed all compatibility statements to
+  evidence-based capability tiers.
+- Changed release automation to derive SemVer and changelog entries from merged
+  PR labels, then commit, tag, and publish serially.
+
+### Removed
+
+- Removed global setup, init, add, rules, project removal, info, upgrade, and
+  uninstall skills without compatibility stubs.
+- Removed the global cleanup script and all automatic repair behavior.
+
+### Security
+
+- Repository content is explicitly treated as untrusted input during handoff.
+- Sensitive values, identities, private remotes, full diffs, and hidden
+  reasoning are denied from handoff output by default.
+
+## [1.12.0] - 2026-07-08
+
+### Added
+
+- Split the v1 orchestration workflow into ten independently discoverable
+  skills. This architecture was removed by the v2 rewrite.
+
+### Changed
+
+- Updated v1 distribution manifests and documentation for the ten-skill
+  package.
+
+## [1.11.0] - 2026-07-08
+
+No separately documented user-facing changes. This intermediate release was
+superseded by the v1.12.0 multi-skill package.
 
 ## [1.10.0] - 2026-07-08
 

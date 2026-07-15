@@ -1,53 +1,27 @@
-# openagents -- health report
+# openagents status
 
-Report the current state of the multi-agent setup. Use `openagents-doctor` for repairs.
+Produce a concise, read-only status report.
 
-## 1. Detect agent
+## Checks
 
-Detect via env vars -> config dirs -> binaries (first match wins).
-The detection matrix is in the openagents SKILL.md -- read on demand.
+1. Identify the project from the working directory, without exposing its
+   absolute path.
+2. If Git is available, report branch, abbreviated `HEAD`, and clean/dirty
+   state. Do not include remotes, author identity, or diff contents.
+3. Check whether `openagents`, `openagents-handoff`, and `openagents-doctor`
+   are visible to the current agent. Report only what can be proven.
+4. Detect known CLI binaries with `command -v`, but label them `observed`.
+5. Never infer the currently running agent from API keys or one weak signal.
 
-## 2. Status check
+## Report
 
-Per detected/installed agent, verify skill **and** rules are linked to the
-canonical source, plus repo state:
-
-```bash
-test -f ~/.agents/skills/openagents/SKILL.md && echo "global skill: installed" || echo "global skill: MISSING"
-for a in claude cursor zed; do
-  test -L ~/.${a}/skills/openagents && echo "$a: skill linked" || echo "$a: skill NOT linked"
-  test -L ~/.${a}/rules && echo "$a: rules linked" || echo "$a: rules NOT linked"
-done
-echo "Repo: $(basename $(pwd))"
-test -f AGENTS.md && echo "AGENTS.md: present" || echo "AGENTS.md: missing"
-ls .agents/rules/*.md 2>/dev/null | awk '{print NR, $0}'
-for a in claude cursor zed; do test -L ".$a/rules" && echo "$a rules: linked" || echo "$a rules: NOT linked"; done
-for a in global init add rules rm doctor info upgrade uninstall; do test -L ".claude/skills/openagents-$a" && echo "openagents-$a: linked" || echo "openagents-$a: NOT linked"; done
+```text
+OpenAgents <version from loaded skill frontmatter>
+Project: <name> | Git: <branch>@<head> | Worktree: clean|dirty|unknown
+Skills: <visible facts or unknown>
+CLI signals: <observed binaries or none>
+Next: handoff | doctor | none
 ```
 
-Agents that auto-discover `~/.agents/` (opencode, codex, cline,
-gemini, warp, amp, ...) need no symlink.
-
-## 3. Available commands
-
-| Invocation | Action |
-|------------|--------|
-| `openagents` | This status (default) |
-| `openagents-global` | Agent detection + handshake + symlinks |
-| `openagents-init` | Scaffold AGENTS.md + .agents/rules/ |
-| `openagents-add` | Create and register new skills or rules |
-| `openagents-rules` | Deep codebase analysis -> generate rules |
-| `openagents-rm` | Remove project artifacts |
-| `openagents-doctor` | Diagnose and repair broken setup |
-| `openagents-info` | Show version, agents, distribution channels |
-| `openagents-upgrade` | Update openagents to latest version |
-| `openagents-uninstall` | Remove openagents skill globally |
-
-## 4. Next steps
-
-- **skill MISSING** -> `npx skills add luismtns/openagents`
-- **no AGENTS.md** -> `openagents-init`
-- **skill NOT linked** (cursor/zed) -> `openagents-global`
-- **rules NOT linked** -> `openagents-global` (global) or `openagents-init` / `openagents-rules` (project)
-- **symlinks broken** -> `openagents-doctor`
-- **all green** -> unified setup is healthy, no action needed
+Recommend `openagents-handoff` for transferring work and
+`openagents-doctor` for detailed diagnostics. Do not offer repairs.

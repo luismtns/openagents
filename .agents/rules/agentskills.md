@@ -36,5 +36,5 @@ prefer these links over ad-hoc decisions.
 - **Feedback loops**: validator → fix → repeat for quality-critical steps.
 - **Consistency**: one term throughout; no Windows paths; no time-sensitive
   info (use "old patterns" section); avoid offering too many options.
-- **Scripts over generated code** for deterministic ops; handle errors, no
-  "voodoo constants", make execute-vs-read intent explicit.
+- **Determinism must match claims**: instruction-only behavior is best effort;
+  executable helpers are required before promising transactional guarantees.
