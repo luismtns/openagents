@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [2.0.0] - 2026-07-15
+
 ### Added
 
 - `openagents-handoff` for portable Markdown continuation context, explicit
@@ -19,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ### Changed
 
+
 - Repositioned OpenAgents from orchestration and configuration lifecycle
   management to safe cross-agent work continuity.
 - Reduced the public suite to `openagents`, `openagents-handoff`, and
@@ -27,6 +30,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
   evidence-based capability tiers.
 - Changed release automation to derive SemVer and changelog entries from merged
   PR labels, then commit, tag, and publish serially.
+- feat!: replace orchestration lifecycle with cross-agent handoffs ([#1](https://github.com/luismtns/openagents/pull/1))
 
 ### Removed
 

@@ -6,7 +6,7 @@ description: |
   Use when the user says "doctor", requests diagnostics, or a handoff cannot
   be exported. It never repairs, installs, deletes, or rewrites configuration.
 allowed-tools: Read Glob Grep Bash(command -v claude) Bash(command -v codex) Bash(command -v opencode) Bash(git rev-parse --abbrev-ref HEAD) Bash(git rev-parse --short HEAD) Bash(git --no-optional-locks -c core.fsmonitor=false status --short) Bash(pwd) Bash(uname)
-version: 1.12.0
+version: 2.0.0
 author: Luis Bovo
 license: MIT
 user-invocable: true

@@ -10,7 +10,7 @@
       "name": "openagents",
       "source": "./claude-plugin",
       "description": "Portable cross-agent handoffs with read-only diagnostics.",
-      "version": "1.12.0"
+      "version": "2.0.0"
     }
   ]
 }

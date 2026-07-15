@@ -6,7 +6,7 @@ description: |
   "handoff", wants to switch agents or sessions, asks to export context, or
   needs a checkpoint before context compaction. Export is always explicit.
 allowed-tools: Read Write Glob Grep Bash(chmod:*) Bash(command -v claude) Bash(command -v codex) Bash(command -v opencode) Bash(git diff --binary --no-ext-diff --no-textconv HEAD | sha256sum) Bash(git diff --binary --no-ext-diff --no-textconv HEAD | shasum -a 256) Bash(git rev-parse --abbrev-ref HEAD) Bash(git rev-parse --short HEAD) Bash(git --no-optional-locks -c core.fsmonitor=false status --porcelain=v1 --untracked-files=all | sha256sum) Bash(git --no-optional-locks -c core.fsmonitor=false status --porcelain=v1 --untracked-files=all | shasum -a 256) Bash(git --no-optional-locks -c core.fsmonitor=false status --short) Bash(mktemp:*) Bash(pwd) Bash(claude:*) Bash(opencode:*) Bash(codex:*)
-version: 1.12.0
+version: 2.0.0
 author: Luis Bovo
 license: MIT
 user-invocable: true

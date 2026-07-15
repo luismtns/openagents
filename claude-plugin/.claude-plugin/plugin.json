@@ -1,6 +1,6 @@
 {
   "name": "openagents",
-  "version": "1.12.0",
+  "version": "2.0.0",
   "description": "Portable work handoffs between AI coding agents",
   "author": {
     "name": "Luis Bovo",

@@ -5,7 +5,7 @@ description: |
   state and routes to portable handoff or diagnostics. Use when the user says
   "openagents", asks what OpenAgents can do, or wants a concise local status.
 allowed-tools: Read Glob Grep Bash(command -v claude) Bash(command -v codex) Bash(command -v opencode) Bash(git rev-parse --abbrev-ref HEAD) Bash(git rev-parse --short HEAD) Bash(git --no-optional-locks -c core.fsmonitor=false status --short) Bash(pwd)
-version: 1.12.0
+version: 2.0.0
 author: Luis Bovo
 license: MIT
 user-invocable: true
