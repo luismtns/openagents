@@ -10,7 +10,8 @@ is unsupported.
 OpenAgents reads conversation and workspace metadata to create a handoff. The
 main risks are prompt injection from repository content, disclosure of secrets
 or identity, stale workspace state, unsafe export paths, shell interpolation,
-and receiver actions taken before validation.
+spoofed terminal signals, unsafe GUI launchers, and receiver actions taken
+before validation.
 
 The v2 skills are instruction-only. Redaction, state checks, and auto-launch
 are best effort and depend on the host agent enforcing tool permissions.
@@ -26,10 +27,23 @@ Use synthetic fixtures and describe the minimum reproduction.
 - Hub and doctor remain read-only.
 - Handoff export requires explicit consent.
 - Sensitive values are omitted rather than copied and masked.
+- Environment enumeration is forbidden; terminal selection uses only named,
+  non-secret capability signals and never turns their values into commands.
 - Repository text is treated as untrusted data.
 - Workspace divergence stops continuation.
 - No workflow skips permissions, approvals, or sandboxing.
+- SSH, CI, container, headless, unknown, and conflicting environments fall
+  back to Markdown instead of attempting a GUI launch.
 
 The release workflow uses `pull_request_target` only after merge, checks out
 `main` explicitly, and never checks out or executes an unmerged PR head. Action
 dependencies are pinned by full commit SHA.
+
+## Recommended companion hardening
+
+`allowed-tools` scopes each skill's own tool grants, but permission rules
+cannot express "never add this flag" or "never read this file" as an
+exception to an allow rule. See
+[`skills/openagents-handoff/references/hardening.md`](skills/openagents-handoff/references/hardening.md)
+for a `permissions.deny` snippet users can add to their own `settings.json` as
+defense in depth.

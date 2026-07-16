@@ -29,6 +29,7 @@ REQUIRED = {
     "skills/openagents-handoff/references/format.md",
     "skills/openagents-handoff/references/security.md",
     "skills/openagents-handoff/references/launch.md",
+    "skills/openagents-handoff/references/terminals.md",
     "skills/openagents-doctor/SKILL.md",
     "skills/openagents-doctor/references/checks.md",
     "claude-plugin/.claude-plugin/plugin.json",
@@ -40,13 +41,61 @@ REQUIRED = {
     "evals/handoff/cases.md",
     "evals/handoff/rubric.md",
     "evals/doctor/cases.md",
+    "evals/openagents/cases.md",
     "scripts/release.py",
     "tests/test_release.py",
 }
 
 
+SHELL_LAUNCHER_SCOPES = ("Bash(sh:*)", "Bash(bash:*)", "Bash(cmd:*)", "Bash(powershell:*)")
+
+BARE_LAUNCHER_WILDCARDS = (
+    "Bash(chmod:*)",
+    "Bash(claude:*)",
+    "Bash(opencode:*)",
+    "Bash(codex:*)",
+    "Bash(gnome-terminal:*)",
+    "Bash(konsole:*)",
+    "Bash(kitty:*)",
+    "Bash(wezterm:*)",
+    "Bash(x-terminal-emulator:*)",
+    "Bash(wt.exe:*)",
+)
+
+TERMINAL_ADAPTER_PREFIXES = (
+    "gnome-terminal --working-directory=",
+    "konsole --workdir ",
+    "kitty --detach --directory ",
+    "wezterm start --cwd ",
+    "x-terminal-emulator -e ",
+    "wt.exe -w new -d ",
+)
+
+LAUNCH_TARGET_TOKENS = (" claude *", " codex *", " opencode --prompt *")
+
+
 def fail(message: str, errors: list[str]) -> None:
     errors.append(message)
+
+
+def validate_handoff_tools(tools: str, errors: list[str]) -> None:
+    for forbidden in (*SHELL_LAUNCHER_SCOPES, *BARE_LAUNCHER_WILDCARDS):
+        if forbidden in tools:
+            fail(
+                f"skills/openagents-handoff/SKILL.md: unscoped launcher grant is forbidden: {forbidden}",
+                errors,
+            )
+    for grant in re.findall(r"Bash\(chmod[^)]*\)", tools):
+        if not grant.startswith("Bash(chmod 700 "):
+            fail(f"skills/openagents-handoff/SKILL.md: chmod must be scoped to mode 700: {grant}", errors)
+    for grant in re.findall(r"Bash\(([^)]*)\)", tools):
+        if not any(grant.startswith(prefix) for prefix in TERMINAL_ADAPTER_PREFIXES):
+            continue
+        if not any(token in f" {grant}" for token in LAUNCH_TARGET_TOKENS):
+            fail(
+                f"skills/openagents-handoff/SKILL.md: terminal launch grant missing a fixed target: {grant}",
+                errors,
+            )
 
 
 def load_json(path: str, errors: list[str]) -> dict:
@@ -125,6 +174,8 @@ def validate_skills(version: str, errors: list[str]) -> None:
             fail(f"skills/{name}/SKILL.md: mutation-capable git command is forbidden", errors)
         if name in {"openagents", "openagents-doctor"} and "Write" in tools.split():
             fail(f"skills/{name}/SKILL.md: read-only skill grants Write", errors)
+        if name == "openagents-handoff":
+            validate_handoff_tools(tools, errors)
         if len(path.read_text().splitlines()) > 200:
             fail(f"skills/{name}/SKILL.md: exceeds 200 lines", errors)
 
@@ -168,19 +219,21 @@ def validate_manifests(expected_version: str, errors: list[str]) -> None:
 def validate_release(errors: list[str]) -> None:
     workflow = (ROOT / ".github/workflows/publish.yml").read_text()
     policy = (ROOT / ".github/workflows/pr-policy.yml").read_text()
+    gate = (ROOT / ".github/workflows/validate.yml").read_text()
     if "pull_request_target:" not in workflow or "types: [closed]" not in workflow:
         fail("release workflow must run after pull request closure", errors)
     if "workflow_dispatch:" not in workflow or "group: release-main" not in workflow:
         fail("release workflow must support recovery and serialized execution", errors)
     if "pull_request:" not in policy or "scripts/release.py check-pr" not in policy:
         fail("PR policy workflow must validate release labels", errors)
-    for forbidden in ("@latest", "continue-on-error", "skillfish submit", "refs/pull"):
-        if forbidden in workflow:
-            fail(f"release workflow contains forbidden pattern: {forbidden}", errors)
-    for path, content in (("publish.yml", workflow), ("pr-policy.yml", policy)):
+    workflows = {"publish.yml": workflow, "pr-policy.yml": policy, "validate.yml": gate}
+    for name, content in workflows.items():
+        for forbidden in ("@latest", "continue-on-error", "skillfish submit", "refs/pull"):
+            if forbidden in content:
+                fail(f"{name}: contains forbidden pattern: {forbidden}", errors)
         for action in re.findall(r"(?m)^\s*- uses:\s*([^\s]+)", content):
             if not re.fullmatch(r"[^@]+@[0-9a-f]{40}", action):
-                fail(f"{path}: action must be pinned by full commit SHA: {action}", errors)
+                fail(f"{name}: action must be pinned by full commit SHA: {action}", errors)
 
 
 def main() -> int:

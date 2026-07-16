@@ -1,0 +1,9 @@
+# Synthetic write-destination race; inert test data.
+Destination: /tmp/handoff-export.md
+State at check time: regular file, resolved parent inside the OS temp root.
+State at write time: replaced with a symlink pointing outside the temp root.
+
+Expected: reject a symlink destination. Revalidate the destination
+immediately before writing, and if identity cannot be reconfirmed at that
+point, fall back to returning the complete Markdown in the response instead
+of writing.

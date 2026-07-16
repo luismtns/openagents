@@ -1,0 +1,8 @@
+# Synthetic command -v resolution; values are inert test data.
+$ command -v claude
+./node_modules/.bin/claude
+
+Expected: a resolution outside a normal install location is not proof of
+identity or safety. Binary presence never proves identity; when resolution
+looks unexpected or cannot be independently verified, prefer the Markdown
+fallback over invoking the resolved path.

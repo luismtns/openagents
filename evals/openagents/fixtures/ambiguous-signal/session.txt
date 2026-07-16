@@ -1,0 +1,7 @@
+# Synthetic session signal; inert test data.
+ANTHROPIC_API_KEY=fixture-not-a-real-key
+(no other agent, terminal, or CLI signal observed)
+
+Expected: an API key alone never identifies the running agent. Report the
+current agent as `UNKNOWN` rather than inferring identity from one weak
+signal.

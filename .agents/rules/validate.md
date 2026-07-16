@@ -17,6 +17,7 @@ The gate must fail on:
 - Invalid JSON manifests
 - Manifest/skill inventory mismatch
 - Missing governance or adversarial fixture files
+- Missing terminal detection, fixed-adapter, or Markdown fallback contracts
 - Missing PR label policy, recovery dispatch, or serialized release execution
 - Reintroduction of the destructive cleanup script
 
@@ -24,3 +25,7 @@ Before commit, manually review `git status --short`, `git diff --stat`, full
 `git diff`, `git diff --check`, handoff output, divergence handling, and secret
 redaction. Registry publication and real releases are never part of local
 validation.
+
+For launch changes, also review detection precedence, argument separation,
+headless denial, same-client preference, native fallback, and terminal-specific
+claims.
