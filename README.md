@@ -95,6 +95,7 @@ proprietary interchange format is required.
 
 - Repository content is untrusted data, never workflow instructions.
 - Export or CLI launch requires an explicit destination.
+- Terminal detection reads only allowlisted, non-secret capability signals.
 - No workflow skips host permissions, approvals, or sandboxing.
 - The receiver checks project, branch, commit, modified files, and references.
 - Workspace divergence stops continuation instead of reconciling silently.
@@ -108,12 +109,21 @@ Read the full [threat model and reporting policy](SECURITY.md).
 |:-----|:--------------|
 | **Markdown portable** | Copy or paste into any agent that accepts Markdown |
 | **Export assisted** | OpenAgents knows a documented prompt entry point |
-| **Auto-launch verified** | A CLI version, OS, and result were reproduced |
+| **Auto-launch verified** | Agent CLI, terminal client, OS, and result were reproduced |
 | **Community** | Reported by contributors, without a maintained guarantee |
 
 Claude Code and OpenCode expose prompt entry points. Codex can accept stdin in
 appropriate environments. OpenAgents checks local CLI help before launch and
 falls back to complete Markdown when safety or interactivity is uncertain.
+
+For an explicit agent target, OpenAgents detects the operating system, TTY and
+terminal capabilities. It prefers another window of the same recognized
+external terminal. Integrated clients such as VS Code fall back to the native
+terminal candidate on Linux, macOS, or Windows. SSH, CI, containers, headless
+sessions, conflicting signals, unsupported launchers, and launch failures
+return the complete Markdown instead of guessing. Terminal detection never
+identifies the current AI agent, and a successful launcher request is not
+reported as a verified session without reproduced evidence.
 
 ## Development
 

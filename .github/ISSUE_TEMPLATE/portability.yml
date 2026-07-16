@@ -15,6 +15,26 @@ body:
       label: Operating system and version
     validations:
       required: true
+  - type: input
+    id: terminal
+    attributes:
+      label: Terminal client and exact version
+      description: For example, VS Code integrated terminal, Kitty, or Windows Terminal
+    validations:
+      required: true
+  - type: dropdown
+    id: session
+    attributes:
+      label: Session mode
+      options:
+        - Local external terminal
+        - Local integrated terminal
+        - WSL
+        - SSH
+        - Container
+        - CI or headless
+    validations:
+      required: true
   - type: dropdown
     id: capability
     attributes:

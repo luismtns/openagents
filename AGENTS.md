@@ -20,7 +20,8 @@ skill({ name: "openagents-<name>" })
 | `openagents-doctor` | `openagents-doctor` | Read-only diagnostics with manual remediation |
 
 Markdown output is portable by design. Auto-launch is best effort and must not
-be described as verified for an agent without a reproduced test.
+be described as verified without a reproduced agent CLI, terminal client,
+operating system, and result.
 
 ## Project rules (`.agents/rules/`)
 

@@ -21,4 +21,6 @@ OpenAgents v2 is an instruction-only, three-skill package.
 - Package managers own install, update, and removal.
 - No component synchronizes rules, skills, MCP, hooks, or agent settings.
 - Markdown portability is distinct from verified CLI auto-launch.
+- Terminal selection is capability-based and best effort; Markdown is the
+  terminal-independent baseline.
 - Release automation may change only changelog and version-bearing manifests.

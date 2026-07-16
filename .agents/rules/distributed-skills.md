@@ -24,6 +24,9 @@ Record integrations by capability:
 - Auto-launch verified
 - Community reported
 
+Auto-launch verification records the agent CLI, terminal client, operating
+system, and observed result.
+
 ## Releases
 
 - Use SemVer across all skills, `package.json`, plugin, and marketplace.

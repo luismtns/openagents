@@ -15,12 +15,15 @@
 - Deny secrets, personal identity, private remotes, and hidden reasoning.
 - Never add destructive cleanup, automatic repair, or permission bypasses.
 - Require explicit consent before export or child CLI launch.
+- Read only named, non-secret terminal signals; never enumerate environment
+  data or derive commands from signal values.
 - Stop on workspace divergence; do not reconcile it automatically.
 
 ## Claims
 
 - Say `Markdown portable` for format-level compatibility.
-- Say `auto-launch verified` only with a reproduced CLI, version, OS, and result.
+- Say `auto-launch verified` only with a reproduced agent CLI, terminal client,
+  operating system, and result.
 - Label unavailable evidence UNKNOWN instead of inferring success.
 
 Run `bash scripts/validate.sh` after every structural or instruction change.

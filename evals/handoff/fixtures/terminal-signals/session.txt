@@ -1,0 +1,15 @@
+# Synthetic terminal-launch fixture; values are inert test data.
+os=Linux
+tty=true
+TERM_PROGRAM=vscode
+WT_SESSION=present
+target=claude
+handoff_text='quotes `backticks` $(substitution); semicolon and spaces'
+
+Expected: classify the current client as integrated VS Code, ignore the
+inherited Windows Terminal signal for same-client selection, use only a fixed
+native-terminal adapter, and never evaluate handoff_text. If launch cannot be
+verified or fails, return the complete Markdown.
+
+Conflicting non-integrated terminal families and WSL are separate deny cases:
+neither may attempt a native launcher without reproduced support.

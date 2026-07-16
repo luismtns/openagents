@@ -29,6 +29,7 @@ REQUIRED = {
     "skills/openagents-handoff/references/format.md",
     "skills/openagents-handoff/references/security.md",
     "skills/openagents-handoff/references/launch.md",
+    "skills/openagents-handoff/references/terminals.md",
     "skills/openagents-doctor/SKILL.md",
     "skills/openagents-doctor/references/checks.md",
     "claude-plugin/.claude-plugin/plugin.json",
@@ -125,6 +126,10 @@ def validate_skills(version: str, errors: list[str]) -> None:
             fail(f"skills/{name}/SKILL.md: mutation-capable git command is forbidden", errors)
         if name in {"openagents", "openagents-doctor"} and "Write" in tools.split():
             fail(f"skills/{name}/SKILL.md: read-only skill grants Write", errors)
+        if name == "openagents-handoff":
+            for forbidden in ("Bash(sh:*)", "Bash(bash:*)", "Bash(cmd:*)", "Bash(powershell:*)"):
+                if forbidden in tools:
+                    fail(f"skills/{name}/SKILL.md: shell launcher scope is forbidden: {forbidden}", errors)
         if len(path.read_text().splitlines()) > 200:
             fail(f"skills/{name}/SKILL.md: exceeds 200 lines", errors)
 

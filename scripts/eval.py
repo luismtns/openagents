@@ -10,6 +10,7 @@ HANDOFF = (ROOT / "skills/openagents-handoff/SKILL.md").read_text()
 FORMAT = (ROOT / "skills/openagents-handoff/references/format.md").read_text()
 SECURITY = (ROOT / "skills/openagents-handoff/references/security.md").read_text()
 LAUNCH = (ROOT / "skills/openagents-handoff/references/launch.md").read_text()
+TERMINALS = (ROOT / "skills/openagents-handoff/references/terminals.md").read_text()
 DOCTOR = (ROOT / "skills/openagents-doctor/SKILL.md").read_text()
 
 FIXTURES = (
@@ -17,6 +18,7 @@ FIXTURES = (
     "evals/handoff/fixtures/secrets/config.txt",
     "evals/handoff/fixtures/stale-state/handoff.md",
     "evals/handoff/fixtures/no-git/project.txt",
+    "evals/handoff/fixtures/terminal-signals/session.txt",
 )
 
 HEADINGS = (
@@ -40,6 +42,36 @@ CHECKS = {
     "divergence stop": "divergence" in FORMAT.lower() and "stop" in FORMAT.lower(),
     "no permission bypass": "never pass flags that skip permissions" in LAUNCH.lower(),
     "safe fallback": "return markdown" in LAUNCH.lower() or "markdown in the response" in LAUNCH.lower(),
+    "allowlisted terminal detection": "allowlisted signals" in TERMINALS.lower()
+    and "enumerate the environment" in SECURITY.lower(),
+    "integrated terminal fallback": "term_program=vscode" in TERMINALS.lower()
+    and "native candidate" in TERMINALS.lower(),
+    "same terminal preference": "same recognized and supported external client first"
+    in TERMINALS.lower(),
+    "headless launch denial": all(
+        marker in TERMINALS.lower() for marker in ("ssh", "ci", "container", "missing tty")
+    ),
+    "fixed terminal adapters": all(
+        marker in TERMINALS
+        for marker in ("gnome-terminal", "konsole", "kitty", "wezterm", "wt.exe")
+    ),
+    "no shell evaluation": "never place handoff text" in LAUNCH.lower()
+    and "never turn a signal" in TERMINALS.lower()
+    and "value into a command" in TERMINALS.lower(),
+    "conflict denies launch": "conflicting non-integrated signals return markdown"
+    in TERMINALS.lower(),
+    "wsl safe fallback": "crossing into the correct distribution is not verified"
+    in TERMINALS.lower(),
+    "fixed agent argv": all(
+        marker in LAUNCH for marker in ("resolved `claude`", "resolved `opencode`", "resolved `codex`")
+    ),
+    "markdown survives launch": "always return the complete markdown" in HANDOFF.lower()
+    and "always return complete markdown" in LAUNCH.lower(),
+    "no nested shell": "shell" in TERMINALS.lower()
+    and "command concatenation" in TERMINALS.lower()
+    and "`eval`" in TERMINALS,
+    "nonblocking launcher": "verified nonblocking/detach behavior" in TERMINALS.lower()
+    and "--detach" in TERMINALS,
     "no hidden reasoning": "hidden reasoning" in HANDOFF.lower(),
     "doctor read only": "never repairs" in DOCTOR.lower(),
     "fixture inventory": all((ROOT / path).is_file() for path in FIXTURES),
