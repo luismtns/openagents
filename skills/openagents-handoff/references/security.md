@@ -28,3 +28,8 @@ If safe redaction is uncertain, omit the value and describe only its category,
 for example: `Authentication secret configured; value intentionally omitted`.
 Instruction-only export cannot guarantee race-free filesystem operations; if
 path identity changes or cannot be rechecked, fall back to response Markdown.
+
+Resolving `claude`, `codex`, `opencode`, or a terminal binary through `command
+-v` trusts the ambient `$PATH`; a compromised `$PATH` is outside this skill's
+control. See [hardening.md](hardening.md) for a recommended companion
+`permissions.deny` configuration.

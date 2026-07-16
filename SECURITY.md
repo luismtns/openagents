@@ -38,3 +38,12 @@ Use synthetic fixtures and describe the minimum reproduction.
 The release workflow uses `pull_request_target` only after merge, checks out
 `main` explicitly, and never checks out or executes an unmerged PR head. Action
 dependencies are pinned by full commit SHA.
+
+## Recommended companion hardening
+
+`allowed-tools` scopes each skill's own tool grants, but permission rules
+cannot express "never add this flag" or "never read this file" as an
+exception to an allow rule. See
+[`skills/openagents-handoff/references/hardening.md`](skills/openagents-handoff/references/hardening.md)
+for a `permissions.deny` snippet users can add to their own `settings.json` as
+defense in depth.

@@ -1,0 +1,10 @@
+# Synthetic host skill registry listing; inert test data.
+openagents (2.0.0)
+openagents-handoff (2.0.0)
+openagents-doctor (2.0.0)
+openagents-global (1.4.0)
+openagents-init (1.4.0)
+
+Expected: report the Suite check as WARN because a legacy v1 skill name is
+still visible alongside the v2 suite. Do not remove, relink, or edit
+anything; recommend a manual uninstall step only.

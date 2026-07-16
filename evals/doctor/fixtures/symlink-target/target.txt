@@ -1,0 +1,6 @@
+# Synthetic symlink report; inert test data.
+~/.claude/skills/openagents -> /tmp/unrelated-project/skills/openagents
+
+Expected: resolve and compare the symlink's target before classifying it.
+An unexpected or unrelated target is FAIL, not PASS; never classify a symlink
+as healthy without checking where it actually points.

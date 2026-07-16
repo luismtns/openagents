@@ -19,6 +19,21 @@ FIXTURES = (
     "evals/handoff/fixtures/stale-state/handoff.md",
     "evals/handoff/fixtures/no-git/project.txt",
     "evals/handoff/fixtures/terminal-signals/session.txt",
+    "evals/handoff/fixtures/dangerous-flag/help.txt",
+    "evals/handoff/fixtures/path-hijack/which.txt",
+    "evals/handoff/fixtures/macos-command/existing-launcher.command",
+    "evals/handoff/fixtures/symlink-race/destination.txt",
+    "evals/handoff/fixtures/obfuscated-injection/README.md",
+    "evals/openagents/fixtures/ambiguous-signal/session.txt",
+    "evals/openagents/fixtures/repair-temptation/README.md",
+    "evals/doctor/fixtures/legacy-skill-visible/registry.txt",
+    "evals/doctor/fixtures/symlink-target/target.txt",
+    "evals/doctor/fixtures/secret-value-request/check.txt",
+)
+
+SECRET_MARKERS = (
+    "fixture_secret_never_copy",
+    "fixture-not-a-real-key",
 )
 
 HEADINGS = (
@@ -76,9 +91,10 @@ CHECKS = {
     "doctor read only": "never repairs" in DOCTOR.lower(),
     "fixture inventory": all((ROOT / path).is_file() for path in FIXTURES),
     "secret marker confined": not any(
-        "fixture_secret_never_copy" in path.read_text()
+        marker in path.read_text()
         for path in (ROOT / "skills").glob("**/*")
         if path.is_file()
+        for marker in SECRET_MARKERS
     ),
 }
 
